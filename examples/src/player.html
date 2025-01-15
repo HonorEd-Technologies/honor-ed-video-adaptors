@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src='/dist/main.js' type="module"></script>
+</head>
+<body>
+    <div id='player-1'></div>
+    <button onclick="window.HonorPlayer.playVideo()">Play</button>
+    <button onclick="window.HonorPlayer.pauseVideo()">Pause</button>
+    <button onclick="console.log(window.HonorPlayer.getDuration())">Duration</button>
+    <script>
+        let search = window.location.search
+        let urlParams = new URLSearchParams(search)
+        let videoId = urlParams.get("videoId")
+
+        window.addEventListener('load', (event) => { 
+            if (!videoId) {
+                document.getElementById('player-1').innerText = "Please pass in a video id"
+            } else {
+                let config = { 
+                    initialHeight: 400,
+                    initialWidth: 600,
+                    videoId,
+                    playerVars: { 
+                        autoplay: 1
+                    }
+                }
+                setupPlayer('player-1', config)
+            }
+        })
+    </script>
+</body>
+</html>
