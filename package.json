@@ -5,15 +5,22 @@
   "author": "Calvin Collins (Honor Education)",
   "private": true,
   "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "load-script": "^2.0.0"
   },
   "scripts": {
-    "build": "tsc && webpack build"
+    "clean": "rimraf dist && rimraf Sources/honor-ed-video-adapters/Resources/dist",
+    "prebuild": "yarn run clean",
+    "build": "tsc && webpack build",
+    "postbuild": "copyfiles -u 1 \"dist/**/*\"  Sources/honor-ed-video-adapters/Resources/dist && cp ./src/HonorPlayer.html ./Sources/honor-ed-video-adapters/Resources/dist"
   },
   "devDependencies": {
     "webpack": "^5.97.1",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^6.0.1",
+    "copyfiles": "^2.4.1",
+    "rimraf": "^6.0.1"
   },
-  "files": ["dist/src/main.js"]
+  "files": ["dist"]
 }

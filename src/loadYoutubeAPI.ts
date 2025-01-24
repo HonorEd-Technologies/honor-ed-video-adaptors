@@ -1,5 +1,5 @@
 import load from 'load-script'
-import { YTEvent, YTEventHandler } from './types/YTEvents'
+import { YTEventType, YTEvent, YTEventHandler, YTError } from './types/YTEvents'
 import { IFrameYTPlayer } from './types/types'
 
 export default (handleEvent: YTEventHandler): Promise<IFrameYTPlayer> => {
@@ -15,7 +15,7 @@ export default (handleEvent: YTEventHandler): Promise<IFrameYTPlayer> => {
     load(protocol + '//www.youtube.com/iframe_api', (err) => { 
       if (err) {
         console.log("ERROR")
-        handleEvent(YTEvent.error)
+        handleEvent(YTEventType.error, { data: YTError.apiLoadError })
       }
     })
 

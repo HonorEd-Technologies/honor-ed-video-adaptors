@@ -1,4 +1,4 @@
-import { YTEvent, YTEventHandler } from "../YTEvents"
+import { YTEventType, YTEventEmitters, YTEvent, YTPlayerState } from "../YTEvents"
 import { YTFunction } from "../YTFunctions"
 import loadYoutubeAPI from "../../loadYoutubeAPI"
 import { IFrameYTPlayer } from "../types"
@@ -14,49 +14,39 @@ export type YTAdaptor = {
 }
 
 export type YTConfig = { 
-  initialHeight: number,
-  initialWidth: number,
+  height: number,
+  width: number,
   videoId: string,
-  playerVars: YTPlayerVars
+  playerVars: Object
   events?: Object
 }
 
-export type YTPlayerVars = {
-  autoplay?: number,
-  cc_lang_pref?: string,
-  cc_load_policy?: number,
-  color?: string,
-  control?: number,
-  disablekb?: number,
-  enablejsapi?: number,
-  end?: number,
-  fs?: number,
-  hl?: string,
-  playsInline?: number,
-  start?: number
-}
-
-type YTEventPayload = { 
-  data: number
-}
-
-export const bindAdaptorToAPI = (elementId: string, handler: YTEventHandler, config: YTConfig): Promise<HonorPlayer> => {
+export const bindAdaptorToAPI = (elementId: string, config: YTConfig, emitter: YTEventEmitters): Promise<HonorPlayer> => {
   return new Promise<HonorPlayer>((resolve) => { 
-    loadYoutubeAPI(handler)
+    loadYoutubeAPI(emitter.triggerEvent)
     .then((YT: IFrameYTPlayer) => { 
-      if (config.events) { 
-        console.log("ERROR!!")
-        handler(YTEvent.error)
-        return
+      let timePoll: ReturnType<typeof setInterval> | undefined
+      const setupTimePoll = () => {
+        timePoll = setInterval(() => { 
+          if (window.HonorPlayer) {
+            const time = window.HonorPlayer.getCurrentTime()
+            emitter.triggerEvent(YTEventType.currentTimeChanged, { data: time })
+          }
+        }, 500)
       }
-// TODO: add 'associated value' to event values to pass data
+
       config.events = { 
-        'onReady': () => { handler(YTEvent.playerReady) },
-        'onStateChange': ({ data }: YTEventPayload) => { handler(YTEvent.stateChanged) },
-        'onError': ({ data }: YTEventPayload) => { 
-          console.log(data)
-          handler(YTEvent.error) 
-        }
+        'onReady': () => { emitter.triggerEvent(YTEventType.playerReady) },
+        'onStateChange': (event: YTEvent) => { 
+          emitter.triggerEvent(YTEventType.stateChanged, event)
+          const { data } = event
+          if (timePoll !== undefined && (YTPlayerState.ended === data || YTPlayerState.unstarted === data)) { 
+            clearInterval(timePoll)
+          } else if (timePoll === undefined) { 
+            setupTimePoll()
+          }
+        },
+        'onError': (event: YTEvent) => { emitter.triggerEvent(YTEventType.error, event) }
       }
 
       const YTPlayer = convertYTPlayer(elementId, config)
@@ -64,7 +54,7 @@ export const bindAdaptorToAPI = (elementId: string, handler: YTEventHandler, con
       let player: HonorPlayer = {
         destroy: () => { },
         getCurrentTime: function (): number {
-          throw new Error("Function not implemented.")
+          return YTPlayer.getCurrentTime()
         },
         getDuration: function (): number {
           return YTPlayer.getDuration()
@@ -88,7 +78,7 @@ export const bindAdaptorToAPI = (elementId: string, handler: YTEventHandler, con
           YTPlayer.setPlaybackRate(rate)
         },
         setSize: function (width: number, height: number): Object {
-          return YTPlayer.setSize(width, height)
+          return YTPlayer.setSize(width.toString(), height.toString())
         },
         setVolume: function (volume: number): void {
           YTPlayer.setVolume(volume)

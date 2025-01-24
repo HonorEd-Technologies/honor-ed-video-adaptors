@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src='/dist/main.js' type="module"></script>
+    <script src='/dist/main.js'></script>
 </head>
 <body>
     <div id='player-1'></div>
@@ -18,14 +18,30 @@
                 document.getElementById('player-1').innerText = "Please pass in a video id"
             } else {
                 let config = { 
-                    initialHeight: 400,
-                    initialWidth: 600,
+                    height: 400,
+                    width: 600,
                     videoId,
                     playerVars: { 
-                        autoplay: 1
+                        'autoplay': 1,
+                        'controls': 0
                     }
                 }
                 setupPlayer('player-1', config)
+                window.eventListeners.onReady(() => { 
+                    console.log("Ready")
+                })
+
+                window.eventListeners.onStateChanged((state) => { 
+                    console.log("State changed: " + state)
+                })
+
+                window.eventListeners.onError((error) => { 
+                    console.log("Error: " + error)
+                })
+
+                window.eventListeners.onCurrentTimeChanged((time) => { 
+                    console.log("Current time: " + time)
+                })
             }
         })
     </script>

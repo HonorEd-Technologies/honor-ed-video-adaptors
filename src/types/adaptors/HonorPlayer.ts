@@ -1,3 +1,5 @@
+import { YTError, YTPlayerState } from "../YTEvents"
+
 export type HonorPlayer = { 
   destroy: () => void
   getCurrentTime: () => number
