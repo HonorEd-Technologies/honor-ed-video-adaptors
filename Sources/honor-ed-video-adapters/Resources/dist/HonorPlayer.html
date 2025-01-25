@@ -27,25 +27,25 @@
                 }
                 setupPlayer('player-1', config)
 
-                window.eventListeners.onReady(() => { 
+                window.HonorPlayer.onReady(() => { 
                     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.playerReady) { 
                         window.webkit.messageHandlers.playerReady.postMessage({})
                     }
                 })
 
-                window.eventListeners.onStateChanged((state) => { 
+                window.HonorPlayer.onStateChanged((state) => { 
                     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.playerStateChanged) { 
                         window.webkit.messageHandlers.playerStateChanged.postMessage({ state })
                     }
                 })
 
-                window.eventListeners.onError((error) => { 
+                window.HonorPlayer.onError((error) => { 
                     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.playerError) { 
                         window.webkit.messageHandlers.playerError.postMessage({ error })
                     }
                 })
 
-                window.eventListeners.onCurrentTimeChanged((time) => { 
+                window.HonorPlayer.onCurrentTimeChanged((time) => { 
                     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.currentTimeChanged) { 
                         window.webkit.messageHandlers.currentTimeChanged.postMessage({ time })
                     }

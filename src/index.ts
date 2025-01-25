@@ -1,18 +1,9 @@
-import { YTEventEmitters } from "./types/YTEvents";
-import { bindAdaptorToAPI, YTConfig } from "./types/adaptors/YTAdaptor";
+import { HonorPlayer } from "./HonorPlayer";
+import { bindPlayerToYoutubeAPI, YTConfig } from "./types/adaptors/YTAdaptor";
 
 window.setupPlayer = (elementId: string, config: YTConfig) => { 
-  let emitter = new YTEventEmitters()
+  let player = new HonorPlayer()
+  window.HonorPlayer = player
 
-  bindAdaptorToAPI(elementId, config, emitter)
-    .then((player) => { 
-      window.HonorPlayer = player
-    })
-  
-  window.eventListeners = { 
-    onReady: emitter.onReady,
-    onStateChanged: emitter.onStateChange,
-    onError: emitter.onError,
-    onCurrentTimeChanged: emitter.onCurrentTimeChange
-  }
+  bindPlayerToYoutubeAPI(elementId, config, player)
 }

@@ -4,7 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const load_script_1 = __importDefault(require("load-script"));
-const YTEvents_1 = require("./types/YTEvents");
+const HonorVideoEvent_1 = require("./types/Shared/HonorVideoEvent");
+const HonorVideoError_1 = require("./types/Shared/HonorVideoError");
 exports.default = (handleEvent) => {
     const iFrameReadyPromise = new Promise((resolve) => {
         if (window.YT && window.YT.Player && window.YT.Player instanceof Function) {
@@ -17,7 +18,7 @@ exports.default = (handleEvent) => {
         (0, load_script_1.default)(protocol + '//www.youtube.com/iframe_api', (err) => {
             if (err) {
                 console.log("ERROR");
-                handleEvent(YTEvents_1.YTEventType.error, { data: YTEvents_1.YTError.apiLoadError });
+                handleEvent(HonorVideoEvent_1.HonorVideoEvent.error, { data: { type: HonorVideoError_1.HonorVideoErrorType.apiLoadError, message: "Failed to load Youtube iFrame API" } });
             }
         });
         let existingValue = window.onYouTubeIframeAPIReady;

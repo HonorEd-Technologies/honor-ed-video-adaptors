@@ -1,5 +1,5 @@
-import { YTEventHandler } from './types/YTEvents';
-import { IFrameYTPlayer } from './types/types';
-declare const _default: (handleEvent: YTEventHandler) => Promise<IFrameYTPlayer>;
+import { HonorVideoEventHandler } from './types/Shared/HonorEventEmitter';
+import { IFrameYTPlayer } from './types/YouTube/IFrameYTPlayer';
+declare const _default: (handleEvent: HonorVideoEventHandler) => Promise<IFrameYTPlayer>;
 export default _default;
 //# sourceMappingURL=loadYoutubeAPI.d.ts.map

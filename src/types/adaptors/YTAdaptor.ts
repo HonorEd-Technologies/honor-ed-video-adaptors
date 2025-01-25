@@ -1,17 +1,12 @@
-import { YTEventType, YTEventEmitters, YTEvent, YTPlayerState } from "../YTEvents"
-import { YTFunction } from "../YTFunctions"
-import loadYoutubeAPI from "../../loadYoutubeAPI"
-import { IFrameYTPlayer } from "../types"
+import { YTError, YTEvent, YTPlayerState } from "../YouTube/YTEvents"
+import { HonorVideoEvent } from "../Shared/HonorVideoEvent"
+import loadYoutubeAPI from "../../utils/loadYoutubeAPI"
+import { IFrameYTPlayer } from "../YouTube/IFrameYTPlayer"
 import convertYTPlayer from "./convertYTPlayer"
-import { HonorPlayer } from "./HonorPlayer"
-
-export type YTAdaptor = {
-  loadVideoById: (videoId: string, startSeconds?: number, endSeconds?: number) => void,
-  playVideo: () => void,
-  pauseVideo: () => void,
-  stopVideo: () => void,
-
-}
+import { HonorPlayer } from "../../HonorPlayer"
+import { HonorVideoAdaptor } from "./HonorVideoAdaptor"
+import { HonorVideoPlayerState } from "../Shared/HonorVideoPlayerState"
+import { HonorVideoErrorType } from "../Shared/HonorVideoError"
 
 export type YTConfig = { 
   height: number,
@@ -21,37 +16,106 @@ export type YTConfig = {
   events?: Object
 }
 
-export const bindAdaptorToAPI = (elementId: string, config: YTConfig, emitter: YTEventEmitters): Promise<HonorPlayer> => {
-  return new Promise<HonorPlayer>((resolve) => { 
-    loadYoutubeAPI(emitter.triggerEvent)
+const parseYTPlayerState = (state: YTPlayerState): HonorVideoPlayerState | undefined => { 
+  switch (state) { 
+    case YTPlayerState.unstarted:
+      return HonorVideoPlayerState.unstarted
+    case YTPlayerState.playing:
+      return HonorVideoPlayerState.playing
+    case YTPlayerState.paused:
+      return HonorVideoPlayerState.paused
+    case YTPlayerState.buffering:
+      return HonorVideoPlayerState.buffering
+    case YTPlayerState.ended:
+      return HonorVideoPlayerState.ended
+    case YTPlayerState.videoCued:
+      return undefined // unneeded for our purposes
+  }
+}
+
+const parseYTPlayerError = (error: YTError): HonorVideoErrorType => { 
+  switch (error) { 
+    case YTError.apiLoadError:
+      return HonorVideoErrorType.apiLoadError
+    case YTError.invalidPermissions, YTError.invalidPermissionsAlt:
+      return HonorVideoErrorType.invalidPermissions
+    case YTError.invalidParameter:
+      return HonorVideoErrorType.playerError
+    case YTError.playerError:
+      return HonorVideoErrorType.playerError
+    case YTError.notFound:
+      return HonorVideoErrorType.notFound
+    default:
+      return HonorVideoErrorType.unknown
+  }
+}
+
+export const bindPlayerToYoutubeAPI = (elementId: string, config: YTConfig, player: HonorPlayer): Promise<void> => {
+  return new Promise<void>((resolve) => { 
+    loadYoutubeAPI(player.emitter.triggerEvent)
     .then((YT: IFrameYTPlayer) => { 
       let timePoll: ReturnType<typeof setInterval> | undefined
       const setupTimePoll = () => {
         timePoll = setInterval(() => { 
           if (window.HonorPlayer) {
             const time = window.HonorPlayer.getCurrentTime()
-            emitter.triggerEvent(YTEventType.currentTimeChanged, { data: time })
+            player.emitter.triggerEvent(HonorVideoEvent.currentTimeChanged, { data: time })
           }
         }, 500)
       }
 
       config.events = { 
-        'onReady': () => { emitter.triggerEvent(YTEventType.playerReady) },
+        'onReady': () => { player.emitter.triggerEvent(HonorVideoEvent.playerReady) },
         'onStateChange': (event: YTEvent) => { 
-          emitter.triggerEvent(YTEventType.stateChanged, event)
           const { data } = event
+          const castData = <YTPlayerState>data
+          if (castData === undefined) { 
+            player.emitter.triggerEvent(
+              HonorVideoEvent.error, { 
+                data: { 
+                  type: HonorVideoErrorType.adaptorLayerError, 
+                  message: `Unknown player state received: ${data}` 
+                }
+              }
+            )
+            return
+          }
+          const honorPlayerState = parseYTPlayerState(castData)
+
+          if (!honorPlayerState) { 
+            player.emitter.triggerEvent(
+              HonorVideoEvent.error, { 
+                data: { 
+                  type: HonorVideoErrorType.adaptorLayerError, 
+                  message: `Could not convert Youtube player event: ${castData} into Honor Event` 
+                }
+              }
+            )
+            return
+          }
+          player.emitter.triggerEvent(HonorVideoEvent.stateChanged, { data: honorPlayerState })
+
           if (timePoll !== undefined && (YTPlayerState.ended === data || YTPlayerState.unstarted === data)) { 
             clearInterval(timePoll)
           } else if (timePoll === undefined) { 
             setupTimePoll()
           }
         },
-        'onError': (event: YTEvent) => { emitter.triggerEvent(YTEventType.error, event) }
+        'onError': (event: YTEvent) => { 
+          const { data } = event
+          var castData = <YTError>data
+          var error = HonorVideoErrorType.unknown
+
+          if (castData) { 
+            error = parseYTPlayerError(castData)
+          }
+          player.emitter.triggerEvent(HonorVideoEvent.error, { data: { type: error }}) 
+        }
       }
 
       const YTPlayer = convertYTPlayer(elementId, config)
 
-      let player: HonorPlayer = {
+      let adaptor: HonorVideoAdaptor = {
         destroy: () => { },
         getCurrentTime: function (): number {
           return YTPlayer.getCurrentTime()
@@ -93,7 +157,9 @@ export const bindAdaptorToAPI = (elementId: string, config: YTConfig, emitter: Y
           YTPlayer.pauseVideo()
         }
       }
-      resolve(player)
+
+      player.setAdaptor(adaptor)
+      resolve()
     }) 
   })
 }

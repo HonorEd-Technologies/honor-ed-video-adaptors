@@ -23,31 +23,4 @@ exports.default = (elementId, config) => {
         getIframe: () => player.getIframe()
     };
 };
-// stopVideo = 'stopVideo',
-//   getVideoLoadedFraction = 'getVideoLoadedFraction',
-//   playVideoAt = 'playVideoAt',
-//   setOption = 'setOption',
-//   mute = 'mute',
-//   unMute = 'unMute',
-//   isMuted = 'isMuted',
-//   setVolume = 'setVolume',
-//   getVolume = 'getVolume',
-//   seekTo = 'seekTo',
-//   getPlayerState = 'getPlayerState',
-//   getPlaybackRate = 'getPlaybackRate',
-//   setPlaybackRate = 'setPlaybackRate',
-//   getAvailablePlaybackRates = 'getAvailablePlaybackRates',
-//   getPlaybackQuality = 'getPlaybackQuality',
-//   setPlaybackQuality = 'setPlaybackQuality',
-//   getAvailableQualityLevels = 'getAvailableQualityLevels',
-//   getCurrentTime = 'getCurrentTime',
-//   getDuration = 'getDuration',
-//   removeEventListener = 'removeEventListener',
-//   getVideoUrl = 'getVideoUrl',
-//   getOptions = 'getOptions',
-//   getOption = 'getOption',
-//   addEventListener = 'addEventListener',
-//   destroy = 'destroy',
-//   setSize = 'setSize',
-//   getIframe = 'getIframe'
 //# sourceMappingURL=convertYTPlayer.js.map

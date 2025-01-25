@@ -3,28 +3,83 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.bindAdaptorToAPI = void 0;
-const YTEvents_1 = require("../YTEvents");
+exports.bindPlayerToYoutubeAPI = void 0;
+const YTEvents_1 = require("../YouTube/YTEvents");
+const HonorVideoEvent_1 = require("../Shared/HonorVideoEvent");
 const loadYoutubeAPI_1 = __importDefault(require("../../loadYoutubeAPI"));
 const convertYTPlayer_1 = __importDefault(require("./convertYTPlayer"));
-const bindAdaptorToAPI = (elementId, config, emitter) => {
+const HonorVideoPlayerState_1 = require("../Shared/HonorVideoPlayerState");
+const HonorVideoError_1 = require("../Shared/HonorVideoError");
+const parseYTPlayerState = (state) => {
+    switch (state) {
+        case YTEvents_1.YTPlayerState.unstarted:
+            return HonorVideoPlayerState_1.HonorVideoPlayerState.unstarted;
+        case YTEvents_1.YTPlayerState.playing:
+            return HonorVideoPlayerState_1.HonorVideoPlayerState.playing;
+        case YTEvents_1.YTPlayerState.paused:
+            return HonorVideoPlayerState_1.HonorVideoPlayerState.paused;
+        case YTEvents_1.YTPlayerState.buffering:
+            return HonorVideoPlayerState_1.HonorVideoPlayerState.buffering;
+        case YTEvents_1.YTPlayerState.ended:
+            return HonorVideoPlayerState_1.HonorVideoPlayerState.ended;
+        case YTEvents_1.YTPlayerState.videoCued:
+            return undefined; // unneeded for our purposes
+    }
+};
+const parseYTPlayerError = (error) => {
+    switch (error) {
+        case YTEvents_1.YTError.apiLoadError:
+            return HonorVideoError_1.HonorVideoErrorType.apiLoadError;
+        case YTEvents_1.YTError.invalidPermissions, YTEvents_1.YTError.invalidPermissionsAlt:
+            return HonorVideoError_1.HonorVideoErrorType.invalidPermissions;
+        case YTEvents_1.YTError.invalidParameter:
+            return HonorVideoError_1.HonorVideoErrorType.playerError;
+        case YTEvents_1.YTError.playerError:
+            return HonorVideoError_1.HonorVideoErrorType.playerError;
+        case YTEvents_1.YTError.notFound:
+            return HonorVideoError_1.HonorVideoErrorType.notFound;
+        default:
+            return HonorVideoError_1.HonorVideoErrorType.unknown;
+    }
+};
+const bindPlayerToYoutubeAPI = (elementId, config, player) => {
     return new Promise((resolve) => {
-        (0, loadYoutubeAPI_1.default)(emitter.triggerEvent)
+        (0, loadYoutubeAPI_1.default)(player.emitter.triggerEvent)
             .then((YT) => {
             let timePoll;
             const setupTimePoll = () => {
                 timePoll = setInterval(() => {
                     if (window.HonorPlayer) {
                         const time = window.HonorPlayer.getCurrentTime();
-                        emitter.triggerEvent(YTEvents_1.YTEventType.currentTimeChanged, { data: time });
+                        player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.currentTimeChanged, { data: time });
                     }
                 }, 500);
             };
             config.events = {
-                'onReady': () => { emitter.triggerEvent(YTEvents_1.YTEventType.playerReady); },
+                'onReady': () => { player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.playerReady); },
                 'onStateChange': (event) => {
-                    emitter.triggerEvent(YTEvents_1.YTEventType.stateChanged, event);
                     const { data } = event;
+                    const castData = data;
+                    if (castData === undefined) {
+                        player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.error, {
+                            data: {
+                                type: HonorVideoError_1.HonorVideoErrorType.adaptorLayerError,
+                                message: `Unknown player state received: ${data}`
+                            }
+                        });
+                        return;
+                    }
+                    const honorPlayerState = parseYTPlayerState(castData);
+                    if (!honorPlayerState) {
+                        player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.error, {
+                            data: {
+                                type: HonorVideoError_1.HonorVideoErrorType.adaptorLayerError,
+                                message: `Could not convert Youtube player event: ${castData} into Honor Event`
+                            }
+                        });
+                        return;
+                    }
+                    player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.stateChanged, { data: honorPlayerState });
                     if (timePoll !== undefined && (YTEvents_1.YTPlayerState.ended === data || YTEvents_1.YTPlayerState.unstarted === data)) {
                         clearInterval(timePoll);
                     }
@@ -32,10 +87,18 @@ const bindAdaptorToAPI = (elementId, config, emitter) => {
                         setupTimePoll();
                     }
                 },
-                'onError': (event) => { emitter.triggerEvent(YTEvents_1.YTEventType.error, event); }
+                'onError': (event) => {
+                    const { data } = event;
+                    var castData = data;
+                    var error = HonorVideoError_1.HonorVideoErrorType.unknown;
+                    if (castData) {
+                        error = parseYTPlayerError(castData);
+                    }
+                    player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.error, { data: { type: error } });
+                }
             };
             const YTPlayer = (0, convertYTPlayer_1.default)(elementId, config);
-            let player = {
+            let adaptor = {
                 destroy: () => { },
                 getCurrentTime: function () {
                     return YTPlayer.getCurrentTime();
@@ -77,9 +140,10 @@ const bindAdaptorToAPI = (elementId, config, emitter) => {
                     YTPlayer.pauseVideo();
                 }
             };
-            resolve(player);
+            player.setAdaptor(adaptor);
+            resolve();
         });
     });
 };
-exports.bindAdaptorToAPI = bindAdaptorToAPI;
+exports.bindPlayerToYoutubeAPI = bindPlayerToYoutubeAPI;
 //# sourceMappingURL=YTAdaptor.js.map

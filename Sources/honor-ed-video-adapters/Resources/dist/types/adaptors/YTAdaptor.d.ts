@@ -1,11 +1,4 @@
-import { YTEventEmitters } from "../YTEvents";
-import { HonorPlayer } from "./HonorPlayer";
-export type YTAdaptor = {
-    loadVideoById: (videoId: string, startSeconds?: number, endSeconds?: number) => void;
-    playVideo: () => void;
-    pauseVideo: () => void;
-    stopVideo: () => void;
-};
+import { HonorPlayer } from "../../HonorPlayer";
 export type YTConfig = {
     height: number;
     width: number;
@@ -13,5 +6,5 @@ export type YTConfig = {
     playerVars: Object;
     events?: Object;
 };
-export declare const bindAdaptorToAPI: (elementId: string, config: YTConfig, emitter: YTEventEmitters) => Promise<HonorPlayer>;
+export declare const bindPlayerToYoutubeAPI: (elementId: string, config: YTConfig, player: HonorPlayer) => Promise<void>;
 //# sourceMappingURL=YTAdaptor.d.ts.map

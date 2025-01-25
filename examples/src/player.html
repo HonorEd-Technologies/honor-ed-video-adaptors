@@ -27,19 +27,19 @@
                     }
                 }
                 setupPlayer('player-1', config)
-                window.eventListeners.onReady(() => { 
+                window.HonorPlayer.onReady(() => { 
                     console.log("Ready")
                 })
 
-                window.eventListeners.onStateChanged((state) => { 
+                window.HonorPlayer.onStateChanged((state) => { 
                     console.log("State changed: " + state)
                 })
 
-                window.eventListeners.onError((error) => { 
+                window.HonorPlayer.onError((error) => { 
                     console.log("Error: " + error)
                 })
 
-                window.eventListeners.onCurrentTimeChanged((time) => { 
+                window.HonorPlayer.onCurrentTimeChanged((time) => { 
                     console.log("Current time: " + time)
                 })
             }
