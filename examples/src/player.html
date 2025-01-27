@@ -21,10 +21,10 @@
                     height: 400,
                     width: 600,
                     videoId,
-                    playerVars: { 
-                        'autoplay': 1,
-                        'controls': 0
-                    }
+                    autoplay: true,
+                    controls: false,
+                    fullscreenEnabled: false,
+                    playsInline: false
                 }
                 setupPlayer('player-1', config)
                 window.HonorPlayer.onReady(() => { 

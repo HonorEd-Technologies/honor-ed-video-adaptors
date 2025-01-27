@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.bindPlayerToYoutubeAPI = void 0;
 const YTEvents_1 = require("../YouTube/YTEvents");
 const HonorVideoEvent_1 = require("../Shared/HonorVideoEvent");
-const loadYoutubeAPI_1 = __importDefault(require("../../loadYoutubeAPI"));
+const loadYoutubeAPI_1 = __importDefault(require("../../utils/loadYoutubeAPI"));
 const convertYTPlayer_1 = __importDefault(require("./convertYTPlayer"));
 const HonorVideoPlayerState_1 = require("../Shared/HonorVideoPlayerState");
 const HonorVideoError_1 = require("../Shared/HonorVideoError");
@@ -42,7 +42,18 @@ const parseYTPlayerError = (error) => {
             return HonorVideoError_1.HonorVideoErrorType.unknown;
     }
 };
-const bindPlayerToYoutubeAPI = (elementId, config, player) => {
+const bindPlayerToYoutubeAPI = (elementId, honorConfig, player) => {
+    let config = {
+        height: honorConfig.height,
+        width: honorConfig.width,
+        videoId: honorConfig.videoId,
+        playerVars: {
+            autoPlay: honorConfig.autoplay ? 1 : 0,
+            controls: honorConfig.controls ? 1 : 0,
+            fs: honorConfig.fullscreenEnabled ? 1 : 0,
+            playsInline: honorConfig.playsInline ? 1 : 0
+        }
+    };
     return new Promise((resolve) => {
         (0, loadYoutubeAPI_1.default)(player.emitter.triggerEvent)
             .then((YT) => {

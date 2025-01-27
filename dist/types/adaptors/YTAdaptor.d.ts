@@ -1,4 +1,5 @@
 import { HonorPlayer } from "../../HonorPlayer";
+import { HonorVideoConfiguration } from "../Shared/HonorVideoConfiguration";
 export type YTConfig = {
     height: number;
     width: number;
@@ -6,5 +7,5 @@ export type YTConfig = {
     playerVars: Object;
     events?: Object;
 };
-export declare const bindPlayerToYoutubeAPI: (elementId: string, config: YTConfig, player: HonorPlayer) => Promise<void>;
+export declare const bindPlayerToYoutubeAPI: (elementId: string, honorConfig: HonorVideoConfiguration, player: HonorPlayer) => Promise<void>;
 //# sourceMappingURL=YTAdaptor.d.ts.map

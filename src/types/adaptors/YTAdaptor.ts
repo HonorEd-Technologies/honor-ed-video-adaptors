@@ -7,6 +7,7 @@ import { HonorPlayer } from "../../HonorPlayer"
 import { HonorVideoAdaptor } from "./HonorVideoAdaptor"
 import { HonorVideoPlayerState } from "../Shared/HonorVideoPlayerState"
 import { HonorVideoErrorType } from "../Shared/HonorVideoError"
+import { HonorVideoConfiguration } from "../Shared/HonorVideoConfiguration"
 
 export type YTConfig = { 
   height: number,
@@ -50,7 +51,18 @@ const parseYTPlayerError = (error: YTError): HonorVideoErrorType => {
   }
 }
 
-export const bindPlayerToYoutubeAPI = (elementId: string, config: YTConfig, player: HonorPlayer): Promise<void> => {
+export const bindPlayerToYoutubeAPI = (elementId: string, honorConfig: HonorVideoConfiguration, player: HonorPlayer): Promise<void> => {
+  let config: YTConfig = { 
+    height: honorConfig.height,
+    width: honorConfig.width,
+    videoId: honorConfig.videoId,
+    playerVars: { 
+      autoPlay: honorConfig.autoplay ? 1 : 0,
+      controls: honorConfig.controls ? 1 : 0,
+      fs: honorConfig.fullscreenEnabled ? 1 : 0,
+      playsInline: honorConfig.playsInline ? 1 : 0
+    }
+  }
   return new Promise<void>((resolve) => { 
     loadYoutubeAPI(player.emitter.triggerEvent)
     .then((YT: IFrameYTPlayer) => { 

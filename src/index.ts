@@ -1,7 +1,8 @@
 import { HonorPlayer } from "./HonorPlayer";
-import { bindPlayerToYoutubeAPI, YTConfig } from "./types/adaptors/YTAdaptor";
+import { bindPlayerToYoutubeAPI } from "./types/adaptors/YTAdaptor";
+import { HonorVideoConfiguration } from "./types/Shared/HonorVideoConfiguration";
 
-window.setupPlayer = (elementId: string, config: YTConfig) => { 
+window.setupPlayer = (elementId: string, config: HonorVideoConfiguration) => { 
   let player = new HonorPlayer()
   window.HonorPlayer = player
 

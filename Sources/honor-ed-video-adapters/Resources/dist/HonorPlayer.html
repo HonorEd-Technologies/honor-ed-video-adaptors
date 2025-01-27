@@ -18,12 +18,10 @@
                     height: document.documentElement.clientHeight,
                     width: document.documentElement.clientWidth,
                     videoId,
-                    playerVars: { 
-                        "autoplay": 1,
-                        "controls": 0,
-                        "fs": 0,
-                        "playsinline": 1
-                    }
+                    autoplay: true,
+                    controls: false,
+                    fullscreenEnabled: false,
+                    playsInline: false
                 }
                 setupPlayer('player-1', config)
 
