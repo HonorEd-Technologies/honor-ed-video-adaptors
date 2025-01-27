@@ -5,19 +5,21 @@
 </head>
 <body>
     <div id='player-1'></div>
-    <button onclick="window.HonorPlayer.playVideo()">Play</button>
-    <button onclick="window.HonorPlayer.pauseVideo()">Pause</button>
-    <button onclick="console.log(window.HonorPlayer.getDuration())">Duration</button>
+    <button onclick="play()">Play</button>
+    <button onclick="pause()">Pause</button>
+    <button onclick="getDuration()">Duration</button>
     <script>
         let search = window.location.search
         let urlParams = new URLSearchParams(search)
         let videoId = urlParams.get("videoId")
+        let videoProvider = urlParams.get("provider")
 
         window.addEventListener('load', (event) => { 
-            if (!videoId) {
+            if (!videoId || !videoProvider) {
                 document.getElementById('player-1').innerText = "Please pass in a video id"
             } else {
-                let config = { 
+                let config = {
+                    provider: videoProvider,
                     height: 400,
                     width: 600,
                     videoId,
@@ -44,6 +46,21 @@
                 })
             }
         })
+
+        const play = () => { 
+            window.HonorPlayer.playVideo()
+                .then(() => console.log("playing video"))
+        }
+
+        const pause = () => { 
+            window.HonorPlayer.pauseVideo()
+                .then(() => console.log("paused video"))
+        }
+
+        const getDuration = () => { 
+            window.HonorPlayer.getDuration()
+                .then((duration) => console.log("duration: " + `${duration}`))
+        }
     </script>
 </body>
 </html>

@@ -8,24 +8,23 @@ export declare class HonorPlayer {
     emitter: HonorVideoEventEmitters;
     constructor();
     setAdaptor(adaptor: HonorVideoAdaptor): void;
-    destroy: () => void;
-    getCurrentTime: () => number;
-    getDuration: () => number;
-    getPlaybackRate: () => number;
-    getVideoLoadedFraction: () => number;
-    getVolume: () => number;
-    loadVideoById: (videoId: string, startTime?: number, endTime?: number) => void;
-    seekTo: (seconds: number) => void;
-    setPlaybackRate: (rate: number) => void;
-    setSize: (width: number, height: number) => Object;
-    setVolume: (volume: number) => void;
-    stopVideo: () => void;
-    playVideo: () => void;
-    pauseVideo: () => void;
+    destroy: () => Promise<void>;
+    getCurrentTime: () => Promise<number>;
+    getDuration: () => Promise<number>;
+    getPlaybackRate: () => Promise<number>;
+    getVideoLoadedFraction: () => Promise<number>;
+    getVolume: () => Promise<number>;
+    loadVideoById: (videoId: string, startTime?: number, endTime?: number) => Promise<void>;
+    seekTo: (seconds: number) => Promise<void>;
+    setPlaybackRate: (rate: number) => Promise<void>;
+    setSize: (width: number, height: number) => Promise<void>;
+    setVolume: (volume: number) => Promise<void>;
+    playVideo: () => Promise<void>;
+    pauseVideo: () => Promise<void>;
     onReady(callback: () => void): void;
     onError(callback: (error: HonorVideoError) => void): void;
     onCurrentTimeChanged(callback: (time: number) => void): void;
     onStateChanged(callback: (state: HonorVideoPlayerState) => void): void;
-    runIfInitialized<T, U>(fn: () => U): U;
+    runIfInitialized<T, U>(fn: () => Promise<U>): Promise<U>;
 }
 //# sourceMappingURL=HonorPlayer.d.ts.map

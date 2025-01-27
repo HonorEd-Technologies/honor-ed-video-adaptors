@@ -16,29 +16,29 @@ export class HonorPlayer {
     this.adaptor = adaptor
   }
 
-  destroy = () => this.runIfInitialized(() => this.adaptor.destroy())
-  getCurrentTime = (): number => this.runIfInitialized(() => this.adaptor.getCurrentTime())
-  getDuration = (): number => this.runIfInitialized(() => this.adaptor.getDuration())
-  getPlaybackRate = (): number => this.runIfInitialized(() => this.adaptor.getPlaybackRate())
-  getVideoLoadedFraction = (): number => this.runIfInitialized(() => this.adaptor.getVideoLoadedFraction())
-  getVolume = (): number => this.runIfInitialized(() => this.adaptor.getVolume())
-  loadVideoById = (videoId: string, startTime?: number, endTime?: number) => this.runIfInitialized(() => this.adaptor.loadVideoById(videoId, startTime, endTime))
-  seekTo = (seconds: number) => this.runIfInitialized(() => this.adaptor.seekTo(seconds))
-  setPlaybackRate = (rate: number) => this.runIfInitialized(() => this.adaptor.setPlaybackRate(rate))
-  setSize = (width: number, height: number): Object => this.runIfInitialized(() => this.adaptor.setSize(width, height))
-  setVolume = (volume: number) => this.runIfInitialized(() => this.adaptor.setVolume(volume))
-  stopVideo = () => this.runIfInitialized(() => this.adaptor.stopVideo())
-  playVideo = () => this.runIfInitialized(() => this.adaptor.playVideo())
-  pauseVideo = () => this.runIfInitialized(() => this.adaptor.pauseVideo())
+  destroy = async (): Promise<void> => this.runIfInitialized(() => this.adaptor.destroy())
+  getCurrentTime = async (): Promise<number> => this.runIfInitialized(() => this.adaptor.getCurrentTime())
+  getDuration = async (): Promise<number> => this.runIfInitialized(() => this.adaptor.getDuration())
+  getPlaybackRate = async (): Promise<number> => this.runIfInitialized(() => this.adaptor.getPlaybackRate())
+  getVideoLoadedFraction = async (): Promise<number> => this.runIfInitialized(() => this.adaptor.getVideoLoadedFraction())
+  getVolume = async (): Promise<number> => this.runIfInitialized(() => this.adaptor.getVolume())
+  loadVideoById = async (videoId: string, startTime?: number, endTime?: number): Promise<void> => this.runIfInitialized(() => this.adaptor.loadVideoById(videoId, startTime, endTime))
+  seekTo = async (seconds: number): Promise<void> => this.runIfInitialized(() => this.adaptor.seekTo(seconds))
+  setPlaybackRate = async (rate: number): Promise<void> => this.runIfInitialized(() => this.adaptor.setPlaybackRate(rate))
+  setSize = (width: number, height: number) => this.runIfInitialized(() => this.adaptor.setSize(width, height))
+  setVolume = async (volume: number): Promise<void> => this.runIfInitialized(() => this.adaptor.setVolume(volume))
+  playVideo = async (): Promise<void> => this.runIfInitialized(() => this.adaptor.playVideo())
+  pauseVideo = async (): Promise<void> => this.runIfInitialized(() => this.adaptor.pauseVideo())
   onReady(callback: () => void) { this.emitter.onReady(callback) }
   onError(callback: (error: HonorVideoError) => void) { this.emitter.onError(callback) }
   onCurrentTimeChanged(callback: (time: number) => void) { this.emitter.onCurrentTimeChange(callback) }
   onStateChanged(callback: (state: HonorVideoPlayerState) => void) { this.emitter.onStateChange(callback) }
 
-  runIfInitialized<T, U>(fn: () => U): U { 
+  async runIfInitialized<T, U>(fn: () => Promise<U>): Promise<U> { 
     if (!this.initialized) { 
       this.emitter.triggerEvent(HonorVideoEvent.error, { data: 5 })
     }
-    return fn()
+    let promise = fn()
+    return await promise
   }
 }

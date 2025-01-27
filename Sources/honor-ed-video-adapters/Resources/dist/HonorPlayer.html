@@ -9,12 +9,14 @@
         let search = window.location.search
         let urlParams = new URLSearchParams(search)
         let videoId = urlParams.get("videoId")
+        let videoProvider = urlParams.get("provider")
 
         window.addEventListener('load', (event) => { 
-            if (!videoId) {
-                document.getElementById('player-1').innerText = "Please pass in a video id"
+            if (!videoId || !videoProvider) {
+                document.getElementById('player-1').innerText = "Please pass in a video id and a provider type (e.g. 'youtube')"
             } else {
                 let config = { 
+                    provider: videoProvider,
                     height: document.documentElement.clientHeight,
                     width: document.documentElement.clientWidth,
                     videoId,
