@@ -8,7 +8,7 @@ const HonorVideoEvent_1 = require("../types/Shared/HonorVideoEvent");
 const HonorVideoError_1 = require("../types/Shared/HonorVideoError");
 exports.default = (handleEvent) => {
     const iFrameReadyPromise = new Promise((resolve, reject) => {
-        let protocol = window.location.protocol === 'http:' ? 'http:' : 'https:';
+        let protocol = 'http:';
         console.log(protocol);
         (0, load_script_1.default)(protocol + '//player.vimeo.com/api/player.js', (err, script) => {
             if (err) {

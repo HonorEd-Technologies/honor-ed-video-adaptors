@@ -1,9 +1,10 @@
 export declare enum VimeoEvent {
-    ready = "ready",
+    ready = "loaded",
     play = "play",
     pause = "pause",
     buffering = "bufferstart",
     timeUpdated = "timeupdate",
-    ended = "ended"
+    ended = "ended",
+    error = "error"
 }
 //# sourceMappingURL=VimeoEvents.d.ts.map

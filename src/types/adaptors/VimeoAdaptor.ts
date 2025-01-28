@@ -4,6 +4,7 @@ import { HonorVideoEventEmitters } from "../Shared/HonorEventEmitter";
 import { HonorVideoConfiguration } from "../Shared/HonorVideoConfiguration";
 import { HonorVideoEvent } from "../Shared/HonorVideoEvent";
 import { HonorVideoPlayerState } from "../Shared/HonorVideoPlayerState";
+import { VimeoError } from "../Vimeo/VimeoErrors";
 import { VimeoEvent } from "../Vimeo/VimeoEvents";
 import { HonorVideoAdaptor } from "./HonorVideoAdaptor";
 import convertVimeoPlayer from "./convertVimeoPlayer";
@@ -29,7 +30,7 @@ export const bindPlayerToVimeoAPI = (elementId: string, honorConfig: HonorVideoC
     id: honorConfig.videoId,
     width: honorConfig.width,
     height: honorConfig.height,
-    autoplay: honorConfig.autoplay,
+    autoplay: true,
     controls: honorConfig.controls,
     playsinline: honorConfig.playsInline,
     vimeo_logo: false
@@ -58,6 +59,11 @@ export const bindPlayerToVimeoAPI = (elementId: string, honorConfig: HonorVideoC
       vimeoPlayer.on(VimeoEvent.ended, () => { 
         player.emitter.triggerEvent(HonorVideoEvent.stateChanged, { data: HonorVideoPlayerState.ended })
       })
+      vimeoPlayer.on(VimeoEvent.error, (error: VimeoError) => { 
+        console.log("ERROR")
+        console.log(error.message)
+        console.log(error.name)
+      });
 
       let adaptor: HonorVideoAdaptor = {
       destroy: () => vimeoPlayer.destroy(),

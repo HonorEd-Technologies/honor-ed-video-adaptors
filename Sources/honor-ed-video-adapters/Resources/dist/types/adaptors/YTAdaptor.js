@@ -48,7 +48,7 @@ const bindPlayerToYoutubeAPI = (elementId, honorConfig, player) => {
         width: honorConfig.width,
         videoId: honorConfig.videoId,
         playerVars: {
-            autoPlay: honorConfig.autoplay ? 1 : 0,
+            autoplay: honorConfig.autoplay ? 1 : 0,
             controls: honorConfig.controls ? 1 : 0,
             fs: honorConfig.fullscreenEnabled ? 1 : 0,
             playsInline: honorConfig.playsInline ? 1 : 0

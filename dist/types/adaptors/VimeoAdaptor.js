@@ -14,7 +14,7 @@ const bindPlayerToVimeoAPI = (elementId, honorConfig, player) => {
         id: honorConfig.videoId,
         width: honorConfig.width,
         height: honorConfig.height,
-        autoplay: honorConfig.autoplay,
+        autoplay: true,
         controls: honorConfig.controls,
         playsinline: honorConfig.playsInline,
         vimeo_logo: false
@@ -41,6 +41,11 @@ const bindPlayerToVimeoAPI = (elementId, honorConfig, player) => {
             });
             vimeoPlayer.on(VimeoEvents_1.VimeoEvent.ended, () => {
                 player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.stateChanged, { data: HonorVideoPlayerState_1.HonorVideoPlayerState.ended });
+            });
+            vimeoPlayer.on(VimeoEvents_1.VimeoEvent.error, (error) => {
+                console.log("ERROR");
+                console.log(error.message);
+                console.log(error.name);
             });
             let adaptor = {
                 destroy: () => vimeoPlayer.destroy(),

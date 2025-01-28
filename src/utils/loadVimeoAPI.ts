@@ -5,7 +5,7 @@ import { HonorVideoErrorType } from '../types/Shared/HonorVideoError'
 
 export default (handleEvent: HonorVideoEventHandler): Promise<void> => {
   const iFrameReadyPromise = new Promise<void>((resolve, reject) => { 
-    let protocol = window.location.protocol === 'http:' ? 'http:' : 'https:'
+    let protocol = 'http:'
     console.log(protocol)
     load(protocol + '//player.vimeo.com/api/player.js', (err, script) => { 
       if (err) {
