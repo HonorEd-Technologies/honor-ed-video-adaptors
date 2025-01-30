@@ -1,1 +1,1 @@
-{"version":3,"file":"loadYoutubeAPI.d.ts","sourceRoot":"","sources":["../../src/utils/loadYoutubeAPI.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,sBAAsB,EAAE,MAAM,mCAAmC,CAAA;AAC1E,OAAO,EAAE,cAAc,EAAE,MAAM,iCAAiC,CAAA;sCAInC,sBAAsB,KAAG,OAAO,CAAC,cAAc,CAAC;AAA7E,wBA8BC"}
+{"version":3,"file":"loadYoutubeAPI.d.ts","sourceRoot":"","sources":["../../src/utils/loadYoutubeAPI.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,uBAAuB,EAAE,MAAM,4BAA4B,CAAA;kCAI3C,uBAAuB,KAAG,OAAO,CAAC,IAAI,CAAC;AAAhE,wBAmCC"}
