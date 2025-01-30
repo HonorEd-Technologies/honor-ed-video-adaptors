@@ -24,27 +24,29 @@
                     fullscreenEnabled: false,
                     playsInline: false
                 }
-                setupPlayer('player-1', config)
 
-                window.HonorPlayer.onReady(() => { 
+                const player = new HonorPlayer('player-1', config)
+                window.HonorPlayer = player
+
+                player.onReady(() => { 
                     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.playerReady) { 
                         window.webkit.messageHandlers.playerReady.postMessage({})
                     }
                 })
 
-                window.HonorPlayer.onStateChanged((state) => { 
+                player.onStateChanged((state) => { 
                     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.playerStateChanged) { 
                         window.webkit.messageHandlers.playerStateChanged.postMessage({ state })
                     }
                 })
 
-                window.HonorPlayer.onError((error) => { 
+                player.onError((error) => { 
                     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.playerError) { 
                         window.webkit.messageHandlers.playerError.postMessage({ error })
                     }
                 })
 
-                window.HonorPlayer.onCurrentTimeChanged((time) => { 
+                player.onCurrentTimeChanged((time) => { 
                     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.currentTimeChanged) { 
                         window.webkit.messageHandlers.currentTimeChanged.postMessage({ time })
                     }

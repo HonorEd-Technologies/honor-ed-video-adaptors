@@ -41,7 +41,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HonorPlayer = void 0;
 const HonorEventEmitter_1 = require("./utils/Shared/HonorEventEmitter");
 const HonorVideoEvent_1 = require("./types/Shared/HonorVideoEvent");
 const loadYoutubeAPI_1 = __importDefault(require("./utils/loadYoutubeAPI"));
@@ -86,7 +85,7 @@ let HonorPlayer = (() => {
     let _classExtraInitializers = [];
     let _classThis;
     var HonorPlayer = _classThis = class {
-        constructor() {
+        constructor(elementId, configuration) {
             this.initialized = false;
             this.emitter = new HonorEventEmitter_1.HonorVideoEventEmitters();
             this.destroy = () => this.adaptor.destroy();
@@ -111,6 +110,7 @@ let HonorPlayer = (() => {
                     this.setAdaptor(adaptor);
                 });
             };
+            this.initializeAdaptor(elementId, configuration);
         }
         setAdaptor(adaptor) {
             this.initialized = true;
@@ -131,5 +131,5 @@ let HonorPlayer = (() => {
     })();
     return HonorPlayer = _classThis;
 })();
-exports.HonorPlayer = HonorPlayer;
+exports.default = HonorPlayer;
 //# sourceMappingURL=HonorPlayer.js.map

@@ -1,4 +1,4 @@
-import { HonorPlayer } from "../../HonorPlayer"
+import HonorPlayer from "../../HonorPlayer"
 import { HonorVideoErrorType } from "../../types/Shared/HonorVideoError"
 import { HonorVideoEvent } from "../../types/Shared/HonorVideoEvent"
 import { HonorVideoPlayerState } from "../../types/Shared/HonorVideoPlayerState"

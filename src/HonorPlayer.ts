@@ -52,10 +52,14 @@ function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
     'initializeAdaptor'
   ]
 )
-export class HonorPlayer {
+export default class HonorPlayer {
   private initialized = false
   private adaptor!: HonorVideoAdaptor
   emitter = new HonorVideoEventEmitters()
+
+  constructor(elementId: string, configuration: HonorVideoConfiguration) { 
+    this.initializeAdaptor(elementId, configuration)
+  }
 
   setAdaptor(adaptor: HonorVideoAdaptor) { 
     this.initialized = true
