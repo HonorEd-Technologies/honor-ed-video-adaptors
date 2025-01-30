@@ -1,5 +1,5 @@
 import convertYTPlayer from "./convertYTPlayer"
-import { HonorPlayer } from "../../HonorPlayer"
+import HonorPlayer from "../../HonorPlayer"
 import { HonorVideoAdaptor } from "../HonorVideoAdaptor"
 import { HonorVideoConfiguration } from "../../types/Shared/HonorVideoConfiguration"
 import { youtubeEventHandler } from "../../utils/YouTube/events"

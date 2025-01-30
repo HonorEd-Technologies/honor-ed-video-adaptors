@@ -1,4 +1,4 @@
-import { HonorPlayer } from "../../HonorPlayer";
+import HonorPlayer from "../../HonorPlayer";
 import { HonorVideoAdaptor } from "../HonorVideoAdaptor";
 import { HonorVideoConfiguration } from "../../types/Shared/HonorVideoConfiguration";
 export type YoutubeConfig = {

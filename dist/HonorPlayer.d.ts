@@ -3,10 +3,11 @@ import { HonorVideoConfiguration } from "./types/Shared/HonorVideoConfiguration"
 import { HonorVideoError } from "./types/Shared/HonorVideoError";
 import { HonorVideoPlayerState } from "./types/Shared/HonorVideoPlayerState";
 import { HonorVideoAdaptor } from "./adaptors/HonorVideoAdaptor";
-export declare class HonorPlayer {
+export default class HonorPlayer {
     private initialized;
     private adaptor;
     emitter: HonorVideoEventEmitters;
+    constructor(elementId: string, configuration: HonorVideoConfiguration);
     setAdaptor(adaptor: HonorVideoAdaptor): void;
     destroy: () => void;
     getCurrentTime: () => number;

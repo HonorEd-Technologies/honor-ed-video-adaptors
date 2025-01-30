@@ -26,20 +26,22 @@
                     fullscreenEnabled: false,
                     playsInline: false
                 }
-                setupPlayer('player-1', config)
-                window.HonorPlayer.onReady(() => { 
+                const player = new HonorPlayer('player-1', config)
+                window.HonorPlayer = player
+                
+                player.onReady(() => { 
                     console.log("Ready")
                 })
 
-                window.HonorPlayer.onStateChanged((state) => { 
+                player.onStateChanged((state) => { 
                     console.log("State changed: " + state)
                 })
 
-                window.HonorPlayer.onError((error) => { 
+                player.onError((error) => { 
                     console.log("Error: " + error)
                 })
 
-                window.HonorPlayer.onCurrentTimeChanged((time) => { 
+                player.onCurrentTimeChanged((time) => { 
                     console.log("Current time: " + time)
                 })
             }
