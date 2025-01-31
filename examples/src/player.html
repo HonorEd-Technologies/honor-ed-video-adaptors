@@ -21,25 +21,27 @@
                     height: 400,
                     width: 600,
                     videoId,
-                    playerVars: { 
-                        'autoplay': 1,
-                        'controls': 0
-                    }
+                    autoplay: true,
+                    controls: false,
+                    fullscreenEnabled: false,
+                    playsInline: false
                 }
-                setupPlayer('player-1', config)
-                window.eventListeners.onReady(() => { 
+                const player = new HonorPlayer('player-1', config)
+                window.HonorPlayer = player
+                
+                player.onReady(() => { 
                     console.log("Ready")
                 })
 
-                window.eventListeners.onStateChanged((state) => { 
+                player.onStateChanged((state) => { 
                     console.log("State changed: " + state)
                 })
 
-                window.eventListeners.onError((error) => { 
+                player.onError((error) => { 
                     console.log("Error: " + error)
                 })
 
-                window.eventListeners.onCurrentTimeChanged((time) => { 
+                player.onCurrentTimeChanged((time) => { 
                     console.log("Current time: " + time)
                 })
             }

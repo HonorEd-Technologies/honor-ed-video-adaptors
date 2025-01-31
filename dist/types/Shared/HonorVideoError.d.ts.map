@@ -1,0 +1,1 @@
+{"version":3,"file":"HonorVideoError.d.ts","sourceRoot":"","sources":["../../../src/types/Shared/HonorVideoError.ts"],"names":[],"mappings":"AAAA,0BAAkB,mBAAmB;IACnC,WAAW,IAAI;IACf,QAAQ,IAAI;IACZ,cAAc,IAAI;IAClB,YAAY,IAAI;IAChB,iBAAiB,IAAI;IACrB,kBAAkB,IAAI;IACtB,OAAO,KAAK;CACb;AAED,MAAM,MAAM,eAAe,GAAG;IAC5B,IAAI,EAAE,mBAAmB,CAAA;IACzB,OAAO,CAAC,EAAE,MAAM,CAAA;CACjB,CAAA"}
