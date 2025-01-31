@@ -33,6 +33,15 @@ var __runInitializers = (this && this.__runInitializers) || function (thisArg, i
     }
     return useValue ? value : void 0;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __setFunctionName = (this && this.__setFunctionName) || function (f, name, prefix) {
     if (typeof name === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
     return Object.defineProperty(f, "name", { configurable: true, value: prefix ? "".concat(prefix, " ", name) : name });
@@ -45,6 +54,9 @@ const HonorEventEmitter_1 = require("./utils/Shared/HonorEventEmitter");
 const HonorVideoEvent_1 = require("./types/Shared/HonorVideoEvent");
 const loadYoutubeAPI_1 = __importDefault(require("./utils/loadYoutubeAPI"));
 const YoutubeAdaptor_1 = require("./adaptors/YouTube/YoutubeAdaptor");
+const VideoServiceProvider_1 = require("./types/Shared/VideoServiceProvider");
+const loadVimeoAPI_1 = __importDefault(require("./utils/loadVimeoAPI"));
+const VimeoAdaptor_1 = require("./adaptors/Vimeo/VimeoAdaptor");
 function RequiresInitializationForAllMethods(excludeMethods = []) {
     return function (Base) {
         return class extends Base {
@@ -88,27 +100,35 @@ let HonorPlayer = (() => {
         constructor(elementId, configuration) {
             this.initialized = false;
             this.emitter = new HonorEventEmitter_1.HonorVideoEventEmitters();
-            this.destroy = () => this.adaptor.destroy();
-            this.getCurrentTime = () => this.adaptor.getCurrentTime();
-            this.getDuration = () => this.adaptor.getDuration();
-            this.getPlaybackRate = () => this.adaptor.getPlaybackRate();
-            this.getVideoLoadedFraction = () => this.adaptor.getVideoLoadedFraction();
-            this.getVolume = () => this.adaptor.getVolume();
-            this.loadVideoById = (videoId, startTime, endTime) => this.adaptor.loadVideoById(videoId, startTime, endTime);
-            this.seekTo = (seconds) => this.adaptor.seekTo(seconds);
-            this.setPlaybackRate = (rate) => this.adaptor.setPlaybackRate(rate);
+            this.destroy = () => __awaiter(this, void 0, void 0, function* () { return yield this.adaptor.destroy(); });
+            this.getCurrentTime = () => __awaiter(this, void 0, void 0, function* () { return yield this.adaptor.getCurrentTime(); });
+            this.getDuration = () => __awaiter(this, void 0, void 0, function* () { return yield this.adaptor.getDuration(); });
+            this.getPlaybackRate = () => __awaiter(this, void 0, void 0, function* () { return yield this.adaptor.getPlaybackRate(); });
+            this.getVideoLoadedFraction = () => __awaiter(this, void 0, void 0, function* () { return yield this.adaptor.getVideoLoadedFraction(); });
+            this.getVolume = () => __awaiter(this, void 0, void 0, function* () { return yield this.adaptor.getVolume(); });
+            this.seekTo = (seconds) => __awaiter(this, void 0, void 0, function* () { return yield this.adaptor.seekTo(seconds); });
+            this.setPlaybackRate = (rate) => __awaiter(this, void 0, void 0, function* () { return yield this.adaptor.setPlaybackRate(rate); });
             this.setSize = (width, height) => this.adaptor.setSize(width, height);
-            this.setVolume = (volume) => this.adaptor.setVolume(volume);
-            this.stopVideo = () => this.adaptor.stopVideo();
-            this.playVideo = () => this.adaptor.playVideo();
-            this.pauseVideo = () => this.adaptor.pauseVideo();
+            this.setVolume = (volume) => __awaiter(this, void 0, void 0, function* () { return yield this.adaptor.setVolume(volume); });
+            this.playVideo = () => __awaiter(this, void 0, void 0, function* () { return yield this.adaptor.playVideo(); });
+            this.pauseVideo = () => __awaiter(this, void 0, void 0, function* () { return yield this.adaptor.pauseVideo(); });
             this.initializeAdaptor = (elementId, config) => {
-                // load the Youtube Iframe API 
-                (0, loadYoutubeAPI_1.default)(this.emitter)
-                    .then(() => {
-                    const adaptor = (0, YoutubeAdaptor_1.initializeYoutubeAdaptor)(elementId, config, this); // Once iframe is loaded, instantiate YT.Player and return the adaptor
-                    this.setAdaptor(adaptor);
-                });
+                switch (config.provider) {
+                    case VideoServiceProvider_1.VideoServiceProvider.youtube:
+                        // load the Youtube Iframe API 
+                        (0, loadYoutubeAPI_1.default)(this.emitter)
+                            .then(() => {
+                            const adaptor = (0, YoutubeAdaptor_1.initializeYoutubeAdaptor)(elementId, config, this); // Once iframe is loaded, instantiate YT.Player and return the adaptor
+                            this.setAdaptor(adaptor);
+                        });
+                    case VideoServiceProvider_1.VideoServiceProvider.vimeo:
+                        // load the Vimeo Iframe API
+                        (0, loadVimeoAPI_1.default)()
+                            .then(() => {
+                            const adaptor = (0, VimeoAdaptor_1.initializeVimeoAdaptor)(elementId, config, this); // Once iframe is loaded, instantiate YT.Player and return the adaptor
+                            this.setAdaptor(adaptor);
+                        });
+                }
             };
             this.initializeAdaptor(elementId, configuration);
         }

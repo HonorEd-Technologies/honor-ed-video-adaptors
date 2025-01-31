@@ -41,45 +41,42 @@ export const initializeYoutubeAdaptor = (elementId: string, honorConfig: HonorVi
 
   // construct HonorVideoAdaptor, using the Youtube-specific methods on the YT.Player
   let adaptor: HonorVideoAdaptor = {
-    destroy: () => { },
-    getCurrentTime: function (): number {
-      return YTPlayer.getCurrentTime()
+    destroy: () => Promise.resolve(YTPlayer.destroy()),
+    getCurrentTime: function (): Promise<number> {
+      return Promise.resolve(YTPlayer.getCurrentTime())
     },
-    getDuration: function (): number {
-      return YTPlayer.getDuration()
+    getDuration: function (): Promise<number> {
+      return Promise.resolve(YTPlayer.getDuration())
     },
-    getPlaybackRate: function (): number {
-      return YTPlayer.getPlaybackRate()
+    getPlaybackRate: function (): Promise<number> {
+      return Promise.resolve(YTPlayer.getPlaybackRate())
     },
-    getVideoLoadedFraction: function (): number {
-      return YTPlayer.getVideoLoadedFraction()
+    getVideoLoadedFraction: function (): Promise<number> {
+      return Promise.resolve(YTPlayer.getVideoLoadedFraction())
     },
-    getVolume: function (): number {
-      return YTPlayer.getVolume()
+    getVolume: function (): Promise<number> {
+      return Promise.resolve(YTPlayer.getVolume())
     },
-    loadVideoById: function (videoId: string, startTime?: number, endTime?: number): void {
-      YTPlayer.loadVideoById(videoId, startTime, endTime)
+    loadVideoById: function (videoId: string, startTime?: number, endTime?: number): Promise<void> {
+      return Promise.resolve(YTPlayer.loadVideoById(videoId, startTime, endTime))
     },
-    seekTo: function (seconds: number): void {
-      YTPlayer.seekTo(seconds, true)
+    seekTo: function (seconds: number): Promise<void> {
+      return Promise.resolve(YTPlayer.seekTo(seconds, true))
     },
-    setPlaybackRate: function (rate: number): void {
-      YTPlayer.setPlaybackRate(rate)
+    setPlaybackRate: function (rate: number): Promise<void> {
+      return Promise.resolve(YTPlayer.setPlaybackRate(rate))
     },
-    setSize: function (width: number, height: number): Object {
-      return YTPlayer.setSize(width.toString(), height.toString())
+    setSize: function (width: number, height: number) {
+      return Promise.resolve(YTPlayer.setSize(width.toString(), height.toString()))
     },
-    setVolume: function (volume: number): void {
-      YTPlayer.setVolume(volume)
+    setVolume: function (volume: number): Promise<void> {
+      return Promise.resolve(YTPlayer.setVolume(volume))
     },
-    stopVideo: function (): void {
-      YTPlayer.stopVideo()
+    playVideo: function (): Promise<void> {
+      return Promise.resolve(YTPlayer.playVideo())
     },
-    playVideo: function (): void {
-      YTPlayer.playVideo()
-    },
-    pauseVideo: function (): void {
-      YTPlayer.pauseVideo()
+    pauseVideo: function (): Promise<void> {
+      return Promise.resolve(YTPlayer.pauseVideo())
     }
   }
 

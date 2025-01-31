@@ -6,6 +6,9 @@ import { HonorVideoPlayerState } from "./types/Shared/HonorVideoPlayerState"
 import { HonorVideoAdaptor } from "./adaptors/HonorVideoAdaptor"
 import loadYoutubeAPI from "./utils/loadYoutubeAPI"
 import { initializeYoutubeAdaptor } from "./adaptors/YouTube/YoutubeAdaptor"
+import { VideoServiceProvider } from "./types/Shared/VideoServiceProvider"
+import loadVimeoAPI from "./utils/loadVimeoAPI"
+import { initializeVimeoAdaptor } from "./adaptors/Vimeo/VimeoAdaptor"
 
 type Constructor = new (...args: any[]) => {};
 function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
@@ -66,31 +69,39 @@ export default class HonorPlayer {
     this.adaptor = adaptor
   }
 
-  destroy = () => this.adaptor.destroy()
-  getCurrentTime = (): number => this.adaptor.getCurrentTime()
-  getDuration = (): number => this.adaptor.getDuration()
-  getPlaybackRate = (): number => this.adaptor.getPlaybackRate()
-  getVideoLoadedFraction = (): number => this.adaptor.getVideoLoadedFraction()
-  getVolume = (): number =>  this.adaptor.getVolume()
-  loadVideoById = (videoId: string, startTime?: number, endTime?: number) => this.adaptor.loadVideoById(videoId, startTime, endTime)
-  seekTo = (seconds: number) => this.adaptor.seekTo(seconds)
-  setPlaybackRate = (rate: number) => this.adaptor.setPlaybackRate(rate)
-  setSize = (width: number, height: number): Object => this.adaptor.setSize(width, height)
-  setVolume = (volume: number) => this.adaptor.setVolume(volume)
-  stopVideo = () => this.adaptor.stopVideo()
-  playVideo = () => this.adaptor.playVideo()
-  pauseVideo = () => this.adaptor.pauseVideo()
+  destroy = async () => await this.adaptor.destroy()
+  getCurrentTime = async () => await this.adaptor.getCurrentTime()
+  getDuration =  async () => await this.adaptor.getDuration()
+  getPlaybackRate = async () => await this.adaptor.getPlaybackRate()
+  getVideoLoadedFraction = async () => await this.adaptor.getVideoLoadedFraction()
+  getVolume = async () => await this.adaptor.getVolume()
+  seekTo = async (seconds: number) => await this.adaptor.seekTo(seconds)
+  setPlaybackRate = async (rate: number) => await this.adaptor.setPlaybackRate(rate)
+  setSize = (width: number, height: number) => this.adaptor.setSize(width, height)
+  setVolume = async (volume: number) => await this.adaptor.setVolume(volume)
+  playVideo = async () => await this.adaptor.playVideo()
+  pauseVideo = async () => await this.adaptor.pauseVideo()
   onReady(callback: () => void) { this.emitter.onReady(callback) }
   onError(callback: (error: HonorVideoError) => void) { this.emitter.onError(callback) }
   onCurrentTimeChanged(callback: (time: number) => void) { this.emitter.onCurrentTimeChange(callback) }
   onStateChanged(callback: (state: HonorVideoPlayerState) => void) { this.emitter.onStateChange(callback) }
 
   initializeAdaptor = (elementId: string, config: HonorVideoConfiguration) => {
-    // load the Youtube Iframe API 
-    loadYoutubeAPI(this.emitter)
-      .then(() => {
-        const adaptor = initializeYoutubeAdaptor(elementId, config, this) // Once iframe is loaded, instantiate YT.Player and return the adaptor
-        this.setAdaptor(adaptor)
-      })
+    switch (config.provider) {
+      case VideoServiceProvider.youtube:
+        // load the Youtube Iframe API 
+        loadYoutubeAPI(this.emitter)
+          .then(() => {
+            const adaptor = initializeYoutubeAdaptor(elementId, config, this) // Once iframe is loaded, instantiate YT.Player and return the adaptor
+            this.setAdaptor(adaptor)
+          })
+      case VideoServiceProvider.vimeo:
+        // load the Vimeo Iframe API
+        loadVimeoAPI()
+          .then(() => { 
+            const adaptor = initializeVimeoAdaptor(elementId, config, this) // Once iframe is loaded, instantiate YT.Player and return the adaptor
+            this.setAdaptor(adaptor)
+          })
+    }
   }
 }

@@ -1,4 +1,7 @@
-export type HonorVideoConfiguration = { 
+import { VideoServiceProvider } from "./VideoServiceProvider"
+
+export type HonorVideoConfiguration = {
+  provider: VideoServiceProvider
   autoplay: boolean
   height: number
   width: number

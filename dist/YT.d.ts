@@ -4,6 +4,9 @@ declare global {
         YT?: {
             Player: Function;
         };
+        Vimeo?: {
+            Player: Function;
+        };
         HonorPlayer: HonorPlayer;
         onYouTubeIframeAPIReady?: () => void;
         setupPlayer?: Function;

@@ -32,45 +32,42 @@ const initializeYoutubeAdaptor = (elementId, honorConfig, player) => {
     const YTPlayer = (0, convertYTPlayer_1.default)(elementId, config);
     // construct HonorVideoAdaptor, using the Youtube-specific methods on the YT.Player
     let adaptor = {
-        destroy: () => { },
+        destroy: () => Promise.resolve(YTPlayer.destroy()),
         getCurrentTime: function () {
-            return YTPlayer.getCurrentTime();
+            return Promise.resolve(YTPlayer.getCurrentTime());
         },
         getDuration: function () {
-            return YTPlayer.getDuration();
+            return Promise.resolve(YTPlayer.getDuration());
         },
         getPlaybackRate: function () {
-            return YTPlayer.getPlaybackRate();
+            return Promise.resolve(YTPlayer.getPlaybackRate());
         },
         getVideoLoadedFraction: function () {
-            return YTPlayer.getVideoLoadedFraction();
+            return Promise.resolve(YTPlayer.getVideoLoadedFraction());
         },
         getVolume: function () {
-            return YTPlayer.getVolume();
+            return Promise.resolve(YTPlayer.getVolume());
         },
         loadVideoById: function (videoId, startTime, endTime) {
-            YTPlayer.loadVideoById(videoId, startTime, endTime);
+            return Promise.resolve(YTPlayer.loadVideoById(videoId, startTime, endTime));
         },
         seekTo: function (seconds) {
-            YTPlayer.seekTo(seconds, true);
+            return Promise.resolve(YTPlayer.seekTo(seconds, true));
         },
         setPlaybackRate: function (rate) {
-            YTPlayer.setPlaybackRate(rate);
+            return Promise.resolve(YTPlayer.setPlaybackRate(rate));
         },
         setSize: function (width, height) {
-            return YTPlayer.setSize(width.toString(), height.toString());
+            return Promise.resolve(YTPlayer.setSize(width.toString(), height.toString()));
         },
         setVolume: function (volume) {
-            YTPlayer.setVolume(volume);
-        },
-        stopVideo: function () {
-            YTPlayer.stopVideo();
+            return Promise.resolve(YTPlayer.setVolume(volume));
         },
         playVideo: function () {
-            YTPlayer.playVideo();
+            return Promise.resolve(YTPlayer.playVideo());
         },
         pauseVideo: function () {
-            YTPlayer.pauseVideo();
+            return Promise.resolve(YTPlayer.pauseVideo());
         }
     };
     return adaptor;
