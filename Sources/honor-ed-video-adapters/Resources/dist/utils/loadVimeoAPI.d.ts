@@ -1,4 +1,3 @@
-import { HonorVideoEventEmitters } from './Shared/HonorEventEmitter';
-declare const _default: (emitter: HonorVideoEventEmitters) => Promise<void>;
+declare const _default: () => Promise<void>;
 export default _default;
 //# sourceMappingURL=loadVimeoAPI.d.ts.map

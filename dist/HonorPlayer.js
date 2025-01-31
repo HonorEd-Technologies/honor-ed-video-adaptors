@@ -123,7 +123,7 @@ let HonorPlayer = (() => {
                         });
                     case VideoServiceProvider_1.VideoServiceProvider.vimeo:
                         // load the Vimeo Iframe API
-                        (0, loadVimeoAPI_1.default)(this.emitter)
+                        (0, loadVimeoAPI_1.default)()
                             .then(() => {
                             const adaptor = (0, VimeoAdaptor_1.initializeVimeoAdaptor)(elementId, config, this); // Once iframe is loaded, instantiate YT.Player and return the adaptor
                             this.setAdaptor(adaptor);

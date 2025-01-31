@@ -97,7 +97,7 @@ export default class HonorPlayer {
           })
       case VideoServiceProvider.vimeo:
         // load the Vimeo Iframe API
-        loadVimeoAPI(this.emitter)
+        loadVimeoAPI()
           .then(() => { 
             const adaptor = initializeVimeoAdaptor(elementId, config, this) // Once iframe is loaded, instantiate YT.Player and return the adaptor
             this.setAdaptor(adaptor)
