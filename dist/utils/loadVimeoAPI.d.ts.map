@@ -1,1 +1,1 @@
-{"version":3,"file":"loadVimeoAPI.d.ts","sourceRoot":"","sources":["../../src/utils/loadVimeoAPI.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,sBAAsB,EAAE,MAAM,mCAAmC,CAAA;sCAI7C,sBAAsB,KAAG,OAAO,CAAC,IAAI,CAAC;AAAnE,wBAgBC"}
+{"version":3,"file":"loadVimeoAPI.d.ts","sourceRoot":"","sources":["../../src/utils/loadVimeoAPI.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,uBAAuB,EAAE,MAAM,4BAA4B,CAAA;kCAE3C,uBAAuB,KAAG,OAAO,CAAC,IAAI,CAAC;AAAhE,wBAgBC"}

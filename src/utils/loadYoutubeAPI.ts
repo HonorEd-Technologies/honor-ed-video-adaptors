@@ -1,34 +1,37 @@
-import load from 'load-script'
-import { HonorVideoEventHandler } from '../types/Shared/HonorEventEmitter'
-import { IFrameYTPlayer } from '../types/YouTube/IFrameYTPlayer'
-import { HonorVideoEvent } from '../types/Shared/HonorVideoEvent'
+import { HonorVideoEventEmitters } from './Shared/HonorEventEmitter'
 import { HonorVideoErrorType } from '../types/Shared/HonorVideoError'
+import { HonorVideoEvent } from '../types/Shared/HonorVideoEvent'
 
-export default (handleEvent: HonorVideoEventHandler): Promise<IFrameYTPlayer> => {
-  const iFrameReadyPromise = new Promise<IFrameYTPlayer>((resolve) => { 
+export default (emitter: HonorVideoEventEmitters): Promise<void> => {
+  const iFrameReadyPromise = new Promise<void>((resolve, reject) => { 
     if (window.YT && window.YT.Player && window.YT.Player instanceof Function) { 
       // youtube iframe already loaded, resolve
-      resolve(window.YT)
+      resolve()
       return
     }
 
-    let protocol = window.location.protocol === 'http:' ? 'http:' : 'https:'
-    console.log(protocol)
-    load(protocol + '//www.youtube.com/iframe_api', (err) => { 
-      if (err) {
-        console.log("ERROR")
-        handleEvent(HonorVideoEvent.error, { data: { type: HonorVideoErrorType.apiLoadError, message: "Failed to load Youtube iFrame API" } })
-      }
-    })
+    const tag = document.createElement('script');
 
-    let existingValue = window.onYouTubeIframeAPIReady
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+
+    if (firstScriptTag.parentNode) {
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
 
     window.onYouTubeIframeAPIReady = () => {
-      if (existingValue) { 
-        existingValue()
-      }
       if (window.YT !== undefined && window.YT.Player && window.YT.Player instanceof Function) { 
-        resolve(window.YT)
+        resolve()
+      } else { 
+        const errorMessage = "There was a problem loading the YouTube Iframe API"
+        emitter.triggerEvent(HonorVideoEvent.error, { 
+          data: { 
+            code: HonorVideoErrorType.apiLoadError,
+            message: errorMessage
+          } 
+        })
+
+        reject(errorMessage)
       }
     }
   })

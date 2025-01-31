@@ -1,12 +1,13 @@
-import { HonorVideoEventEmitters } from "./types/Shared/HonorEventEmitter";
+import { HonorVideoEventEmitters } from "./utils/Shared/HonorEventEmitter";
+import { HonorVideoConfiguration } from "./types/Shared/HonorVideoConfiguration";
 import { HonorVideoError } from "./types/Shared/HonorVideoError";
 import { HonorVideoPlayerState } from "./types/Shared/HonorVideoPlayerState";
-import { HonorVideoAdaptor } from "./types/adaptors/HonorVideoAdaptor";
-export declare class HonorPlayer {
+import { HonorVideoAdaptor } from "./adaptors/HonorVideoAdaptor";
+export default class HonorPlayer {
     private initialized;
     private adaptor;
     emitter: HonorVideoEventEmitters;
-    constructor();
+    constructor(elementId: string, configuration: HonorVideoConfiguration);
     setAdaptor(adaptor: HonorVideoAdaptor): void;
     destroy: () => Promise<void>;
     getCurrentTime: () => Promise<number>;
@@ -14,7 +15,6 @@ export declare class HonorPlayer {
     getPlaybackRate: () => Promise<number>;
     getVideoLoadedFraction: () => Promise<number>;
     getVolume: () => Promise<number>;
-    loadVideoById: (videoId: string, startTime?: number, endTime?: number) => Promise<void>;
     seekTo: (seconds: number) => Promise<void>;
     setPlaybackRate: (rate: number) => Promise<void>;
     setSize: (width: number, height: number) => Promise<void>;
@@ -25,6 +25,6 @@ export declare class HonorPlayer {
     onError(callback: (error: HonorVideoError) => void): void;
     onCurrentTimeChanged(callback: (time: number) => void): void;
     onStateChanged(callback: (state: HonorVideoPlayerState) => void): void;
-    runIfInitialized<T, U>(fn: () => Promise<U>): Promise<U>;
+    initializeAdaptor: (elementId: string, config: HonorVideoConfiguration) => void;
 }
 //# sourceMappingURL=HonorPlayer.d.ts.map

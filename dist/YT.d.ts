@@ -1,4 +1,4 @@
-import { HonorPlayer } from "./HonorPlayer";
+import HonorPlayer from "./HonorPlayer";
 declare global {
     interface Window {
         YT?: {

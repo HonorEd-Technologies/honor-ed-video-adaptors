@@ -1,5 +1,4 @@
-import { HonorVideoEventHandler } from '../types/Shared/HonorEventEmitter';
-import { IFrameYTPlayer } from '../types/YouTube/IFrameYTPlayer';
-declare const _default: (handleEvent: HonorVideoEventHandler) => Promise<IFrameYTPlayer>;
+import { HonorVideoEventEmitters } from './Shared/HonorEventEmitter';
+declare const _default: (emitter: HonorVideoEventEmitters) => Promise<void>;
 export default _default;
 //# sourceMappingURL=loadYoutubeAPI.d.ts.map
