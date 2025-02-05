@@ -1,4 +1,5 @@
 export default (elementId: string, config: PlayerOptions) => {
+  if (!window.YT) return
   let player = new window.YT.Player(elementId, config)
   return {
     loadVideoById: (
