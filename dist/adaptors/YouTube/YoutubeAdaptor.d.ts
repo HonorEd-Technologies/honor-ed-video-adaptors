@@ -13,7 +13,6 @@ export type YoutubeConfig = {
  */
 export declare class YoutubeAdaptor implements HonorVideoAdaptor {
     YTPlayer: any | null;
-    constructor();
     initialize(elementId: string, configuration: HonorVideoConfiguration, player: HonorPlayer): Promise<void>;
     destroy: () => any;
     getCurrentTime: () => number;

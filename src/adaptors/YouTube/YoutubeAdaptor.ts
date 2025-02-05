@@ -2,7 +2,6 @@ import convertYTPlayer from "./convertYTPlayer"
 import { HonorVideoAdaptor } from "../HonorVideoAdaptor"
 import { HonorVideoConfiguration } from "../../types/Shared/HonorVideoConfiguration"
 import loadYoutubeAPI from "../../utils/loadYoutubeAPI"
-import { HonorVideoEventEmitters } from "../../utils/Shared/HonorEventEmitter"
 import { youtubeEventHandler } from "../../utils/YouTube/events"
 import HonorPlayer from "../../HonorPlayer"
 
@@ -19,10 +18,6 @@ export type YoutubeConfig = {
  */
 export class YoutubeAdaptor implements HonorVideoAdaptor {
   YTPlayer: any | null
-
-  constructor() { 
-
-  }
 
   async initialize(elementId: string, configuration: HonorVideoConfiguration, player: HonorPlayer) { 
     await loadYoutubeAPI(player.emitter)

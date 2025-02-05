@@ -12,8 +12,6 @@ const events_1 = require("../../utils/YouTube/events");
  */
 class YoutubeAdaptor {
     YTPlayer;
-    constructor() {
-    }
     async initialize(elementId, configuration, player) {
         await (0, loadYoutubeAPI_1.default)(player.emitter);
         const config = {
