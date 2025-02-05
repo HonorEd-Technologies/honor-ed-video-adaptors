@@ -12,7 +12,7 @@
     "prebuild": "npm run clean",
     "build": "tsc && webpack build",
     "postbuild": "copyfiles -u 1 \"dist/**/*\"  Sources/honor-ed-video-adapters/Resources/dist && cp ./src/HonorPlayer.html ./Sources/honor-ed-video-adapters/Resources/dist",
-    "format": "prettier --write .",
+    "format:fix": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "devDependencies": {

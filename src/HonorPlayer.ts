@@ -1,35 +1,36 @@
-import { HonorVideoEventEmitters } from "./utils/Shared/HonorEventEmitter"
-import { HonorVideoConfiguration } from "./types/Shared/HonorVideoConfiguration"
-import { HonorVideoError } from "./types/Shared/HonorVideoError"
-import { HonorVideoEvent } from "./types/Shared/HonorVideoEvent"
-import { HonorVideoPlayerState } from "./types/Shared/HonorVideoPlayerState"
-import { HonorVideoAdaptor } from "./adaptors/HonorVideoAdaptor"
-import loadYoutubeAPI from "./utils/loadYoutubeAPI"
+import { HonorVideoEventEmitters } from './utils/Shared/HonorEventEmitter'
+import { HonorVideoConfiguration } from './types/Shared/HonorVideoConfiguration'
+import { HonorVideoError } from './types/Shared/HonorVideoError'
+import { HonorVideoEvent } from './types/Shared/HonorVideoEvent'
+import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState'
+import { HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor'
+import loadYoutubeAPI from './utils/loadYoutubeAPI'
 
-type Constructor = new (...args: any[]) => {};
+type Constructor = new (...args: any[]) => {}
 function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
   return function <T extends Constructor>(Base: T) {
     return class extends Base {
-      constructor(...args: any[]) { 
+      constructor(...args: any[]) {
         super(...args)
 
         // Get all method names of the class prototype
-        const methodNames = Object.getOwnPropertyNames(Base.prototype)
-          .filter(
-            (method) =>
-              method !== 'constructor' && // Exclude constructor
-              !excludeMethods.includes(method) // Exclude specified methods
-          )
-        
-        for (const methodName of methodNames) { 
+        const methodNames = Object.getOwnPropertyNames(Base.prototype).filter(
+          (method) =>
+            method !== 'constructor' && // Exclude constructor
+            !excludeMethods.includes(method) // Exclude specified methods
+        )
+
+        for (const methodName of methodNames) {
           const originalMethod = (this as any)[methodName]
 
-          if (typeof originalMethod === 'function') { 
+          if (typeof originalMethod === 'function') {
             // Wrap the method with initialization check
-            (this as any)[methodName] = function (...args: any[]) { 
-              if (!(this as any).initialized) { 
+            ;(this as any)[methodName] = function (...args: any[]) {
+              if (!(this as any).initialized) {
                 this.emitter.triggerEvent(HonorVideoEvent.error, { data: 5 })
-                throw new Error(`Method ${methodName} called before adaptor was initialized`);
+                throw new Error(
+                  `Method ${methodName} called before adaptor was initialized`
+                )
               }
 
               return originalMethod.apply(this, args)
@@ -41,22 +42,24 @@ function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
   }
 }
 
-@RequiresInitializationForAllMethods(
-  [
-    'setAdaptor',
-    'onReady',
-    'onError',
-    'onCurrentTimeChanged',
-    'onStateChanged',
-    'initializeAdaptor'
-  ]
-)
+@RequiresInitializationForAllMethods([
+  'setAdaptor',
+  'onReady',
+  'onError',
+  'onCurrentTimeChanged',
+  'onStateChanged',
+  'initializeAdaptor',
+])
 export default class HonorPlayer {
   private initialized = false
   private adaptor: HonorVideoAdaptor
   emitter = new HonorVideoEventEmitters()
 
-  constructor(elementId: string, configuration: HonorVideoConfiguration, adaptor: HonorVideoAdaptor) {
+  constructor(
+    elementId: string,
+    configuration: HonorVideoConfiguration,
+    adaptor: HonorVideoAdaptor
+  ) {
     this.adaptor = adaptor
     this.initializeAdaptor(elementId, configuration)
   }
@@ -66,19 +69,29 @@ export default class HonorPlayer {
   getDuration = (): number => this.adaptor.getDuration()
   getPlaybackRate = (): number => this.adaptor.getPlaybackRate()
   getVideoLoadedFraction = (): number => this.adaptor.getVideoLoadedFraction()
-  getVolume = (): number =>  this.adaptor.getVolume()
-  loadVideoById = (videoId: string, startTime?: number, endTime?: number) => this.adaptor.loadVideoById(videoId, startTime, endTime)
+  getVolume = (): number => this.adaptor.getVolume()
+  loadVideoById = (videoId: string, startTime?: number, endTime?: number) =>
+    this.adaptor.loadVideoById(videoId, startTime, endTime)
   seekTo = (seconds: number) => this.adaptor.seekTo(seconds)
   setPlaybackRate = (rate: number) => this.adaptor.setPlaybackRate(rate)
-  setSize = (width: number, height: number): Object => this.adaptor.setSize(width, height)
+  setSize = (width: number, height: number): Object =>
+    this.adaptor.setSize(width, height)
   setVolume = (volume: number) => this.adaptor.setVolume(volume)
   stopVideo = () => this.adaptor.stopVideo()
   playVideo = () => this.adaptor.playVideo()
   pauseVideo = () => this.adaptor.pauseVideo()
-  onReady(callback: () => void) { this.emitter.onReady(callback) }
-  onError(callback: (error: HonorVideoError) => void) { this.emitter.onError(callback) }
-  onCurrentTimeChanged(callback: (time: number) => void) { this.emitter.onCurrentTimeChange(callback) }
-  onStateChanged(callback: (state: HonorVideoPlayerState) => void) { this.emitter.onStateChange(callback) }
+  onReady(callback: () => void) {
+    this.emitter.onReady(callback)
+  }
+  onError(callback: (error: HonorVideoError) => void) {
+    this.emitter.onError(callback)
+  }
+  onCurrentTimeChanged(callback: (time: number) => void) {
+    this.emitter.onCurrentTimeChange(callback)
+  }
+  onStateChanged(callback: (state: HonorVideoPlayerState) => void) {
+    this.emitter.onStateChange(callback)
+  }
 
   async initializeAdaptor(elementId: string, config: HonorVideoConfiguration) {
     await this.adaptor.initialize(elementId, config, this)

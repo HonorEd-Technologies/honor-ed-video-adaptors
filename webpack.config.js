@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 module.exports = {
   entry: './dist/index.js',
@@ -6,10 +6,10 @@ module.exports = {
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
-    library: { 
+    library: {
       name: 'HE',
-      type: 'umd'
+      type: 'umd',
     },
-    libraryExport: 'default'
+    libraryExport: 'default',
   },
-};
+}

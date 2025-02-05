@@ -1,10 +1,10 @@
-export const enum HonorVideoEvent { 
+export const enum HonorVideoEvent {
   playerReady,
   stateChanged,
   error,
-  currentTimeChanged
+  currentTimeChanged,
 }
 
-export type HonorVideoEventPayload = { 
+export type HonorVideoEventPayload = {
   data?: any
 }

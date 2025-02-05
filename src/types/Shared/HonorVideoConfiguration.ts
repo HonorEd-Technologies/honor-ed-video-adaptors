@@ -1,4 +1,4 @@
-export type HonorVideoConfiguration = { 
+export type HonorVideoConfiguration = {
   autoplay: boolean
   height: number
   width: number

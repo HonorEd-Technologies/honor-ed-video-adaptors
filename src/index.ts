@@ -1,7 +1,7 @@
-import HonorPlayer from "./HonorPlayer";
-import { HonorVideoAdaptorFactory } from "./adaptors/HonorVideoAdaptorFactory";
+import HonorPlayer from './HonorPlayer'
+import { HonorVideoAdaptorFactory } from './adaptors/HonorVideoAdaptorFactory'
 
-export default { 
+export default {
   HonorPlayer,
-  HonorVideoAdaptorFactory
+  HonorVideoAdaptorFactory,
 }
