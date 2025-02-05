@@ -1,4 +1,5 @@
 node_modules
+Sources/honor-ed-video-adaptors/Resources/dist
 dist
 .swiftpm
 .idea
