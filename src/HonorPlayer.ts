@@ -5,7 +5,6 @@ import { HonorVideoEvent } from "./types/Shared/HonorVideoEvent"
 import { HonorVideoPlayerState } from "./types/Shared/HonorVideoPlayerState"
 import { HonorVideoAdaptor } from "./adaptors/HonorVideoAdaptor"
 import loadYoutubeAPI from "./utils/loadYoutubeAPI"
-import { initializeYoutubeAdaptor } from "./adaptors/YouTube/YoutubeAdaptor"
 
 type Constructor = new (...args: any[]) => {};
 function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
@@ -54,16 +53,12 @@ function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
 )
 export default class HonorPlayer {
   private initialized = false
-  private adaptor!: HonorVideoAdaptor
+  private adaptor: HonorVideoAdaptor
   emitter = new HonorVideoEventEmitters()
 
-  constructor(elementId: string, configuration: HonorVideoConfiguration) { 
-    this.initializeAdaptor(elementId, configuration)
-  }
-
-  setAdaptor(adaptor: HonorVideoAdaptor) { 
-    this.initialized = true
+  constructor(elementId: string, configuration: HonorVideoConfiguration, adaptor: HonorVideoAdaptor) {
     this.adaptor = adaptor
+    this.initializeAdaptor(elementId, configuration)
   }
 
   destroy = () => this.adaptor.destroy()
@@ -85,12 +80,8 @@ export default class HonorPlayer {
   onCurrentTimeChanged(callback: (time: number) => void) { this.emitter.onCurrentTimeChange(callback) }
   onStateChanged(callback: (state: HonorVideoPlayerState) => void) { this.emitter.onStateChange(callback) }
 
-  initializeAdaptor = (elementId: string, config: HonorVideoConfiguration) => {
-    // load the Youtube Iframe API 
-    loadYoutubeAPI(this.emitter)
-      .then(() => {
-        const adaptor = initializeYoutubeAdaptor(elementId, config, this) // Once iframe is loaded, instantiate YT.Player and return the adaptor
-        this.setAdaptor(adaptor)
-      })
+  async initializeAdaptor(elementId: string, config: HonorVideoConfiguration) {
+    await this.adaptor.initialize(elementId, config, this)
+    this.initialized = true
   }
 }

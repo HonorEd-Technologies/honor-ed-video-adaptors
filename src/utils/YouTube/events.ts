@@ -1,3 +1,4 @@
+import { YoutubeAdaptor } from "../../adaptors/YouTube/YoutubeAdaptor"
 import HonorPlayer from "../../HonorPlayer"
 import { HonorVideoErrorType } from "../../types/Shared/HonorVideoError"
 import { HonorVideoEvent } from "../../types/Shared/HonorVideoEvent"
@@ -109,12 +110,12 @@ const youtubeErrorHandler = (player: HonorPlayer): (event: YoutubeEvent) => void
  *  onStateChange: ({ data: any }) => void,
  *  onError: ({ data: any }) => void
  * }
- * This function takes in an HonorPlayer and returns an object conforming to the above, with each property a function that:
+ * This function takes in an `HonorPlayer` and returns an object conforming to the above, with each property a function that:
  * 1. Processes raw object events coming from the Youtube API ({ data: any })
  * 2. Converts them into TS types specific to Youtube e.g. ({ data: any }) => YoutubePlayerState
  * 3. Converts those into the appropriate Honor type e.g. (YoutubePlayerState) => HonorVideoPlayerState
  * 4. Sends those into the player's event emitter.
- * @param player the HonorPlayer
+ * @param player The HonorPlayer
  * @returns an object containing the functions passed into the YT.Player
  */
 export const youtubeEventHandler = (player: HonorPlayer): Object => { 

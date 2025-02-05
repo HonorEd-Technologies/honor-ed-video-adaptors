@@ -7,8 +7,7 @@ export default class HonorPlayer {
     private initialized;
     private adaptor;
     emitter: HonorVideoEventEmitters;
-    constructor(elementId: string, configuration: HonorVideoConfiguration);
-    setAdaptor(adaptor: HonorVideoAdaptor): void;
+    constructor(elementId: string, configuration: HonorVideoConfiguration, adaptor: HonorVideoAdaptor);
     destroy: () => void;
     getCurrentTime: () => number;
     getDuration: () => number;
@@ -27,6 +26,6 @@ export default class HonorPlayer {
     onError(callback: (error: HonorVideoError) => void): void;
     onCurrentTimeChanged(callback: (time: number) => void): void;
     onStateChanged(callback: (state: HonorVideoPlayerState) => void): void;
-    initializeAdaptor: (elementId: string, config: HonorVideoConfiguration) => void;
+    initializeAdaptor(elementId: string, config: HonorVideoConfiguration): Promise<void>;
 }
 //# sourceMappingURL=HonorPlayer.d.ts.map

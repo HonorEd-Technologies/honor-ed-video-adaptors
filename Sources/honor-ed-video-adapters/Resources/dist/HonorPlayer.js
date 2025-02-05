@@ -33,18 +33,9 @@ var __runInitializers = (this && this.__runInitializers) || function (thisArg, i
     }
     return useValue ? value : void 0;
 };
-var __setFunctionName = (this && this.__setFunctionName) || function (f, name, prefix) {
-    if (typeof name === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
-    return Object.defineProperty(f, "name", { configurable: true, value: prefix ? "".concat(prefix, " ", name) : name });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const HonorEventEmitter_1 = require("./utils/Shared/HonorEventEmitter");
 const HonorVideoEvent_1 = require("./types/Shared/HonorVideoEvent");
-const loadYoutubeAPI_1 = __importDefault(require("./utils/loadYoutubeAPI"));
-const YoutubeAdaptor_1 = require("./adaptors/YouTube/YoutubeAdaptor");
 function RequiresInitializationForAllMethods(excludeMethods = []) {
     return function (Base) {
         return class extends Base {
@@ -84,51 +75,45 @@ let HonorPlayer = (() => {
     let _classDescriptor;
     let _classExtraInitializers = [];
     let _classThis;
-    var HonorPlayer = _classThis = class {
-        constructor(elementId, configuration) {
-            this.initialized = false;
-            this.emitter = new HonorEventEmitter_1.HonorVideoEventEmitters();
-            this.destroy = () => this.adaptor.destroy();
-            this.getCurrentTime = () => this.adaptor.getCurrentTime();
-            this.getDuration = () => this.adaptor.getDuration();
-            this.getPlaybackRate = () => this.adaptor.getPlaybackRate();
-            this.getVideoLoadedFraction = () => this.adaptor.getVideoLoadedFraction();
-            this.getVolume = () => this.adaptor.getVolume();
-            this.loadVideoById = (videoId, startTime, endTime) => this.adaptor.loadVideoById(videoId, startTime, endTime);
-            this.seekTo = (seconds) => this.adaptor.seekTo(seconds);
-            this.setPlaybackRate = (rate) => this.adaptor.setPlaybackRate(rate);
-            this.setSize = (width, height) => this.adaptor.setSize(width, height);
-            this.setVolume = (volume) => this.adaptor.setVolume(volume);
-            this.stopVideo = () => this.adaptor.stopVideo();
-            this.playVideo = () => this.adaptor.playVideo();
-            this.pauseVideo = () => this.adaptor.pauseVideo();
-            this.initializeAdaptor = (elementId, config) => {
-                // load the Youtube Iframe API 
-                (0, loadYoutubeAPI_1.default)(this.emitter)
-                    .then(() => {
-                    const adaptor = (0, YoutubeAdaptor_1.initializeYoutubeAdaptor)(elementId, config, this); // Once iframe is loaded, instantiate YT.Player and return the adaptor
-                    this.setAdaptor(adaptor);
-                });
-            };
+    var HonorPlayer = class {
+        static { _classThis = this; }
+        static {
+            const _metadata = typeof Symbol === "function" && Symbol.metadata ? Object.create(null) : void 0;
+            __esDecorate(null, _classDescriptor = { value: _classThis }, _classDecorators, { kind: "class", name: _classThis.name, metadata: _metadata }, null, _classExtraInitializers);
+            HonorPlayer = _classThis = _classDescriptor.value;
+            if (_metadata) Object.defineProperty(_classThis, Symbol.metadata, { enumerable: true, configurable: true, writable: true, value: _metadata });
+            __runInitializers(_classThis, _classExtraInitializers);
+        }
+        initialized = false;
+        adaptor;
+        emitter = new HonorEventEmitter_1.HonorVideoEventEmitters();
+        constructor(elementId, configuration, adaptor) {
+            this.adaptor = adaptor;
             this.initializeAdaptor(elementId, configuration);
         }
-        setAdaptor(adaptor) {
-            this.initialized = true;
-            this.adaptor = adaptor;
-        }
+        destroy = () => this.adaptor.destroy();
+        getCurrentTime = () => this.adaptor.getCurrentTime();
+        getDuration = () => this.adaptor.getDuration();
+        getPlaybackRate = () => this.adaptor.getPlaybackRate();
+        getVideoLoadedFraction = () => this.adaptor.getVideoLoadedFraction();
+        getVolume = () => this.adaptor.getVolume();
+        loadVideoById = (videoId, startTime, endTime) => this.adaptor.loadVideoById(videoId, startTime, endTime);
+        seekTo = (seconds) => this.adaptor.seekTo(seconds);
+        setPlaybackRate = (rate) => this.adaptor.setPlaybackRate(rate);
+        setSize = (width, height) => this.adaptor.setSize(width, height);
+        setVolume = (volume) => this.adaptor.setVolume(volume);
+        stopVideo = () => this.adaptor.stopVideo();
+        playVideo = () => this.adaptor.playVideo();
+        pauseVideo = () => this.adaptor.pauseVideo();
         onReady(callback) { this.emitter.onReady(callback); }
         onError(callback) { this.emitter.onError(callback); }
         onCurrentTimeChanged(callback) { this.emitter.onCurrentTimeChange(callback); }
         onStateChanged(callback) { this.emitter.onStateChange(callback); }
+        async initializeAdaptor(elementId, config) {
+            await this.adaptor.initialize(elementId, config, this);
+            this.initialized = true;
+        }
     };
-    __setFunctionName(_classThis, "HonorPlayer");
-    (() => {
-        const _metadata = typeof Symbol === "function" && Symbol.metadata ? Object.create(null) : void 0;
-        __esDecorate(null, _classDescriptor = { value: _classThis }, _classDecorators, { kind: "class", name: _classThis.name, metadata: _metadata }, null, _classExtraInitializers);
-        HonorPlayer = _classThis = _classDescriptor.value;
-        if (_metadata) Object.defineProperty(_classThis, Symbol.metadata, { enumerable: true, configurable: true, writable: true, value: _metadata });
-        __runInitializers(_classThis, _classExtraInitializers);
-    })();
     return HonorPlayer = _classThis;
 })();
 exports.default = HonorPlayer;

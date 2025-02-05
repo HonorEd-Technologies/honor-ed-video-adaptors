@@ -9,23 +9,25 @@ export type YoutubeEvent = {
 /**
  * Youtube's iFrame API passes changes to the state of its video player in the form of a number. See [here](https://developers.google.com/youtube/iframe_api_reference#onStateChange) for more info.
  */
-export declare const enum YoutubePlayerState {
-    unstarted = -1,
-    ended = 0,
-    playing = 1,
-    paused = 2,
-    buffering = 3,
-    videoCued = 5
-}
+export declare const YoutubePlayerState: {
+    readonly unstarted: -1;
+    readonly ended: 0;
+    readonly playing: 1;
+    readonly paused: 2;
+    readonly buffering: 3;
+    readonly videoCued: 4;
+};
+export type YoutubePlayerState = typeof YoutubePlayerState[keyof typeof YoutubePlayerState];
 /**
  * Youtube's iFrame API passes error data in the form of a number. See [here](https://developers.google.com/youtube/iframe_api_reference#onError) for more info.
  */
-export declare enum YoutubeError {
-    invalidParameter = 2,
-    playerError = 5,
-    notFound = 100,
-    invalidPermissions = 101,
-    invalidPermissionsAlt = 150,
-    apiLoadError = 400
-}
+export declare const YoutubeError: {
+    readonly invalidParameter: 2;
+    readonly playerError: 5;
+    readonly notFound: 100;
+    readonly invalidPermissions: 101;
+    readonly invalidPermissionsAlt: 150;
+    readonly apiLoadError: 400;
+};
+export type YoutubeError = typeof YoutubeError[keyof typeof YoutubeError];
 //# sourceMappingURL=YouTubeEvents.d.ts.map

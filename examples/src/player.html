@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src='/dist/main.js'></script>
+    <script type='module' src='/dist/main.js'></script>
 </head>
 <body>
     <div id='player-1'></div>
@@ -26,7 +26,8 @@
                     fullscreenEnabled: false,
                     playsInline: false
                 }
-                const player = new HonorPlayer('player-1', config)
+                const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor('youtube')
+                const player = new HE.HonorPlayer('player-1', config, adaptor)
                 window.HonorPlayer = player
                 
                 player.onReady(() => { 

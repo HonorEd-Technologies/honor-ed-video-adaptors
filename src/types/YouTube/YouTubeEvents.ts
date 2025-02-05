@@ -10,23 +10,27 @@ export type YoutubeEvent = {
 /**
  * Youtube's iFrame API passes changes to the state of its video player in the form of a number. See [here](https://developers.google.com/youtube/iframe_api_reference#onStateChange) for more info.
  */
-export const enum YoutubePlayerState { 
-  unstarted = -1,
-  ended = 0,
-  playing = 1,
-  paused = 2,
-  buffering = 3,
-  videoCued = 5
-}
+export const YoutubePlayerState = { 
+  unstarted: -1,
+  ended: 0,
+  playing: 1,
+  paused: 2,
+  buffering: 3,
+  videoCued: 4
+} as const
+
+export type YoutubePlayerState = typeof YoutubePlayerState[keyof typeof YoutubePlayerState]
 
 /**
  * Youtube's iFrame API passes error data in the form of a number. See [here](https://developers.google.com/youtube/iframe_api_reference#onError) for more info.
  */
-export enum YoutubeError { 
-  invalidParameter = 2,
-  playerError = 5,
-  notFound = 100,
-  invalidPermissions = 101,
-  invalidPermissionsAlt = 150,
-  apiLoadError = 400
-}
+export const YoutubeError = { 
+  invalidParameter: 2,
+  playerError: 5,
+  notFound: 100,
+  invalidPermissions: 101,
+  invalidPermissionsAlt: 150,
+  apiLoadError: 400
+} as const
+
+export type YoutubeError = typeof YoutubeError[keyof typeof YoutubeError]

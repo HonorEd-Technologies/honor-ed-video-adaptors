@@ -1,6 +1,6 @@
-import HonorPlayer from "../../HonorPlayer";
 import { HonorVideoAdaptor } from "../HonorVideoAdaptor";
 import { HonorVideoConfiguration } from "../../types/Shared/HonorVideoConfiguration";
+import HonorPlayer from "../../HonorPlayer";
 export type YoutubeConfig = {
     height: number;
     width: number;
@@ -9,11 +9,25 @@ export type YoutubeConfig = {
     events?: Object;
 };
 /**
- * Once the Youtube API is loaded, you can instantiate a player based on an elementId and a configuration object. This function does just that, and returns an object containing methods that interact with the YT.Player.
- * @param elementId The id of the element to contain the iframe
- * @param honorConfig The configuration, storing values to control things like autoplay, the id of the video to play, etc.
- * @param player The HonorPlayer
- * @returns A `HonorVideoAdaptor`, a type exposing methods that, in this case, call the corresponding methods based on Youtube's iFrame API.
+ * This class will load Youtube's IFrame API upon the call of `initialize`, and upon completion will set the YT.Player object on `this` and expose methods that interact with it.
  */
-export declare const initializeYoutubeAdaptor: (elementId: string, honorConfig: HonorVideoConfiguration, player: HonorPlayer) => HonorVideoAdaptor;
+export declare class YoutubeAdaptor implements HonorVideoAdaptor {
+    YTPlayer: any | null;
+    constructor();
+    initialize(elementId: string, configuration: HonorVideoConfiguration, player: HonorPlayer): Promise<void>;
+    destroy: () => any;
+    getCurrentTime: () => number;
+    getDuration: () => number;
+    getPlaybackRate: () => number;
+    getVideoLoadedFraction: () => number;
+    getVolume: () => number;
+    loadVideoById: (videoId: string, startTime?: number, endTime?: number) => void;
+    seekTo: (seconds: number) => void;
+    setPlaybackRate: (rate: number) => void;
+    setSize: (width: number, height: number) => Object;
+    setVolume: (volume: number) => void;
+    stopVideo: () => any;
+    playVideo: () => any;
+    pauseVideo: () => any;
+}
 //# sourceMappingURL=YoutubeAdaptor.d.ts.map

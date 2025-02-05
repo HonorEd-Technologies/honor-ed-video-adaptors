@@ -1,8 +1,10 @@
 import convertYTPlayer from "./convertYTPlayer"
-import HonorPlayer from "../../HonorPlayer"
 import { HonorVideoAdaptor } from "../HonorVideoAdaptor"
 import { HonorVideoConfiguration } from "../../types/Shared/HonorVideoConfiguration"
+import loadYoutubeAPI from "../../utils/loadYoutubeAPI"
+import { HonorVideoEventEmitters } from "../../utils/Shared/HonorEventEmitter"
 import { youtubeEventHandler } from "../../utils/YouTube/events"
+import HonorPlayer from "../../HonorPlayer"
 
 export type YoutubeConfig = { 
   height: number,
@@ -13,75 +15,47 @@ export type YoutubeConfig = {
 }
 
 /**
- * Once the Youtube API is loaded, you can instantiate a player based on an elementId and a configuration object. This function does just that, and returns an object containing methods that interact with the YT.Player.
- * @param elementId The id of the element to contain the iframe
- * @param honorConfig The configuration, storing values to control things like autoplay, the id of the video to play, etc.
- * @param player The HonorPlayer
- * @returns A `HonorVideoAdaptor`, a type exposing methods that, in this case, call the corresponding methods based on Youtube's iFrame API.
+ * This class will load Youtube's IFrame API upon the call of `initialize`, and upon completion will set the YT.Player object on `this` and expose methods that interact with it.
  */
-export const initializeYoutubeAdaptor = (elementId: string, honorConfig: HonorVideoConfiguration, player: HonorPlayer): HonorVideoAdaptor => {
-  // Convert `honorConfig` to type `YoutubeConfig`, which will be passed directly into the Youtube video player provided by its iFrame API
-  let config: YoutubeConfig = { 
-    height: honorConfig.height,
-    width: honorConfig.width,
-    videoId: honorConfig.videoId,
-    playerVars: { 
-      autoPlay: honorConfig.autoplay ? 1 : 0,
-      controls: honorConfig.controls ? 1 : 0,
-      fs: honorConfig.fullscreenEnabled ? 1 : 0,
-      playsInline: honorConfig.playsInline ? 1 : 0
-    }
+export class YoutubeAdaptor implements HonorVideoAdaptor {
+  YTPlayer: any | null
+
+  constructor() { 
+
   }
 
-  // set up event handling, mapping YoutubeEvents to HonorVideoEvents, then sending them to the emitter
-  config.events = youtubeEventHandler(player)
+  async initialize(elementId: string, configuration: HonorVideoConfiguration, player: HonorPlayer) { 
+    await loadYoutubeAPI(player.emitter)
 
-  // instantiate YT.Player
-  const YTPlayer = convertYTPlayer(elementId, config)
-
-  // construct HonorVideoAdaptor, using the Youtube-specific methods on the YT.Player
-  let adaptor: HonorVideoAdaptor = {
-    destroy: () => { },
-    getCurrentTime: function (): number {
-      return YTPlayer.getCurrentTime()
-    },
-    getDuration: function (): number {
-      return YTPlayer.getDuration()
-    },
-    getPlaybackRate: function (): number {
-      return YTPlayer.getPlaybackRate()
-    },
-    getVideoLoadedFraction: function (): number {
-      return YTPlayer.getVideoLoadedFraction()
-    },
-    getVolume: function (): number {
-      return YTPlayer.getVolume()
-    },
-    loadVideoById: function (videoId: string, startTime?: number, endTime?: number): void {
-      YTPlayer.loadVideoById(videoId, startTime, endTime)
-    },
-    seekTo: function (seconds: number): void {
-      YTPlayer.seekTo(seconds, true)
-    },
-    setPlaybackRate: function (rate: number): void {
-      YTPlayer.setPlaybackRate(rate)
-    },
-    setSize: function (width: number, height: number): Object {
-      return YTPlayer.setSize(width.toString(), height.toString())
-    },
-    setVolume: function (volume: number): void {
-      YTPlayer.setVolume(volume)
-    },
-    stopVideo: function (): void {
-      YTPlayer.stopVideo()
-    },
-    playVideo: function (): void {
-      YTPlayer.playVideo()
-    },
-    pauseVideo: function (): void {
-      YTPlayer.pauseVideo()
+    const config: YoutubeConfig = { 
+      height: configuration.height,
+      width: configuration.width,
+      videoId: configuration.videoId,
+      events: youtubeEventHandler(player),
+      playerVars: { 
+        autoPlay: configuration.autoplay ? 1 : 0,
+        controls: configuration.controls ? 1 : 0,
+        fs: configuration.fullscreenEnabled ? 1 : 0,
+        playsInline: configuration.playsInline ? 1 : 0
+      }
     }
+
+    const ytPlayer = convertYTPlayer(elementId, config)
+    this.YTPlayer = ytPlayer
   }
 
-  return adaptor
+  destroy = () => this.YTPlayer.destroy()
+  getCurrentTime = (): number => this.YTPlayer.getCurrentTime()
+  getDuration = (): number => this.YTPlayer.getDuration()
+  getPlaybackRate = (): number => this.YTPlayer.getPlaybackRate()
+  getVideoLoadedFraction = (): number => this.YTPlayer.getVideoLoadedFraction()
+  getVolume = (): number => this.YTPlayer.getVolume()
+  loadVideoById = (videoId: string, startTime?: number, endTime?: number): void => this.loadVideoById(videoId, startTime, endTime)
+  seekTo = (seconds: number): void => this.YTPlayer.seekTo(seconds)
+  setPlaybackRate = (rate: number): void => this.YTPlayer.setPlaybackRate(rate)
+  setSize = (width: number, height: number): Object => this.YTPlayer.setSize(width, height)
+  setVolume = (volume: number): void => this.YTPlayer.setVolume(volume)
+  stopVideo = () => this.YTPlayer.stopVideo()
+  playVideo = () => this.YTPlayer.playVideo()
+  pauseVideo = () => this.YTPlayer.pauseVideo()
 }
