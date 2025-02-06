@@ -1,12 +1,11 @@
-import { HonorPlayer } from "./types/adaptors/HonorPlayer";
-import { YTEventListeners } from "./types/YTEvents";
+import HonorPlayer from "./HonorPlayer";
+import type { PlayerOptions, Player } from "./adaptors/YouTube/convertYTPlayer";
 declare global {
     interface Window {
-        YT?: {
-            Player: Function;
+        YT: {
+            Player: new (elementId: string | HTMLElement, options: PlayerOptions) => Player;
         };
-        HonorPlayer?: HonorPlayer;
-        eventListeners?: YTEventListeners;
+        HonorPlayer: HonorPlayer;
         onYouTubeIframeAPIReady?: () => void;
         setupPlayer?: Function;
     }

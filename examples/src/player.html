@@ -1,49 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-    <script src='/dist/main.js'></script>
-</head>
-<body>
-    <div id='player-1'></div>
+  <head>
+    <script type="module" src="/dist/main.js"></script>
+  </head>
+  <body>
+    <div id="player-1"></div>
     <button onclick="window.HonorPlayer.playVideo()">Play</button>
     <button onclick="window.HonorPlayer.pauseVideo()">Pause</button>
-    <button onclick="console.log(window.HonorPlayer.getDuration())">Duration</button>
+    <button onclick="console.log(window.HonorPlayer.getDuration())">
+      Duration
+    </button>
     <script>
-        let search = window.location.search
-        let urlParams = new URLSearchParams(search)
-        let videoId = urlParams.get("videoId")
+      let search = window.location.search
+      let urlParams = new URLSearchParams(search)
+      let videoId = urlParams.get('videoId')
 
-        window.addEventListener('load', (event) => { 
-            if (!videoId) {
-                document.getElementById('player-1').innerText = "Please pass in a video id"
-            } else {
-                let config = { 
-                    height: 400,
-                    width: 600,
-                    videoId,
-                    playerVars: { 
-                        'autoplay': 1,
-                        'controls': 0
-                    }
-                }
-                setupPlayer('player-1', config)
-                window.eventListeners.onReady(() => { 
-                    console.log("Ready")
-                })
+      window.addEventListener('load', (event) => {
+        if (!videoId) {
+          document.getElementById('player-1').innerText =
+            'Please pass in a video id'
+        } else {
+          let config = {
+            height: 400,
+            width: 600,
+            videoId,
+            autoplay: true,
+            controls: false,
+            fullscreenEnabled: false,
+            playsInline: false,
+          }
+          const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor('youtube')
+          const player = new HE.HonorPlayer('player-1', config, adaptor)
+          window.HonorPlayer = player
 
-                window.eventListeners.onStateChanged((state) => { 
-                    console.log("State changed: " + state)
-                })
+          player.onReady(() => {
+            console.log('Ready')
+          })
 
-                window.eventListeners.onError((error) => { 
-                    console.log("Error: " + error)
-                })
+          player.onStateChanged((state) => {
+            console.log('State changed: ' + state)
+          })
 
-                window.eventListeners.onCurrentTimeChanged((time) => { 
-                    console.log("Current time: " + time)
-                })
-            }
-        })
+          player.onError((error) => {
+            console.log('Error: ' + error)
+          })
+
+          player.onCurrentTimeChanged((time) => {
+            console.log('Current time: ' + time)
+          })
+        }
+      })
     </script>
-</body>
+  </body>
 </html>
