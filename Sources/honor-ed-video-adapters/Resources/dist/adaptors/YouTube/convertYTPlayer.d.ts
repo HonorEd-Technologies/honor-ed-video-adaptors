@@ -17,7 +17,7 @@ declare const _default: (elementId: string, config: PlayerOptions) => {
     destroy: () => void;
     setSize: (width: number, height: number) => void;
     getIframe: () => HTMLIFrameElement;
-};
+} | undefined;
 export default _default;
 export type Player = {
     cueVideoById(videoId: string, startSeconds?: number): void;

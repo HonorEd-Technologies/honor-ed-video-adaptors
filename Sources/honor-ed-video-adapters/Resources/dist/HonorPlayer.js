@@ -42,14 +42,14 @@ function RequiresInitializationForAllMethods(excludeMethods = []) {
             constructor(...args) {
                 super(...args);
                 // Get all method names of the class prototype
-                const methodNames = Object.getOwnPropertyNames(Base.prototype)
-                    .filter((method) => method !== 'constructor' && // Exclude constructor
+                const methodNames = Object.getOwnPropertyNames(Base.prototype).filter((method) => method !== 'constructor' && // Exclude constructor
                     !excludeMethods.includes(method) // Exclude specified methods
                 );
                 for (const methodName of methodNames) {
                     const originalMethod = this[methodName];
                     if (typeof originalMethod === 'function') {
                         // Wrap the method with initialization check
+                        ;
                         this[methodName] = function (...args) {
                             if (!this.initialized) {
                                 this.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.error, { data: 5 });
@@ -70,7 +70,7 @@ let HonorPlayer = (() => {
             'onError',
             'onCurrentTimeChanged',
             'onStateChanged',
-            'initializeAdaptor'
+            'initializeAdaptor',
         ])];
     let _classDescriptor;
     let _classExtraInitializers = [];
@@ -105,10 +105,18 @@ let HonorPlayer = (() => {
         stopVideo = () => this.adaptor.stopVideo();
         playVideo = () => this.adaptor.playVideo();
         pauseVideo = () => this.adaptor.pauseVideo();
-        onReady(callback) { this.emitter.onReady(callback); }
-        onError(callback) { this.emitter.onError(callback); }
-        onCurrentTimeChanged(callback) { this.emitter.onCurrentTimeChange(callback); }
-        onStateChanged(callback) { this.emitter.onStateChange(callback); }
+        onReady(callback) {
+            this.emitter.onReady(callback);
+        }
+        onError(callback) {
+            this.emitter.onError(callback);
+        }
+        onCurrentTimeChanged(callback) {
+            this.emitter.onCurrentTimeChange(callback);
+        }
+        onStateChanged(callback) {
+            this.emitter.onStateChange(callback);
+        }
         async initializeAdaptor(elementId, config) {
             await this.adaptor.initialize(elementId, config, this);
             this.initialized = true;

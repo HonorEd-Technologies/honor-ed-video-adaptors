@@ -10,22 +10,24 @@ exports.default = (emitter) => {
             return;
         }
         const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
+        tag.src = 'https://www.youtube.com/iframe_api';
         const firstScriptTag = document.getElementsByTagName('script')[0];
         if (firstScriptTag.parentNode) {
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         }
         window.onYouTubeIframeAPIReady = () => {
-            if (window.YT !== undefined && window.YT.Player && window.YT.Player instanceof Function) {
+            if (window.YT !== undefined &&
+                window.YT.Player &&
+                window.YT.Player instanceof Function) {
                 resolve();
             }
             else {
-                const errorMessage = "There was a problem loading the YouTube Iframe API";
+                const errorMessage = 'There was a problem loading the YouTube Iframe API';
                 emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.error, {
                     data: {
                         code: HonorVideoError_1.HonorVideoErrorType.apiLoadError,
-                        message: errorMessage
-                    }
+                        message: errorMessage,
+                    },
                 });
                 reject(errorMessage);
             }

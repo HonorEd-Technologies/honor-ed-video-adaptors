@@ -1,4 +1,4 @@
-import HonorPlayer from "./HonorPlayer";
+import HonorPlayer from './HonorPlayer';
 declare const _default: {
     HonorPlayer: typeof HonorPlayer;
     HonorVideoAdaptorFactory: {

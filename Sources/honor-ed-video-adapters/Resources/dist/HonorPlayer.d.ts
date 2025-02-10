@@ -1,8 +1,8 @@
-import { HonorVideoEventEmitters } from "./utils/Shared/HonorEventEmitter";
-import { HonorVideoConfiguration } from "./types/Shared/HonorVideoConfiguration";
-import { HonorVideoError } from "./types/Shared/HonorVideoError";
-import { HonorVideoPlayerState } from "./types/Shared/HonorVideoPlayerState";
-import { HonorVideoAdaptor } from "./adaptors/HonorVideoAdaptor";
+import { HonorVideoEventEmitters } from './utils/Shared/HonorEventEmitter';
+import { HonorVideoConfiguration } from './types/Shared/HonorVideoConfiguration';
+import { HonorVideoError } from './types/Shared/HonorVideoError';
+import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState';
+import { HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor';
 export default class HonorPlayer {
     private initialized;
     private adaptor;

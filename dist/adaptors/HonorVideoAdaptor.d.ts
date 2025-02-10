@@ -1,5 +1,5 @@
-import HonorPlayer from "../HonorPlayer";
-import { HonorVideoConfiguration } from "../types/Shared/HonorVideoConfiguration";
+import HonorPlayer from '../HonorPlayer';
+import { HonorVideoConfiguration } from '../types/Shared/HonorVideoConfiguration';
 export type HonorVideoAdaptor = {
     initialize: (videoId: string, configuration: HonorVideoConfiguration, player: HonorPlayer) => Promise<void>;
     destroy: () => void;

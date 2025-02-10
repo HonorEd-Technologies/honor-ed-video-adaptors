@@ -23,8 +23,8 @@ class YoutubeAdaptor {
                 autoPlay: configuration.autoplay ? 1 : 0,
                 controls: configuration.controls ? 1 : 0,
                 fs: configuration.fullscreenEnabled ? 1 : 0,
-                playsInline: configuration.playsInline ? 1 : 0
-            }
+                playsInline: configuration.playsInline ? 1 : 0,
+            },
         };
         const ytPlayer = (0, convertYTPlayer_1.default)(elementId, config);
         this.YTPlayer = ytPlayer;

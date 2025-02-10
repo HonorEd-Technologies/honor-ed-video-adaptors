@@ -17,7 +17,7 @@ export declare const YoutubePlayerState: {
     readonly buffering: 3;
     readonly videoCued: 4;
 };
-export type YoutubePlayerState = typeof YoutubePlayerState[keyof typeof YoutubePlayerState];
+export type YoutubePlayerState = (typeof YoutubePlayerState)[keyof typeof YoutubePlayerState];
 /**
  * Youtube's iFrame API passes error data in the form of a number. See [here](https://developers.google.com/youtube/iframe_api_reference#onError) for more info.
  */
@@ -29,5 +29,5 @@ export declare const YoutubeError: {
     readonly invalidPermissionsAlt: 150;
     readonly apiLoadError: 400;
 };
-export type YoutubeError = typeof YoutubeError[keyof typeof YoutubeError];
+export type YoutubeError = (typeof YoutubeError)[keyof typeof YoutubeError];
 //# sourceMappingURL=YouTubeEvents.d.ts.map

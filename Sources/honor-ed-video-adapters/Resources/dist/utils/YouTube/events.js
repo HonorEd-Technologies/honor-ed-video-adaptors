@@ -25,7 +25,7 @@ const parseYTPlayerError = (error) => {
     switch (error) {
         case YouTubeEvents_1.YoutubeError.apiLoadError:
             return HonorVideoError_1.HonorVideoErrorType.apiLoadError;
-        case YouTubeEvents_1.YoutubeError.invalidPermissions, YouTubeEvents_1.YoutubeError.invalidPermissionsAlt:
+        case (YouTubeEvents_1.YoutubeError.invalidPermissions, YouTubeEvents_1.YoutubeError.invalidPermissionsAlt):
             return HonorVideoError_1.HonorVideoErrorType.invalidPermissions;
         case YouTubeEvents_1.YoutubeError.invalidParameter:
             return HonorVideoError_1.HonorVideoErrorType.playerError;
@@ -43,17 +43,20 @@ const youtubeStateChangeHandler = (player) => {
     const startTimePoll = () => {
         timePoll = setInterval(() => {
             const time = player.getCurrentTime();
-            player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.currentTimeChanged, { data: time });
+            player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.currentTimeChanged, {
+                data: time,
+            });
         }, 500);
     };
     const onStateChange = ({ data }) => {
         const castData = data;
-        if (!castData) { // if the raw youtube player state cannot be converted into `YoutubePlayerState`, there is a state that we have not accounted for and we should emit an error
+        if (!castData) {
+            // if the raw youtube player state cannot be converted into `YoutubePlayerState`, there is a state that we have not accounted for and we should emit an error
             player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.error, {
                 data: {
                     type: HonorVideoError_1.HonorVideoErrorType.adaptorLayerError,
-                    message: `Unknown player state received: ${data}`
-                }
+                    message: `Unknown player state received: ${data}`,
+                },
             });
             return;
         }
@@ -63,13 +66,17 @@ const youtubeStateChangeHandler = (player) => {
             player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.error, {
                 data: {
                     type: HonorVideoError_1.HonorVideoErrorType.adaptorLayerError,
-                    message: `Could not convert Youtube player event: ${castData} into Honor Event`
-                }
+                    message: `Could not convert Youtube player event: ${castData} into Honor Event`,
+                },
             });
             return;
         }
-        player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.stateChanged, { data: honorPlayerState });
-        if (timePoll !== undefined && (YouTubeEvents_1.YoutubePlayerState.ended === data || YouTubeEvents_1.YoutubePlayerState.unstarted === data)) {
+        player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.stateChanged, {
+            data: honorPlayerState,
+        });
+        if (timePoll !== undefined &&
+            (YouTubeEvents_1.YoutubePlayerState.ended === data ||
+                YouTubeEvents_1.YoutubePlayerState.unstarted === data)) {
             // if we are polling for the current time and the video has ended or is unplayed, we should cancel the interval polling for the elapsed time
             clearInterval(timePoll);
         }
@@ -87,7 +94,9 @@ const youtubeErrorHandler = (player) => {
         if (castData) {
             error = parseYTPlayerError(castData);
         }
-        player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.error, { data: { type: error } });
+        player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.error, {
+            data: { type: error },
+        });
     };
 };
 /**
@@ -106,13 +115,15 @@ const youtubeErrorHandler = (player) => {
  * @returns an object containing the functions passed into the YT.Player
  */
 const youtubeEventHandler = (player) => {
-    const onReady = () => { player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.playerReady); };
+    const onReady = () => {
+        player.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.playerReady);
+    };
     const onStateChange = youtubeStateChangeHandler(player);
     const onError = youtubeErrorHandler(player);
     return {
         onReady,
         onStateChange,
-        onError
+        onError,
     };
 };
 exports.youtubeEventHandler = youtubeEventHandler;

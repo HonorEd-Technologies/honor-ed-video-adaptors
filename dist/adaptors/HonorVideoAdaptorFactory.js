@@ -8,6 +8,6 @@ exports.HonorVideoAdaptorFactory = {
             case 'youtube':
                 return new YoutubeAdaptor_1.YoutubeAdaptor();
         }
-    }
+    },
 };
 //# sourceMappingURL=HonorVideoAdaptorFactory.js.map

@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = (elementId, config) => {
+    if (!window.YT)
+        return;
     let player = new window.YT.Player(elementId, config);
     return {
         loadVideoById: (videoId, startSeconds, endSeconds) => player.loadVideoById({ videoId, startSeconds, endSeconds }),
@@ -20,7 +22,7 @@ exports.default = (elementId, config) => {
         getVideoUrl: () => player.getVideoUrl(),
         destroy: () => player.destroy(),
         setSize: (width, height) => player.setSize(width, height),
-        getIframe: () => player.getIframe()
+        getIframe: () => player.getIframe(),
     };
 };
 //# sourceMappingURL=convertYTPlayer.js.map
