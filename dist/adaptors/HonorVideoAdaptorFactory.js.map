@@ -1,1 +1,0 @@
-{"version":3,"file":"HonorVideoAdaptorFactory.js","sourceRoot":"","sources":["../../src/adaptors/HonorVideoAdaptorFactory.ts"],"names":[],"mappings":";;;AAEA,6DAA0D;AAE7C,QAAA,wBAAwB,GAAG;IACtC,aAAa,EAAE,CAAC,OAAkC,EAAqB,EAAE;QACvE,QAAQ,OAAO,EAAE,CAAC;YAChB,KAAK,SAAS;gBACZ,OAAO,IAAI,+BAAc,EAAE,CAAA;QAC/B,CAAC;IACH,CAAC;CACF,CAAA"}
