@@ -1,4 +1,3 @@
-"use strict";
 var __esDecorate = (this && this.__esDecorate) || function (ctor, descriptorIn, decorators, contextIn, initializers, extraInitializers) {
     function accept(f) { if (f !== void 0 && typeof f !== "function") throw new TypeError("Function expected"); return f; }
     var kind = contextIn.kind, key = kind === "getter" ? "get" : kind === "setter" ? "set" : "value";
@@ -33,9 +32,8 @@ var __runInitializers = (this && this.__runInitializers) || function (thisArg, i
     }
     return useValue ? value : void 0;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const HonorEventEmitter_1 = require("./utils/Shared/HonorEventEmitter");
-const HonorVideoEvent_1 = require("./types/Shared/HonorVideoEvent");
+import { HonorVideoEventEmitters } from './utils/Shared/HonorEventEmitter';
+import { HonorVideoEvent } from './types/Shared/HonorVideoEvent';
 function RequiresInitializationForAllMethods(excludeMethods = []) {
     return function (Base) {
         return class extends Base {
@@ -52,7 +50,7 @@ function RequiresInitializationForAllMethods(excludeMethods = []) {
                         ;
                         this[methodName] = function (...args) {
                             if (!this.initialized) {
-                                this.emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.error, { data: 5 });
+                                this.emitter.triggerEvent(HonorVideoEvent.error, { data: 5 });
                                 throw new Error(`Method ${methodName} called before adaptor was initialized`);
                             }
                             return originalMethod.apply(this, args);
@@ -86,7 +84,7 @@ let HonorPlayer = (() => {
         }
         initialized = false;
         adaptor;
-        emitter = new HonorEventEmitter_1.HonorVideoEventEmitters();
+        emitter = new HonorVideoEventEmitters();
         constructor(elementId, configuration, adaptor) {
             this.adaptor = adaptor;
             this.initializeAdaptor(elementId, configuration);
@@ -124,5 +122,5 @@ let HonorPlayer = (() => {
     };
     return HonorPlayer = _classThis;
 })();
-exports.default = HonorPlayer;
+export { HonorPlayer };
 //# sourceMappingURL=HonorPlayer.js.map

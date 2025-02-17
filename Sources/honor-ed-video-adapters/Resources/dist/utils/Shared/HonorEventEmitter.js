@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HonorVideoEventEmitters = void 0;
-const HonorVideoEvent_1 = require("../../types/Shared/HonorVideoEvent");
+import { HonorVideoEvent, } from '../../types/Shared/HonorVideoEvent';
 class HonorVideoEventEmitter {
     callbacks = [];
     on(callback) {
@@ -19,7 +16,7 @@ class HonorVideoEventEmitter {
         }
     }
 }
-class HonorVideoEventEmitters {
+export class HonorVideoEventEmitters {
     stateChangeEmitter = new HonorVideoEventEmitter();
     readyEmitter = new HonorVideoEventEmitter();
     errorEmitter = new HonorVideoEventEmitter();
@@ -30,25 +27,24 @@ class HonorVideoEventEmitters {
     onCurrentTimeChange = (callback) => this.currentTimeEmitter.on(callback);
     triggerEvent = (event, { data } = {}) => {
         switch (event) {
-            case HonorVideoEvent_1.HonorVideoEvent.playerReady:
+            case HonorVideoEvent.playerReady:
                 this.readyEmitter.emit();
                 break;
-            case HonorVideoEvent_1.HonorVideoEvent.stateChanged:
+            case HonorVideoEvent.stateChanged:
                 if (data) {
                     this.stateChangeEmitter.emit(data);
                 }
                 break;
-            case HonorVideoEvent_1.HonorVideoEvent.error:
+            case HonorVideoEvent.error:
                 if (data) {
                     this.errorEmitter.emit(data);
                 }
                 break;
-            case HonorVideoEvent_1.HonorVideoEvent.currentTimeChanged:
+            case HonorVideoEvent.currentTimeChanged:
                 if (data) {
                     this.currentTimeEmitter.emit(data);
                 }
         }
     };
 }
-exports.HonorVideoEventEmitters = HonorVideoEventEmitters;
 //# sourceMappingURL=HonorEventEmitter.js.map

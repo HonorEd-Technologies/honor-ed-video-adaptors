@@ -1,9 +1,4 @@
-import HonorPlayer from './HonorPlayer';
-declare const _default: {
-    HonorPlayer: typeof HonorPlayer;
-    HonorVideoAdaptorFactory: {
-        createAdaptor: (service: import("./types/Shared/HonorVideoServiceProvider").HonorVideoServiceProvider) => import("./adaptors/HonorVideoAdaptor").HonorVideoAdaptor;
-    };
-};
-export default _default;
+export { HonorPlayer } from './HonorPlayer';
+export * from './adaptors';
+export * from './types';
 //# sourceMappingURL=index.d.ts.map

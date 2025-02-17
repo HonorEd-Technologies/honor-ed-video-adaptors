@@ -1,6 +1,6 @@
 import { HonorVideoAdaptor } from '../HonorVideoAdaptor';
 import { HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration';
-import HonorPlayer from '../../HonorPlayer';
+import { HonorPlayer } from '../../HonorPlayer';
 export type YoutubeConfig = {
     height: number;
     width: number;

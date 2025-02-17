@@ -1,7 +1,3 @@
-import HonorPlayer from './HonorPlayer'
-import { HonorVideoAdaptorFactory } from './adaptors/HonorVideoAdaptorFactory'
-
-export default {
-  HonorPlayer,
-  HonorVideoAdaptorFactory,
-}
+export { HonorPlayer } from './HonorPlayer'
+export * from './adaptors'
+export * from './types'

@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (elementId, config) => {
+export default (elementId, config) => {
     if (!window.YT)
         return;
     let player = new window.YT.Player(elementId, config);

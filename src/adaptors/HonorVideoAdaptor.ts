@@ -1,4 +1,4 @@
-import HonorPlayer from '../HonorPlayer'
+import { HonorPlayer } from '../HonorPlayer'
 import { HonorVideoConfiguration } from '../types/Shared/HonorVideoConfiguration'
 
 export type HonorVideoAdaptor = {

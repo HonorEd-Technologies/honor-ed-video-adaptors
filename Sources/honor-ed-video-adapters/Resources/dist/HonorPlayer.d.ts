@@ -3,7 +3,7 @@ import { HonorVideoConfiguration } from './types/Shared/HonorVideoConfiguration'
 import { HonorVideoError } from './types/Shared/HonorVideoError';
 import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState';
 import { HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor';
-export default class HonorPlayer {
+export declare class HonorPlayer {
     private initialized;
     private adaptor;
     emitter: HonorVideoEventEmitters;

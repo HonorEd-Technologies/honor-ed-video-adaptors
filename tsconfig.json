@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2022",
-    "module": "commonjs",
+    "module": "ES2022",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -16,6 +16,6 @@
     "allowJs": false,
     "isolatedModules": true
   },
-  "include": ["src/**/*", "*.js", "*.mjs"],
+  "include": ["src/**/*", "*.js", "*.mjs", "webpack.config.cjs"],
   "exclude": ["node_modules", "./dist", "**/*.test.ts", "**/*.spec.ts"]
 }

@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const HonorVideoError_1 = require("../types/Shared/HonorVideoError");
-const HonorVideoEvent_1 = require("../types/Shared/HonorVideoEvent");
-exports.default = (emitter) => {
+import { HonorVideoErrorType } from '../types/Shared/HonorVideoError';
+import { HonorVideoEvent } from '../types/Shared/HonorVideoEvent';
+export default (emitter) => {
     const iFrameReadyPromise = new Promise((resolve, reject) => {
         if (window.YT && window.YT.Player && window.YT.Player instanceof Function) {
             // youtube iframe already loaded, resolve
@@ -23,9 +21,9 @@ exports.default = (emitter) => {
             }
             else {
                 const errorMessage = 'There was a problem loading the YouTube Iframe API';
-                emitter.triggerEvent(HonorVideoEvent_1.HonorVideoEvent.error, {
+                emitter.triggerEvent(HonorVideoEvent.error, {
                     data: {
-                        code: HonorVideoError_1.HonorVideoErrorType.apiLoadError,
+                        code: HonorVideoErrorType.apiLoadError,
                         message: errorMessage,
                     },
                 });
