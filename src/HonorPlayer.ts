@@ -4,7 +4,6 @@ import { HonorVideoError } from './types/Shared/HonorVideoError'
 import { HonorVideoEvent } from './types/Shared/HonorVideoEvent'
 import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState'
 import { HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor'
-import loadYoutubeAPI from './utils/loadYoutubeAPI'
 
 type Constructor = new (...args: any[]) => {}
 function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
@@ -50,7 +49,7 @@ function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
   'onStateChanged',
   'initializeAdaptor',
 ])
-export default class HonorPlayer {
+export class HonorPlayer {
   private initialized = false
   private adaptor: HonorVideoAdaptor
   emitter = new HonorVideoEventEmitters()

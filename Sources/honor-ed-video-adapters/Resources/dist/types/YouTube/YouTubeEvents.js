@@ -1,10 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.YoutubeError = exports.YoutubePlayerState = void 0;
 /**
  * Youtube's iFrame API passes changes to the state of its video player in the form of a number. See [here](https://developers.google.com/youtube/iframe_api_reference#onStateChange) for more info.
  */
-exports.YoutubePlayerState = {
+export const YoutubePlayerState = {
     unstarted: -1,
     ended: 0,
     playing: 1,
@@ -15,7 +12,7 @@ exports.YoutubePlayerState = {
 /**
  * Youtube's iFrame API passes error data in the form of a number. See [here](https://developers.google.com/youtube/iframe_api_reference#onError) for more info.
  */
-exports.YoutubeError = {
+export const YoutubeError = {
     invalidParameter: 2,
     playerError: 5,
     notFound: 100,

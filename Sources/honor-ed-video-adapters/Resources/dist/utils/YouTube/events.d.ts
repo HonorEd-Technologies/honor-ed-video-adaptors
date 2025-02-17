@@ -1,4 +1,4 @@
-import HonorPlayer from '../../HonorPlayer';
+import { HonorPlayer } from '../../HonorPlayer';
 /**
  * Youtube's video player does event handling based on an object attached to the initial configuration object of the following format:
  * {
