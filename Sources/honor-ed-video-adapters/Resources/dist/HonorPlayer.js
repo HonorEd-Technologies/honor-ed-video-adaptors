@@ -104,16 +104,22 @@ let HonorPlayer = (() => {
         playVideo = () => this.adaptor.playVideo();
         pauseVideo = () => this.adaptor.pauseVideo();
         onReady(callback) {
-            this.emitter.onReady(callback);
+            return this.emitter.onReady(callback);
         }
         onError(callback) {
-            this.emitter.onError(callback);
+            return this.emitter.onError(callback);
         }
         onCurrentTimeChanged(callback) {
-            this.emitter.onCurrentTimeChange(callback);
+            return this.emitter.onCurrentTimeChange(callback);
         }
         onStateChanged(callback) {
-            this.emitter.onStateChange(callback);
+            return this.emitter.onStateChange(callback);
+        }
+        onPlaybackRateChanged(callback) {
+            return this.emitter.onPlaybackRateChange(callback);
+        }
+        onVolumeChanged(callback) {
+            return this.emitter.onVolumeChange(callback);
         }
         async initializeAdaptor(elementId, config) {
             await this.adaptor.initialize(elementId, config, this);

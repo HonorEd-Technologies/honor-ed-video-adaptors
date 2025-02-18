@@ -22,10 +22,12 @@ export declare class HonorPlayer {
     stopVideo: () => void;
     playVideo: () => void;
     pauseVideo: () => void;
-    onReady(callback: () => void): void;
-    onError(callback: (error: HonorVideoError) => void): void;
-    onCurrentTimeChanged(callback: (time: number) => void): void;
-    onStateChanged(callback: (state: HonorVideoPlayerState) => void): void;
+    onReady(callback: () => void): () => void;
+    onError(callback: (error: HonorVideoError) => void): () => void;
+    onCurrentTimeChanged(callback: (time: number) => void): () => void;
+    onStateChanged(callback: (state: HonorVideoPlayerState) => void): () => void;
+    onPlaybackRateChanged(callback: (rate: number) => void): () => void;
+    onVolumeChanged(callback: (volume: number) => void): () => void;
     initializeAdaptor(elementId: string, config: HonorVideoConfiguration): Promise<void>;
 }
 //# sourceMappingURL=HonorPlayer.d.ts.map

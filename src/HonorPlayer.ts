@@ -47,6 +47,8 @@ function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
   'onError',
   'onCurrentTimeChanged',
   'onStateChanged',
+  'onPlaybackRateChanged',
+  'onVolumeChanged',
   'initializeAdaptor',
 ])
 export class HonorPlayer {
