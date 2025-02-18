@@ -80,17 +80,24 @@ export class HonorPlayer {
   playVideo = () => this.adaptor.playVideo()
   pauseVideo = () => this.adaptor.pauseVideo()
   onReady(callback: () => void) {
-    this.emitter.onReady(callback)
+    return this.emitter.onReady(callback)
   }
   onError(callback: (error: HonorVideoError) => void) {
-    this.emitter.onError(callback)
+    return this.emitter.onError(callback)
   }
   onCurrentTimeChanged(callback: (time: number) => void) {
-    this.emitter.onCurrentTimeChange(callback)
+    return this.emitter.onCurrentTimeChange(callback)
   }
   onStateChanged(callback: (state: HonorVideoPlayerState) => void) {
-    this.emitter.onStateChange(callback)
+    return this.emitter.onStateChange(callback)
   }
+  onPlaybackRateChanged(callback: (rate: number) => void) { 
+    return this.emitter.onPlaybackRateChange(callback)
+  }
+  onVolumeChanged(callback: (volume: number) => void) { 
+    return this.emitter.onVolumeChange(callback)
+  }
+
 
   async initializeAdaptor(elementId: string, config: HonorVideoConfiguration) {
     await this.adaptor.initialize(elementId, config, this)
