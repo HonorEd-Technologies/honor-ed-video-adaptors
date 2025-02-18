@@ -34,6 +34,18 @@ const parseYTPlayerError = (error) => {
             return HonorVideoErrorType.unknown;
     }
 };
+const youtubeReadyHandler = (player) => {
+    return () => {
+        player.emitter.triggerEvent(HonorVideoEvent.playerReady);
+        // youtube has no event for updating the current volume of the video, so we need to set up an interval to publish the event
+        setInterval(() => {
+            const volume = player.getVolume();
+            player.emitter.triggerEvent(HonorVideoEvent.volumeChanged, {
+                data: volume
+            });
+        }, 250);
+    };
+};
 const youtubeStateChangeHandler = (player) => {
     // youtube has no event for updating the current time of the video, so we need to set up an interval to publish the event
     let timePoll;
@@ -96,6 +108,26 @@ const youtubeErrorHandler = (player) => {
         });
     };
 };
+const youtubePlaybackHandler = (player) => {
+    return ({ data }) => {
+        const rate = data;
+        if (rate) {
+            player.emitter.triggerEvent(HonorVideoEvent.playbackRateChanged, {
+                data: rate
+            });
+        }
+    };
+};
+const youtubeVolumeHandler = (player) => {
+    return ({ data }) => {
+        const volume = data;
+        if (volume) {
+            player.emitter.triggerEvent(HonorVideoEvent.volumeChanged, {
+                data: volume
+            });
+        }
+    };
+};
 /**
  * Youtube's video player does event handling based on an object attached to the initial configuration object of the following format:
  * {
@@ -112,15 +144,15 @@ const youtubeErrorHandler = (player) => {
  * @returns an object containing the functions passed into the YT.Player
  */
 export const youtubeEventHandler = (player) => {
-    const onReady = () => {
-        player.emitter.triggerEvent(HonorVideoEvent.playerReady);
-    };
+    const onReady = youtubeReadyHandler(player);
     const onStateChange = youtubeStateChangeHandler(player);
     const onError = youtubeErrorHandler(player);
+    const onPlaybackRateChange = youtubePlaybackHandler(player);
     return {
         onReady,
         onStateChange,
         onError,
+        onPlaybackRateChange,
     };
 };
 //# sourceMappingURL=events.js.map

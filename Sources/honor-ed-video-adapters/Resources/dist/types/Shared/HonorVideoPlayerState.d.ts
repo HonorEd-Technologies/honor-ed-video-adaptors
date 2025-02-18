@@ -1,4 +1,4 @@
-export declare const enum HonorVideoPlayerState {
+export declare enum HonorVideoPlayerState {
     unstarted = 0,
     ended = 1,
     playing = 2,

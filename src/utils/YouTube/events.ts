@@ -45,6 +45,22 @@ const parseYTPlayerError = (error: YoutubeError): HonorVideoErrorType => {
   }
 }
 
+const youtubeReadyHandler = (
+  player: HonorPlayer
+): (() => void) => { 
+  return () => { 
+    player.emitter.triggerEvent(HonorVideoEvent.playerReady)
+
+    // youtube has no event for updating the current volume of the video, so we need to set up an interval to publish the event
+    setInterval(() => { 
+      const volume = player.getVolume()
+      player.emitter.triggerEvent(HonorVideoEvent.volumeChanged, { 
+        data: volume
+      })
+    }, 250)
+  }
+}
+
 const youtubeStateChangeHandler = (
   player: HonorPlayer
 ): ((event: YoutubeEvent) => void) => {
@@ -120,6 +136,32 @@ const youtubeErrorHandler = (
   }
 }
 
+const youtubePlaybackHandler = (
+  player: HonorPlayer
+): ((event: YoutubeEvent) => void) => { 
+  return ({ data }: YoutubeEvent) => { 
+    const rate = <number>data
+    if (rate) { 
+      player.emitter.triggerEvent(HonorVideoEvent.playbackRateChanged, {
+        data: rate
+      })
+    }
+  }
+}
+
+const youtubeVolumeHandler = (
+  player: HonorPlayer
+): ((event: YoutubeEvent) => void) => { 
+  return ({ data }: YoutubeEvent) => { 
+    const volume = <number>data
+    if (volume) { 
+      player.emitter.triggerEvent(HonorVideoEvent.volumeChanged, {
+        data: volume
+      })
+    }
+  }
+}
+
 /**
  * Youtube's video player does event handling based on an object attached to the initial configuration object of the following format:
  * {
@@ -136,15 +178,15 @@ const youtubeErrorHandler = (
  * @returns an object containing the functions passed into the YT.Player
  */
 export const youtubeEventHandler = (player: HonorPlayer): Object => {
-  const onReady = () => {
-    player.emitter.triggerEvent(HonorVideoEvent.playerReady)
-  }
+  const onReady = youtubeReadyHandler(player)
   const onStateChange = youtubeStateChangeHandler(player)
   const onError = youtubeErrorHandler(player)
+  const onPlaybackRateChange = youtubePlaybackHandler(player)
 
   return {
     onReady,
     onStateChange,
     onError,
+    onPlaybackRateChange,
   }
 }
