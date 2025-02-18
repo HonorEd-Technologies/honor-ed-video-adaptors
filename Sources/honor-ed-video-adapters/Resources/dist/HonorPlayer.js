@@ -68,6 +68,8 @@ let HonorPlayer = (() => {
             'onError',
             'onCurrentTimeChanged',
             'onStateChanged',
+            'onPlaybackRateChanged',
+            'onVolumeChanged',
             'initializeAdaptor',
         ])];
     let _classDescriptor;
