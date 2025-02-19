@@ -1,6 +1,6 @@
 {
   "name": "honor-ed-video-adaptors",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "A library comprised of adapters for easy embedding of common video players (e.g. Youtube, Vimeo) for use in both iOS and TypeScript projects",
   "author": "Calvin Collins (Honor Education)",
   "private": false,
