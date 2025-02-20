@@ -5,5 +5,6 @@ export var HonorVideoPlayerState;
     HonorVideoPlayerState[HonorVideoPlayerState["playing"] = 2] = "playing";
     HonorVideoPlayerState[HonorVideoPlayerState["paused"] = 3] = "paused";
     HonorVideoPlayerState[HonorVideoPlayerState["buffering"] = 4] = "buffering";
+    HonorVideoPlayerState[HonorVideoPlayerState["ready"] = 5] = "ready";
 })(HonorVideoPlayerState || (HonorVideoPlayerState = {}));
 //# sourceMappingURL=HonorVideoPlayerState.js.map

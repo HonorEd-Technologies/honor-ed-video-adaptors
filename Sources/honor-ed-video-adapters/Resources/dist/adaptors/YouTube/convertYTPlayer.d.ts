@@ -11,6 +11,7 @@ declare const _default: (elementId: string, config: PlayerOptions) => {
     getVolume: () => number;
     getPlaybackRate: () => number;
     setPlaybackRate: (suggestedRate: number) => void;
+    getPlayerState: () => PlayerState;
     getAvailablePlaybackRates: () => number[];
     getCurrentTime: () => number;
     getVideoUrl: () => string;

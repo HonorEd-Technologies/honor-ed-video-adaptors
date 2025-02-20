@@ -2,7 +2,7 @@ import { HonorVideoErrorType } from '../../types/Shared/HonorVideoError';
 import { HonorVideoEvent } from '../../types/Shared/HonorVideoEvent';
 import { HonorVideoPlayerState } from '../../types/Shared/HonorVideoPlayerState';
 import { YoutubeError, YoutubePlayerState, } from '../../types/YouTube/YouTubeEvents';
-const parseYTPlayerState = (state) => {
+export const parseYTPlayerState = (state) => {
     switch (state) {
         case YoutubePlayerState.unstarted:
             return HonorVideoPlayerState.unstarted;
@@ -15,7 +15,7 @@ const parseYTPlayerState = (state) => {
         case YoutubePlayerState.ended:
             return HonorVideoPlayerState.ended;
         case YoutubePlayerState.videoCued:
-            return undefined; // unneeded for our purposes
+            return HonorVideoPlayerState.ready;
     }
 };
 const parseYTPlayerError = (error) => {

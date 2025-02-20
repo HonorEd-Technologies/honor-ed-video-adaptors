@@ -1,4 +1,7 @@
 import { HonorPlayer } from '../../HonorPlayer';
+import { HonorVideoPlayerState } from '../../types/Shared/HonorVideoPlayerState';
+import { YoutubePlayerState } from '../../types/YouTube/YouTubeEvents';
+export declare const parseYTPlayerState: (state: YoutubePlayerState) => HonorVideoPlayerState | undefined;
 /**
  * Youtube's video player does event handling based on an object attached to the initial configuration object of the following format:
  * {

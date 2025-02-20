@@ -8,7 +8,7 @@ import { HonorVideoPlayerState } from '../../types/Shared/HonorVideoPlayerState'
 class HonorVideoEventEmitter<T> {
   private callbacks: ((data: T) => void)[] = []
 
-  on(callback: (data: T) => void) {
+  on = (callback: (data: T) => void) => {
     this.callbacks.push(callback)
     return () => {
       const idx = this.callbacks.indexOf(callback)
@@ -18,7 +18,7 @@ class HonorVideoEventEmitter<T> {
     }
   }
 
-  emit(data: T) {
+  emit = (data: T) => {
     for (const callback of this.callbacks) {
       callback(data)
     }
@@ -36,7 +36,7 @@ export class HonorVideoEventEmitters {
     new HonorVideoEventEmitter()
   private playbackRateEmitter: HonorVideoEventEmitter<number> =
     new HonorVideoEventEmitter()
-    private volumeEmitter: HonorVideoEventEmitter<number> =
+  private volumeEmitter: HonorVideoEventEmitter<number> =
     new HonorVideoEventEmitter()
 
   onReady = (callback: () => void) => this.readyEmitter.on(callback)

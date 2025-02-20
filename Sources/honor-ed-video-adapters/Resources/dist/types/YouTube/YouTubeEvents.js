@@ -7,7 +7,7 @@ export const YoutubePlayerState = {
     playing: 1,
     paused: 2,
     buffering: 3,
-    videoCued: 4,
+    videoCued: 5,
 };
 /**
  * Youtube's iFrame API passes error data in the form of a number. See [here](https://developers.google.com/youtube/iframe_api_reference#onError) for more info.

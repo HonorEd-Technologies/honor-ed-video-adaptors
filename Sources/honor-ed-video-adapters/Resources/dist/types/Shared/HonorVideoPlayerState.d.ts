@@ -3,6 +3,7 @@ export declare enum HonorVideoPlayerState {
     ended = 1,
     playing = 2,
     paused = 3,
-    buffering = 4
+    buffering = 4,
+    ready = 5
 }
 //# sourceMappingURL=HonorVideoPlayerState.d.ts.map

@@ -1,7 +1,7 @@
 import { HonorVideoEvent, } from '../../types/Shared/HonorVideoEvent';
 class HonorVideoEventEmitter {
     callbacks = [];
-    on(callback) {
+    on = (callback) => {
         this.callbacks.push(callback);
         return () => {
             const idx = this.callbacks.indexOf(callback);
@@ -9,12 +9,12 @@ class HonorVideoEventEmitter {
                 this.callbacks.splice(idx, 1);
             }
         };
-    }
-    emit(data) {
+    };
+    emit = (data) => {
         for (const callback of this.callbacks) {
             callback(data);
         }
-    }
+    };
 }
 export class HonorVideoEventEmitters {
     stateChangeEmitter = new HonorVideoEventEmitter();

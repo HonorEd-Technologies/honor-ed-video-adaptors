@@ -4,4 +4,5 @@ export enum HonorVideoPlayerState {
   playing = 2,
   paused = 3,
   buffering = 4,
+  ready = 5
 }

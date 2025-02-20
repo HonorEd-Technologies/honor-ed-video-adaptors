@@ -9,7 +9,7 @@ import {
   YoutubePlayerState,
 } from '../../types/YouTube/YouTubeEvents'
 
-const parseYTPlayerState = (
+export const parseYTPlayerState = (
   state: YoutubePlayerState
 ): HonorVideoPlayerState | undefined => {
   switch (state) {
@@ -24,7 +24,7 @@ const parseYTPlayerState = (
     case YoutubePlayerState.ended:
       return HonorVideoPlayerState.ended
     case YoutubePlayerState.videoCued:
-      return undefined // unneeded for our purposes
+      return HonorVideoPlayerState.ready
   }
 }
 
@@ -49,8 +49,8 @@ const youtubeReadyHandler = (
   player: HonorPlayer
 ): (() => void) => { 
   return () => { 
-    player.emitter.triggerEvent(HonorVideoEvent.playerReady)
 
+    player.emitter.triggerEvent(HonorVideoEvent.playerReady)
     // youtube has no event for updating the current volume of the video, so we need to set up an interval to publish the event
     setInterval(() => { 
       const volume = player.getVolume()

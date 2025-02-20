@@ -15,7 +15,7 @@ export declare const YoutubePlayerState: {
     readonly playing: 1;
     readonly paused: 2;
     readonly buffering: 3;
-    readonly videoCued: 4;
+    readonly videoCued: 5;
 };
 export type YoutubePlayerState = (typeof YoutubePlayerState)[keyof typeof YoutubePlayerState];
 /**
