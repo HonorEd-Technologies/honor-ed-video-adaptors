@@ -24,6 +24,7 @@ export default (elementId: string, config: PlayerOptions) => {
     getPlaybackRate: () => player.getPlaybackRate(),
     setPlaybackRate: (suggestedRate: number) =>
       player.setPlaybackRate(suggestedRate),
+    getPlayerState: () => player.getPlayerState(),
     getAvailablePlaybackRates: () => player.getAvailablePlaybackRates(),
     getCurrentTime: () => player.getCurrentTime(),
     getVideoUrl: () => player.getVideoUrl(),

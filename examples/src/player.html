@@ -33,19 +33,19 @@
           const player = new HE.HonorPlayer('player-1', config, adaptor)
           window.HonorPlayer = player
 
-          player.onReady(() => {
+          const removeReady = player.onReady(() => {
             console.log('Ready')
           })
 
-          player.onStateChanged((state) => {
+          const removeStateChange = player.onStateChanged((state) => {
             console.log('State changed: ' + state)
           })
 
-          player.onError((error) => {
+          const removeError = player.onError((error) => {
             console.log('Error: ' + error)
           })
 
-          player.onCurrentTimeChanged((time) => {
+          const removeCurrentTimeChange = player.onCurrentTimeChanged((time) => {
             console.log('Current time: ' + time)
           })
         }

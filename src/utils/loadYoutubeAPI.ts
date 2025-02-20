@@ -3,6 +3,7 @@ import { HonorVideoErrorType } from '../types/Shared/HonorVideoError'
 import { HonorVideoEvent } from '../types/Shared/HonorVideoEvent'
 
 export default (emitter: HonorVideoEventEmitters): Promise<void> => {
+  const triggerEvent = emitter.triggerEvent.bind(emitter)
   const iFrameReadyPromise = new Promise<void>((resolve, reject) => {
     if (window.YT && window.YT.Player && window.YT.Player instanceof Function) {
       // youtube iframe already loaded, resolve
@@ -29,7 +30,7 @@ export default (emitter: HonorVideoEventEmitters): Promise<void> => {
       } else {
         const errorMessage =
           'There was a problem loading the YouTube Iframe API'
-        emitter.triggerEvent(HonorVideoEvent.error, {
+          triggerEvent(HonorVideoEvent.error, {
           data: {
             code: HonorVideoErrorType.apiLoadError,
             message: errorMessage,
