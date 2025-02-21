@@ -1,6 +1,6 @@
-import { HonorVideoError } from '../../types/Shared/HonorVideoError';
-import { HonorVideoEvent, HonorVideoEventPayload } from '../../types/Shared/HonorVideoEvent';
-import { HonorVideoPlayerState } from '../../types/Shared/HonorVideoPlayerState';
+import { type HonorVideoError } from '../../types/Shared/HonorVideoError';
+import { HonorVideoEvent, type HonorVideoEventPayload } from '../../types/Shared/HonorVideoEvent';
+import { type HonorVideoPlayerState } from '../../types/Shared/HonorVideoPlayerState';
 export declare class HonorVideoEventEmitters {
     private stateChangeEmitter;
     private readyEmitter;

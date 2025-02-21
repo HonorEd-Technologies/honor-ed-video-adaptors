@@ -1,13 +1,13 @@
-import { HonorVideoAdaptor } from '../HonorVideoAdaptor';
-import { HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration';
-import { HonorPlayer } from '../../HonorPlayer';
-import { HonorVideoPlayerState } from '../../types';
+import { type HonorVideoAdaptor } from '../HonorVideoAdaptor';
+import { type HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration';
+import { type HonorPlayer } from '../../HonorPlayer';
+import { type HonorVideoPlayerState } from '../../types';
 export type YoutubeConfig = {
     height: number;
     width: number;
     videoId: string;
-    playerVars: Object;
-    events?: Object;
+    playerVars: object;
+    events?: object;
 };
 /**
  * This class will load Youtube's IFrame API upon the call of `initialize`, and upon completion will set the YT.Player object on `this` and expose methods that interact with it.

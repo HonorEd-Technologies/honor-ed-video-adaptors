@@ -41,7 +41,7 @@ const youtubeReadyHandler = (player) => {
         setInterval(() => {
             const volume = player.getVolume();
             player.emitter.triggerEvent(HonorVideoEvent.volumeChanged, {
-                data: volume
+                data: volume,
             });
         }, 250);
     };
@@ -75,7 +75,7 @@ const youtubeStateChangeHandler = (player) => {
             player.emitter.triggerEvent(HonorVideoEvent.error, {
                 data: {
                     type: HonorVideoErrorType.adaptorLayerError,
-                    message: `Could not convert Youtube player event: ${castData} into Honor Event`,
+                    message: `Could not convert Youtube player event: ${castData.toString()} into Honor Event`,
                 },
             });
             return;
@@ -98,8 +98,8 @@ const youtubeStateChangeHandler = (player) => {
 };
 const youtubeErrorHandler = (player) => {
     return ({ data }) => {
-        var castData = data;
-        var error = HonorVideoErrorType.unknown;
+        const castData = data;
+        let error = HonorVideoErrorType.unknown;
         if (castData) {
             error = parseYTPlayerError(castData);
         }
@@ -113,17 +113,7 @@ const youtubePlaybackHandler = (player) => {
         const rate = data;
         if (rate) {
             player.emitter.triggerEvent(HonorVideoEvent.playbackRateChanged, {
-                data: rate
-            });
-        }
-    };
-};
-const youtubeVolumeHandler = (player) => {
-    return ({ data }) => {
-        const volume = data;
-        if (volume) {
-            player.emitter.triggerEvent(HonorVideoEvent.volumeChanged, {
-                data: volume
+                data: rate,
             });
         }
     };

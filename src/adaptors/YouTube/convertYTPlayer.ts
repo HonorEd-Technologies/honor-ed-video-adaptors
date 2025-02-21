@@ -1,36 +1,36 @@
 export default (elementId: string, config: PlayerOptions) => {
-  if (!window.YT) return
-  let player = new window.YT.Player(elementId, config)
+  if (!window.YT) { return }
+  const player = new window.YT.Player(elementId, config)
   return {
     loadVideoById: (
       videoId: string,
       startSeconds?: number,
       endSeconds?: number
-    ) => player.loadVideoById({ videoId, startSeconds, endSeconds }),
+    ): void => { player.loadVideoById({ videoId, startSeconds, endSeconds }); },
     loadVideoByUrl: (
       mediaContentUrl: string,
       startSeconds?: number,
       endSeconds?: number
-    ) => player.loadVideoByUrl({ mediaContentUrl, startSeconds, endSeconds }),
-    playVideo: () => player.playVideo(),
-    pauseVideo: () => player.pauseVideo(),
-    stopVideo: () => player.stopVideo(),
-    seekTo: (seconds: number, allowSeekAhead: boolean) =>
-      player.seekTo(seconds, allowSeekAhead),
-    getDuration: () => player.getDuration(),
-    getVideoLoadedFraction: () => player.getVideoLoadedFraction(),
-    setVolume: (volume: number) => player.setVolume(volume),
-    getVolume: () => player.getVolume(),
-    getPlaybackRate: () => player.getPlaybackRate(),
-    setPlaybackRate: (suggestedRate: number) =>
-      player.setPlaybackRate(suggestedRate),
-    getPlayerState: () => player.getPlayerState(),
-    getAvailablePlaybackRates: () => player.getAvailablePlaybackRates(),
-    getCurrentTime: () => player.getCurrentTime(),
-    getVideoUrl: () => player.getVideoUrl(),
-    destroy: () => player.destroy(),
-    setSize: (width: number, height: number) => player.setSize(width, height),
-    getIframe: () => player.getIframe(),
+    ): void => { player.loadVideoByUrl({ mediaContentUrl, startSeconds, endSeconds }); },
+    playVideo: (): void => { player.playVideo(); },
+    pauseVideo: (): void => { player.pauseVideo(); },
+    stopVideo: (): void => { player.stopVideo(); },
+    seekTo: (seconds: number, allowSeekAhead: boolean): void =>
+      { player.seekTo(seconds, allowSeekAhead); },
+    getDuration: (): number => player.getDuration(),
+    getVideoLoadedFraction: (): number => player.getVideoLoadedFraction(),
+    setVolume: (volume: number): void => { player.setVolume(volume); },
+    getVolume: (): number => player.getVolume(),
+    getPlaybackRate: (): number => player.getPlaybackRate(),
+    setPlaybackRate: (suggestedRate: number): void =>
+      { player.setPlaybackRate(suggestedRate); },
+    getPlayerState: (): PlayerState => player.getPlayerState(),
+    getAvailablePlaybackRates: (): number[] => player.getAvailablePlaybackRates(),
+    getCurrentTime: (): number => player.getCurrentTime(),
+    getVideoUrl: (): string => player.getVideoUrl(),
+    destroy: (): void => { player.destroy(); },
+    setSize: (width: number, height: number): void => { player.setSize(width, height); },
+    getIframe: (): HTMLIFrameElement => player.getIframe(),
   }
 }
 
@@ -195,6 +195,7 @@ interface BaseEvent {
   target: Player
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface OnReadyEvent extends BaseEvent {}
 interface OnStateChangeEvent extends BaseEvent {
   data: PlayerState
@@ -208,7 +209,9 @@ interface OnPlaybackRateChangeEvent extends BaseEvent {
 interface OnErrorEvent extends BaseEvent {
   data: number
 }
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface OnApiChangeEvent extends BaseEvent {}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface OnAutoplayBlockedEvent extends BaseEvent {}
 
 interface SphericalProperties {

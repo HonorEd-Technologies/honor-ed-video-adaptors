@@ -1,9 +1,9 @@
-import { HonorVideoError } from '../../types/Shared/HonorVideoError'
+import { type HonorVideoError } from '../../types/Shared/HonorVideoError'
 import {
   HonorVideoEvent,
-  HonorVideoEventPayload,
+  type HonorVideoEventPayload,
 } from '../../types/Shared/HonorVideoEvent'
-import { HonorVideoPlayerState } from '../../types/Shared/HonorVideoPlayerState'
+import { type HonorVideoPlayerState } from '../../types/Shared/HonorVideoPlayerState'
 
 class HonorVideoEventEmitter<T> {
   private callbacks: ((data: T) => void)[] = []
@@ -18,7 +18,7 @@ class HonorVideoEventEmitter<T> {
     }
   }
 
-  emit = (data: T) => {
+  emit = (data: T): void => {
     for (const callback of this.callbacks) {
       callback(data)
     }
@@ -39,22 +39,22 @@ export class HonorVideoEventEmitters {
   private volumeEmitter: HonorVideoEventEmitter<number> =
     new HonorVideoEventEmitter()
 
-  onReady = (callback: () => void) => this.readyEmitter.on(callback)
-  onStateChange = (callback: (data: HonorVideoPlayerState) => void) =>
+  onReady = (callback: () => void): () => void => this.readyEmitter.on(callback)
+  onStateChange = (callback: (data: HonorVideoPlayerState) => void): () => void =>
     this.stateChangeEmitter.on(callback)
-  onError = (callback: (error: HonorVideoError) => void) =>
+  onError = (callback: (error: HonorVideoError) => void): () => void =>
     this.errorEmitter.on(callback)
-  onCurrentTimeChange = (callback: (time: number) => void) =>
+  onCurrentTimeChange = (callback: (time: number) => void): () => void =>
     this.currentTimeEmitter.on(callback)
-  onPlaybackRateChange = (callback: (rate: number) => void) =>
+  onPlaybackRateChange = (callback: (rate: number) => void): () => void =>
     this.playbackRateEmitter.on(callback)
-  onVolumeChange = (callback: (rate: number) => void) =>
+  onVolumeChange = (callback: (rate: number) => void): () => void =>
     this.volumeEmitter.on(callback)
 
   triggerEvent = (
     event: HonorVideoEvent,
     { data }: HonorVideoEventPayload = {}
-  ) => {
+  ): void => {
     switch (event) {
       case HonorVideoEvent.playerReady:
         this.readyEmitter.emit()

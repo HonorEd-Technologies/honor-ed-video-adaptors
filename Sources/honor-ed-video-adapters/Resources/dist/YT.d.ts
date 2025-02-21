@@ -1,4 +1,4 @@
-import { HonorPlayer } from './HonorPlayer';
+import { type HonorPlayer } from './HonorPlayer';
 import type { PlayerOptions, Player } from './adaptors/YouTube/convertYTPlayer';
 declare global {
     interface Window {
@@ -7,7 +7,6 @@ declare global {
         };
         HonorPlayer: HonorPlayer;
         onYouTubeIframeAPIReady?: () => void;
-        setupPlayer?: Function;
     }
 }
 //# sourceMappingURL=YT.d.ts.map

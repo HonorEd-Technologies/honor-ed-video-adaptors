@@ -1,8 +1,8 @@
-import { HonorPlayer } from '../HonorPlayer';
-import { HonorVideoPlayerState } from '../types';
-import { HonorVideoConfiguration } from '../types/Shared/HonorVideoConfiguration';
+import { type HonorPlayer } from '../HonorPlayer';
+import { type HonorVideoPlayerState } from '../types';
+import { type HonorVideoConfiguration } from '../types/Shared/HonorVideoConfiguration';
 export type HonorVideoAdaptor = {
-    initialize: (videoId: string, configuration: HonorVideoConfiguration, player: HonorPlayer) => Promise<void>;
+    initialize: (elementId: string, configuration: HonorVideoConfiguration, player: HonorPlayer) => Promise<void>;
     destroy: () => void;
     getCurrentTime: () => number;
     getDuration: () => number;
@@ -13,7 +13,7 @@ export type HonorVideoAdaptor = {
     loadVideoById: (videoId: string, startTime?: number, endTime?: number) => void;
     seekTo: (seconds: number) => void;
     setPlaybackRate: (rate: number) => void;
-    setSize: (width: number, height: number) => Object;
+    setSize: (width: number, height: number) => object;
     setVolume: (volume: number) => void;
     stopVideo: () => void;
     playVideo: () => void;

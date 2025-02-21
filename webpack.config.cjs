@@ -10,6 +10,6 @@ module.exports = {
       name: 'HE',
       type: 'umd',
     },
-    globalObject: 'globalThis'
+    globalObject: 'globalThis',
   },
 }

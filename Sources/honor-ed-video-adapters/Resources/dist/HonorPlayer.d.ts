@@ -1,8 +1,8 @@
 import { HonorVideoEventEmitters } from './utils/Shared/HonorEventEmitter';
-import { HonorVideoConfiguration } from './types/Shared/HonorVideoConfiguration';
-import { HonorVideoError } from './types/Shared/HonorVideoError';
+import { type HonorVideoConfiguration } from './types/Shared/HonorVideoConfiguration';
+import { type HonorVideoError } from './types/Shared/HonorVideoError';
 import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState';
-import { HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor';
+import { type HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor';
 export declare class HonorPlayer {
     private initialized;
     private adaptor;
@@ -17,12 +17,12 @@ export declare class HonorPlayer {
     loadVideoById: (videoId: string, startTime?: number, endTime?: number) => void;
     seekTo: (seconds: number) => void;
     setPlaybackRate: (rate: number) => void;
-    setSize: (width: number, height: number) => Object;
+    setSize: (width: number, height: number) => object;
     setVolume: (volume: number) => void;
     stopVideo: () => void;
     playVideo: () => void;
     pauseVideo: () => void;
-    onReady: (callback: () => void) => (() => void) | undefined;
+    onReady: (callback: () => void) => () => void;
     onError: (callback: (error: HonorVideoError) => void) => () => void;
     onCurrentTimeChanged: (callback: (time: number) => void) => () => void;
     onStateChanged: (callback: (state: HonorVideoPlayerState) => void) => () => void;
