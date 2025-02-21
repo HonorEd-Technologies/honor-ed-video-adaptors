@@ -1,4 +1,4 @@
-import { HonorPlayer } from '../../HonorPlayer';
+import { type HonorPlayer } from '../../HonorPlayer';
 import { HonorVideoPlayerState } from '../../types/Shared/HonorVideoPlayerState';
 import { YoutubePlayerState } from '../../types/YouTube/YouTubeEvents';
 export declare const parseYTPlayerState: (state: YoutubePlayerState) => HonorVideoPlayerState | undefined;
@@ -17,5 +17,5 @@ export declare const parseYTPlayerState: (state: YoutubePlayerState) => HonorVid
  * @param player The HonorPlayer
  * @returns an object containing the functions passed into the YT.Player
  */
-export declare const youtubeEventHandler: (player: HonorPlayer) => Object;
+export declare const youtubeEventHandler: (player: HonorPlayer) => object;
 //# sourceMappingURL=events.d.ts.map

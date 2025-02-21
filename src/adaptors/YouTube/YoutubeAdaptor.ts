@@ -1,17 +1,20 @@
 import convertYTPlayer from './convertYTPlayer'
-import { HonorVideoAdaptor } from '../HonorVideoAdaptor'
-import { HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration'
+import { type HonorVideoAdaptor } from '../HonorVideoAdaptor'
+import { type HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration'
 import loadYoutubeAPI from '../../utils/loadYoutubeAPI'
-import { parseYTPlayerState, youtubeEventHandler } from '../../utils/YouTube/events'
-import { HonorPlayer } from '../../HonorPlayer'
-import { HonorVideoPlayerState } from '../../types'
+import {
+  parseYTPlayerState,
+  youtubeEventHandler,
+} from '../../utils/YouTube/events'
+import { type HonorPlayer } from '../../HonorPlayer'
+import { type HonorVideoPlayerState } from '../../types'
 
 export type YoutubeConfig = {
   height: number
   width: number
   videoId: string
-  playerVars: Object
-  events?: Object
+  playerVars: object
+  events?: object
 }
 
 /**
@@ -24,9 +27,8 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
     elementId: string,
     configuration: HonorVideoConfiguration,
     player: HonorPlayer
-  ) => {
+  ): Promise<void> => {
     await loadYoutubeAPI(player.emitter)
-    console.log("API LOADED")
     const config: YoutubeConfig = {
       height: configuration.height,
       width: configuration.width,
@@ -49,7 +51,7 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
   getDuration = (): number => this.YTPlayer.getDuration()
   getPlaybackRate = (): number => this.YTPlayer.getPlaybackRate()
   getVideoLoadedFraction = (): number => this.YTPlayer.getVideoLoadedFraction()
-  getPlayerState = (): HonorVideoPlayerState | undefined => { 
+  getPlayerState = (): HonorVideoPlayerState | undefined => {
     const state = this.YTPlayer.getPlayerState()
     return parseYTPlayerState(state)
   }

@@ -36,24 +36,32 @@ import { HonorVideoEventEmitters } from './utils/Shared/HonorEventEmitter';
 import { HonorVideoEvent } from './types/Shared/HonorVideoEvent';
 import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState';
 function RequiresInitializationForAllMethods(excludeMethods = []) {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     return function (Base) {
         return class extends Base {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             constructor(...args) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 super(...args);
                 // Get all method names of the class prototype
                 const methodNames = Object.getOwnPropertyNames(Base.prototype).filter((method) => method !== 'constructor' && // Exclude constructor
                     !excludeMethods.includes(method) // Exclude specified methods
                 );
                 for (const methodName of methodNames) {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                     const originalMethod = this[methodName];
                     if (typeof originalMethod === 'function') {
                         // Wrap the method with initialization check
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-explicit-any
                         ;
                         this[methodName] = function (...args) {
-                            if (!this.initialized) {
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                            if (!(this).initialized) {
+                                // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                                 this.emitter.triggerEvent(HonorVideoEvent.error, { data: 5 });
                                 throw new Error(`Method ${methodName} called before adaptor was initialized`);
                             }
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                             return originalMethod.apply(this, args);
                         };
                     }
@@ -91,30 +99,31 @@ let HonorPlayer = (() => {
         constructor(elementId, configuration, adaptor) {
             this.adaptor = adaptor;
             this.emitter = new HonorVideoEventEmitters();
-            this.initializeAdaptor(elementId, configuration);
+            void this.initializeAdaptor(elementId, configuration);
         }
-        destroy = () => this.adaptor.destroy();
+        destroy = () => { this.adaptor.destroy(); };
         getCurrentTime = () => this.adaptor.getCurrentTime();
         getDuration = () => this.adaptor.getDuration();
         getPlaybackRate = () => this.adaptor.getPlaybackRate();
         getVideoLoadedFraction = () => this.adaptor.getVideoLoadedFraction();
         getVolume = () => this.adaptor.getVolume();
-        loadVideoById = (videoId, startTime, endTime) => this.adaptor.loadVideoById(videoId, startTime, endTime);
-        seekTo = (seconds) => this.adaptor.seekTo(seconds);
-        setPlaybackRate = (rate) => this.adaptor.setPlaybackRate(rate);
+        loadVideoById = (videoId, startTime, endTime) => { this.adaptor.loadVideoById(videoId, startTime, endTime); };
+        seekTo = (seconds) => { this.adaptor.seekTo(seconds); };
+        setPlaybackRate = (rate) => { this.adaptor.setPlaybackRate(rate); };
         setSize = (width, height) => this.adaptor.setSize(width, height);
-        setVolume = (volume) => this.adaptor.setVolume(volume);
-        stopVideo = () => this.adaptor.stopVideo();
-        playVideo = () => this.adaptor.playVideo();
-        pauseVideo = () => this.adaptor.pauseVideo();
+        setVolume = (volume) => { this.adaptor.setVolume(volume); };
+        stopVideo = () => { this.adaptor.stopVideo(); };
+        playVideo = () => { this.adaptor.playVideo(); };
+        pauseVideo = () => { this.adaptor.pauseVideo(); };
         onReady = (callback) => {
             try {
                 const state = this.adaptor.getPlayerState();
-                if (state != HonorVideoPlayerState.unstarted) {
+                if (state !== HonorVideoPlayerState.unstarted) {
                     callback();
+                    return () => { };
                 }
                 else {
-                    this.emitter.onReady(callback);
+                    return this.emitter.onReady(callback);
                 }
             }
             catch {

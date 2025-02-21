@@ -1,11 +1,10 @@
-import { YoutubeAdaptor } from '../../adaptors/YouTube/YoutubeAdaptor'
-import { HonorPlayer } from '../../HonorPlayer'
+import { type HonorPlayer } from '../../HonorPlayer'
 import { HonorVideoErrorType } from '../../types/Shared/HonorVideoError'
 import { HonorVideoEvent } from '../../types/Shared/HonorVideoEvent'
 import { HonorVideoPlayerState } from '../../types/Shared/HonorVideoPlayerState'
 import {
   YoutubeError,
-  YoutubeEvent,
+  type YoutubeEvent,
   YoutubePlayerState,
 } from '../../types/YouTube/YouTubeEvents'
 
@@ -45,17 +44,14 @@ const parseYTPlayerError = (error: YoutubeError): HonorVideoErrorType => {
   }
 }
 
-const youtubeReadyHandler = (
-  player: HonorPlayer
-): (() => void) => { 
-  return () => { 
-
+const youtubeReadyHandler = (player: HonorPlayer): (() => void) => {
+  return () => {
     player.emitter.triggerEvent(HonorVideoEvent.playerReady)
     // youtube has no event for updating the current volume of the video, so we need to set up an interval to publish the event
-    setInterval(() => { 
+    setInterval(() => {
       const volume = player.getVolume()
-      player.emitter.triggerEvent(HonorVideoEvent.volumeChanged, { 
-        data: volume
+      player.emitter.triggerEvent(HonorVideoEvent.volumeChanged, {
+        data: volume,
       })
     }, 250)
   }
@@ -66,7 +62,7 @@ const youtubeStateChangeHandler = (
 ): ((event: YoutubeEvent) => void) => {
   // youtube has no event for updating the current time of the video, so we need to set up an interval to publish the event
   let timePoll: ReturnType<typeof setInterval> | undefined
-  const startTimePoll = () => {
+  const startTimePoll = (): void => {
     timePoll = setInterval(() => {
       const time = player.getCurrentTime()
       player.emitter.triggerEvent(HonorVideoEvent.currentTimeChanged, {
@@ -75,7 +71,7 @@ const youtubeStateChangeHandler = (
     }, 500)
   }
 
-  const onStateChange = ({ data }: YoutubeEvent) => {
+  const onStateChange = ({ data }: YoutubeEvent): void => {
     const castData = <YoutubePlayerState>data
     if (!castData) {
       // if the raw youtube player state cannot be converted into `YoutubePlayerState`, there is a state that we have not accounted for and we should emit an error
@@ -95,7 +91,7 @@ const youtubeStateChangeHandler = (
       player.emitter.triggerEvent(HonorVideoEvent.error, {
         data: {
           type: HonorVideoErrorType.adaptorLayerError,
-          message: `Could not convert Youtube player event: ${castData} into Honor Event`,
+          message: `Could not convert Youtube player event: ${castData.toString()} into Honor Event`,
         },
       })
       return
@@ -124,8 +120,8 @@ const youtubeErrorHandler = (
   player: HonorPlayer
 ): ((event: YoutubeEvent) => void) => {
   return ({ data }: YoutubeEvent) => {
-    var castData = <YoutubeError>data
-    var error = HonorVideoErrorType.unknown
+    const castData = <YoutubeError>data
+    let error = HonorVideoErrorType.unknown
 
     if (castData) {
       error = parseYTPlayerError(castData)
@@ -138,25 +134,12 @@ const youtubeErrorHandler = (
 
 const youtubePlaybackHandler = (
   player: HonorPlayer
-): ((event: YoutubeEvent) => void) => { 
-  return ({ data }: YoutubeEvent) => { 
+): ((event: YoutubeEvent) => void) => {
+  return ({ data }: YoutubeEvent) => {
     const rate = <number>data
-    if (rate) { 
+    if (rate) {
       player.emitter.triggerEvent(HonorVideoEvent.playbackRateChanged, {
-        data: rate
-      })
-    }
-  }
-}
-
-const youtubeVolumeHandler = (
-  player: HonorPlayer
-): ((event: YoutubeEvent) => void) => { 
-  return ({ data }: YoutubeEvent) => { 
-    const volume = <number>data
-    if (volume) { 
-      player.emitter.triggerEvent(HonorVideoEvent.volumeChanged, {
-        data: volume
+        data: rate,
       })
     }
   }
@@ -177,7 +160,7 @@ const youtubeVolumeHandler = (
  * @param player The HonorPlayer
  * @returns an object containing the functions passed into the YT.Player
  */
-export const youtubeEventHandler = (player: HonorPlayer): Object => {
+export const youtubeEventHandler = (player: HonorPlayer): object => {
   const onReady = youtubeReadyHandler(player)
   const onStateChange = youtubeStateChangeHandler(player)
   const onError = youtubeErrorHandler(player)

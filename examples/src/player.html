@@ -45,9 +45,11 @@
             console.log('Error: ' + error)
           })
 
-          const removeCurrentTimeChange = player.onCurrentTimeChanged((time) => {
-            console.log('Current time: ' + time)
-          })
+          const removeCurrentTimeChange = player.onCurrentTimeChanged(
+            (time) => {
+              console.log('Current time: ' + time)
+            }
+          )
         }
       })
     </script>

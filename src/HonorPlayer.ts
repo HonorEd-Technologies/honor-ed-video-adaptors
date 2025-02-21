@@ -1,15 +1,19 @@
 import { HonorVideoEventEmitters } from './utils/Shared/HonorEventEmitter'
-import { HonorVideoConfiguration } from './types/Shared/HonorVideoConfiguration'
-import { HonorVideoError } from './types/Shared/HonorVideoError'
+import { type HonorVideoConfiguration } from './types/Shared/HonorVideoConfiguration'
+import { type HonorVideoError } from './types/Shared/HonorVideoError'
 import { HonorVideoEvent } from './types/Shared/HonorVideoEvent'
 import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState'
-import { HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor'
+import { type HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type Constructor = new (...args: any[]) => {}
 function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   return function <T extends Constructor>(Base: T) {
     return class extends Base {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       constructor(...args: any[]) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         super(...args)
 
         // Get all method names of the class prototype
@@ -20,18 +24,23 @@ function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
         )
 
         for (const methodName of methodNames) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
           const originalMethod = (this as any)[methodName]
 
           if (typeof originalMethod === 'function') {
             // Wrap the method with initialization check
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-explicit-any
             ;(this as any)[methodName] = function (...args: any[]) {
-              if (!(this as any).initialized) {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              if (!(this).initialized) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                 this.emitter.triggerEvent(HonorVideoEvent.error, { data: 5 })
                 throw new Error(
                   `Method ${methodName} called before adaptor was initialized`
                 )
               }
 
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
               return originalMethod.apply(this, args)
             }
           }
@@ -63,55 +72,58 @@ export class HonorPlayer {
   ) {
     this.adaptor = adaptor
     this.emitter = new HonorVideoEventEmitters()
-    this.initializeAdaptor(elementId, configuration)
+    void this.initializeAdaptor(elementId, configuration)
   }
 
-  destroy = () => this.adaptor.destroy()
+  destroy = (): void => { this.adaptor.destroy(); }
   getCurrentTime = (): number => this.adaptor.getCurrentTime()
   getDuration = (): number => this.adaptor.getDuration()
   getPlaybackRate = (): number => this.adaptor.getPlaybackRate()
   getVideoLoadedFraction = (): number => this.adaptor.getVideoLoadedFraction()
   getVolume = (): number => this.adaptor.getVolume()
-  loadVideoById = (videoId: string, startTime?: number, endTime?: number) =>
-    this.adaptor.loadVideoById(videoId, startTime, endTime)
-  seekTo = (seconds: number) => this.adaptor.seekTo(seconds)
-  setPlaybackRate = (rate: number) => this.adaptor.setPlaybackRate(rate)
-  setSize = (width: number, height: number): Object =>
+  loadVideoById = (videoId: string, startTime?: number, endTime?: number): void =>
+    { this.adaptor.loadVideoById(videoId, startTime, endTime); }
+  seekTo = (seconds: number): void => { this.adaptor.seekTo(seconds); }
+  setPlaybackRate = (rate: number): void => { this.adaptor.setPlaybackRate(rate); }
+  setSize = (width: number, height: number): object =>
     this.adaptor.setSize(width, height)
-  setVolume = (volume: number) => this.adaptor.setVolume(volume)
-  stopVideo = () => this.adaptor.stopVideo()
-  playVideo = () => this.adaptor.playVideo()
-  pauseVideo = () => this.adaptor.pauseVideo()
-  onReady = (callback: () => void) => {
-    try { 
+  setVolume = (volume: number): void => { this.adaptor.setVolume(volume); }
+  stopVideo = (): void => { this.adaptor.stopVideo(); }
+  playVideo = (): void => { this.adaptor.playVideo(); }
+  pauseVideo = (): void => { this.adaptor.pauseVideo(); }
+  onReady = (callback: () => void): () => void => {
+    try {
       const state = this.adaptor.getPlayerState()
-      if (state != HonorVideoPlayerState.unstarted) { 
+      if (state !== HonorVideoPlayerState.unstarted) {
         callback()
-      } else { 
-        this.emitter.onReady(callback)
+        return () => { }
+      } else {
+        return this.emitter.onReady(callback)
       }
-    } catch { 
+    } catch {
       return this.emitter.onReady(callback)
     }
   }
-  onError = (callback: (error: HonorVideoError) => void) => {
+  onError = (callback: (error: HonorVideoError) => void): () => void => {
     return this.emitter.onError(callback)
   }
-  onCurrentTimeChanged = (callback: (time: number) => void) => {
+  onCurrentTimeChanged = (callback: (time: number) => void): () => void => {
     return this.emitter.onCurrentTimeChange(callback)
   }
-  onStateChanged = (callback: (state: HonorVideoPlayerState) => void) => {
+  onStateChanged = (callback: (state: HonorVideoPlayerState) => void): () => void => {
     return this.emitter.onStateChange(callback)
   }
-  onPlaybackRateChanged = (callback: (rate: number) => void) => { 
+  onPlaybackRateChanged = (callback: (rate: number) => void): () => void => {
     return this.emitter.onPlaybackRateChange(callback)
   }
-  onVolumeChanged = (callback: (volume: number) => void) => { 
+  onVolumeChanged = (callback: (volume: number) => void): () => void => {
     return this.emitter.onVolumeChange(callback)
   }
 
-
-  initializeAdaptor = async (elementId: string, config: HonorVideoConfiguration) => {
+  initializeAdaptor = async (
+    elementId: string,
+    config: HonorVideoConfiguration
+  ): Promise<void> => {
     await this.adaptor.initialize(elementId, config, this)
     this.initialized = true
   }

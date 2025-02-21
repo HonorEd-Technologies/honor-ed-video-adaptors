@@ -4,7 +4,7 @@ export enum HonorVideoEvent {
   error,
   currentTimeChanged,
   playbackRateChanged,
-  volumeChanged
+  volumeChanged,
 }
 
 export type HonorVideoEventPayload = {
