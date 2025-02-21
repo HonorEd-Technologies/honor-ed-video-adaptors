@@ -1,3 +1,4 @@
+import { type Player } from './convertYTPlayer';
 import { type HonorVideoAdaptor } from '../HonorVideoAdaptor';
 import { type HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration';
 import { type HonorPlayer } from '../../HonorPlayer';
@@ -13,9 +14,9 @@ export type YoutubeConfig = {
  * This class will load Youtube's IFrame API upon the call of `initialize`, and upon completion will set the YT.Player object on `this` and expose methods that interact with it.
  */
 export declare class YoutubeAdaptor implements HonorVideoAdaptor {
-    YTPlayer: any | null;
+    YTPlayer: Player;
     initialize: (elementId: string, configuration: HonorVideoConfiguration, player: HonorPlayer) => Promise<void>;
-    destroy: () => any;
+    destroy: () => void;
     getCurrentTime: () => number;
     getDuration: () => number;
     getPlaybackRate: () => number;
@@ -25,10 +26,10 @@ export declare class YoutubeAdaptor implements HonorVideoAdaptor {
     loadVideoById: (videoId: string, startTime?: number, endTime?: number) => void;
     seekTo: (seconds: number) => void;
     setPlaybackRate: (rate: number) => void;
-    setSize: (width: number, height: number) => Object;
+    setSize: (width: number, height: number) => void;
     setVolume: (volume: number) => void;
-    stopVideo: () => any;
-    playVideo: () => any;
-    pauseVideo: () => any;
+    stopVideo: () => void;
+    playVideo: () => void;
+    pauseVideo: () => void;
 }
 //# sourceMappingURL=YoutubeAdaptor.d.ts.map

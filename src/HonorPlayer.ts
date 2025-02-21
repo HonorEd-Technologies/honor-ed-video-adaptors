@@ -5,15 +5,20 @@ import { HonorVideoEvent } from './types/Shared/HonorVideoEvent'
 import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState'
 import { type HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+/* eslint-disable 
+  @typescript-eslint/no-empty-object-type, 
+  @typescript-eslint/no-explicit-any,  
+  @typescript-eslint/no-unsafe-argument,
+  @typescript-eslint/explicit-function-return-type,
+  @typescript-eslint/no-unsafe-member-access,
+  @typescript-eslint/no-unsafe-call,
+  @typescript-eslint/no-unsafe-return
+*/
 type Constructor = new (...args: any[]) => {}
 function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   return function <T extends Constructor>(Base: T) {
     return class extends Base {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       constructor(...args: any[]) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         super(...args)
 
         // Get all method names of the class prototype
@@ -24,23 +29,19 @@ function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
         )
 
         for (const methodName of methodNames) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+          // eslint-disable-next-line 
           const originalMethod = (this as any)[methodName]
 
           if (typeof originalMethod === 'function') {
             // Wrap the method with initialization check
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-explicit-any
             ;(this as any)[methodName] = function (...args: any[]) {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
               if (!(this).initialized) {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                 this.emitter.triggerEvent(HonorVideoEvent.error, { data: 5 })
                 throw new Error(
                   `Method ${methodName} called before adaptor was initialized`
                 )
               }
 
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
               return originalMethod.apply(this, args)
             }
           }
@@ -49,6 +50,15 @@ function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
     }
   }
 }
+/* eslint-enable
+  @typescript-eslint/no-empty-object-type, 
+  @typescript-eslint/no-explicit-any,  
+  @typescript-eslint/no-unsafe-argument,
+  @typescript-eslint/explicit-function-return-type,
+  @typescript-eslint/no-unsafe-member-access,
+  @typescript-eslint/no-unsafe-call,
+  @typescript-eslint/no-unsafe-return
+*/
 
 @RequiresInitializationForAllMethods([
   'setAdaptor',
@@ -85,8 +95,8 @@ export class HonorPlayer {
     { this.adaptor.loadVideoById(videoId, startTime, endTime); }
   seekTo = (seconds: number): void => { this.adaptor.seekTo(seconds); }
   setPlaybackRate = (rate: number): void => { this.adaptor.setPlaybackRate(rate); }
-  setSize = (width: number, height: number): object =>
-    this.adaptor.setSize(width, height)
+  setSize = (width: number, height: number): void =>
+    { this.adaptor.setSize(width, height); }
   setVolume = (volume: number): void => { this.adaptor.setVolume(volume); }
   stopVideo = (): void => { this.adaptor.stopVideo(); }
   playVideo = (): void => { this.adaptor.playVideo(); }

@@ -1,4 +1,4 @@
-import convertYTPlayer from './convertYTPlayer'
+import convertYTPlayer, { type Player } from './convertYTPlayer'
 import { type HonorVideoAdaptor } from '../HonorVideoAdaptor'
 import { type HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration'
 import loadYoutubeAPI from '../../utils/loadYoutubeAPI'
@@ -21,7 +21,7 @@ export type YoutubeConfig = {
  * This class will load Youtube's IFrame API upon the call of `initialize`, and upon completion will set the YT.Player object on `this` and expose methods that interact with it.
  */
 export class YoutubeAdaptor implements HonorVideoAdaptor {
-  YTPlayer: any | null
+  YTPlayer!: Player
 
   initialize = async (
     elementId: string,
@@ -46,7 +46,7 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
     this.YTPlayer = ytPlayer
   }
 
-  destroy = () => this.YTPlayer.destroy()
+  destroy = (): void => { this.YTPlayer.destroy(); }
   getCurrentTime = (): number => this.YTPlayer.getCurrentTime()
   getDuration = (): number => this.YTPlayer.getDuration()
   getPlaybackRate = (): number => this.YTPlayer.getPlaybackRate()
@@ -60,13 +60,13 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
     videoId: string,
     startTime?: number,
     endTime?: number
-  ): void => this.loadVideoById(videoId, startTime, endTime)
-  seekTo = (seconds: number): void => this.YTPlayer.seekTo(seconds)
-  setPlaybackRate = (rate: number): void => this.YTPlayer.setPlaybackRate(rate)
-  setSize = (width: number, height: number): Object =>
-    this.YTPlayer.setSize(width, height)
-  setVolume = (volume: number): void => this.YTPlayer.setVolume(volume)
-  stopVideo = () => this.YTPlayer.stopVideo()
-  playVideo = () => this.YTPlayer.playVideo()
-  pauseVideo = () => this.YTPlayer.pauseVideo()
+  ): void => { this.loadVideoById(videoId, startTime, endTime); }
+  seekTo = (seconds: number): void => { this.YTPlayer.seekTo(seconds, true); }
+  setPlaybackRate = (rate: number): void => { this.YTPlayer.setPlaybackRate(rate); }
+  setSize = (width: number, height: number): void =>
+    { this.YTPlayer.setSize(width, height); }
+  setVolume = (volume: number): void => { this.YTPlayer.setVolume(volume); }
+  stopVideo = (): void => { this.YTPlayer.stopVideo(); }
+  playVideo = (): void => { this.YTPlayer.playVideo(); }
+  pauseVideo = (): void => { this.YTPlayer.pauseVideo(); }
 }

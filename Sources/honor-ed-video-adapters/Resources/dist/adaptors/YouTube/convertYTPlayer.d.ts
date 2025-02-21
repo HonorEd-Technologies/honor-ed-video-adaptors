@@ -1,24 +1,5 @@
-declare const _default: (elementId: string, config: PlayerOptions) => {
-    loadVideoById: (videoId: string, startSeconds?: number, endSeconds?: number) => void;
-    loadVideoByUrl: (mediaContentUrl: string, startSeconds?: number, endSeconds?: number) => void;
-    playVideo: () => void;
-    pauseVideo: () => void;
-    stopVideo: () => void;
-    seekTo: (seconds: number, allowSeekAhead: boolean) => void;
-    getDuration: () => number;
-    getVideoLoadedFraction: () => number;
-    setVolume: (volume: number) => void;
-    getVolume: () => number;
-    getPlaybackRate: () => number;
-    setPlaybackRate: (suggestedRate: number) => void;
-    getPlayerState: () => PlayerState;
-    getAvailablePlaybackRates: () => number[];
-    getCurrentTime: () => number;
-    getVideoUrl: () => string;
-    destroy: () => void;
-    setSize: (width: number, height: number) => void;
-    getIframe: () => HTMLIFrameElement;
-} | undefined;
+import { type YoutubePlayerState } from "../../types/YouTube/YouTubeEvents";
+declare const _default: (elementId: string, config: PlayerOptions) => Player;
 export default _default;
 export type Player = {
     cueVideoById(videoId: string, startSeconds?: number): void;
@@ -78,7 +59,7 @@ export type Player = {
     setLoop(loopPlaylists: boolean): void;
     setShuffle(shufflePlaylist: boolean): void;
     getVideoLoadedFraction(): number;
-    getPlayerState(): PlayerState;
+    getPlayerState(): YoutubePlayerState;
     getCurrentTime(): number;
     getDuration(): number;
     getVideoUrl(): string;

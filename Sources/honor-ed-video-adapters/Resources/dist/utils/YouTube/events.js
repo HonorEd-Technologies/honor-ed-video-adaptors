@@ -36,11 +36,12 @@ const parseYTPlayerError = (error) => {
 };
 const youtubeReadyHandler = (player) => {
     return () => {
-        player.emitter.triggerEvent(HonorVideoEvent.playerReady);
+        player.emitter.triggerEvent({ eventType: HonorVideoEvent.playerReady, data: null });
         // youtube has no event for updating the current volume of the video, so we need to set up an interval to publish the event
         setInterval(() => {
             const volume = player.getVolume();
-            player.emitter.triggerEvent(HonorVideoEvent.volumeChanged, {
+            player.emitter.triggerEvent({
+                eventType: HonorVideoEvent.volumeChanged,
                 data: volume,
             });
         }, 250);
@@ -52,35 +53,28 @@ const youtubeStateChangeHandler = (player) => {
     const startTimePoll = () => {
         timePoll = setInterval(() => {
             const time = player.getCurrentTime();
-            player.emitter.triggerEvent(HonorVideoEvent.currentTimeChanged, {
+            player.emitter.triggerEvent({
+                eventType: HonorVideoEvent.currentTimeChanged,
                 data: time,
             });
         }, 500);
     };
     const onStateChange = ({ data }) => {
         const castData = data;
-        if (!castData) {
-            // if the raw youtube player state cannot be converted into `YoutubePlayerState`, there is a state that we have not accounted for and we should emit an error
-            player.emitter.triggerEvent(HonorVideoEvent.error, {
-                data: {
-                    type: HonorVideoErrorType.adaptorLayerError,
-                    message: `Unknown player state received: ${data}`,
-                },
-            });
-            return;
-        }
         // convert the `YoutubePlayerState` into an `HonorVideoPlayerState`
         const honorPlayerState = parseYTPlayerState(castData);
         if (!honorPlayerState) {
-            player.emitter.triggerEvent(HonorVideoEvent.error, {
+            player.emitter.triggerEvent({
+                eventType: HonorVideoEvent.error,
                 data: {
-                    type: HonorVideoErrorType.adaptorLayerError,
+                    code: HonorVideoErrorType.adaptorLayerError,
                     message: `Could not convert Youtube player event: ${castData.toString()} into Honor Event`,
                 },
             });
             return;
         }
-        player.emitter.triggerEvent(HonorVideoEvent.stateChanged, {
+        player.emitter.triggerEvent({
+            eventType: HonorVideoEvent.stateChanged,
             data: honorPlayerState,
         });
         if (timePoll !== undefined &&
@@ -99,12 +93,12 @@ const youtubeStateChangeHandler = (player) => {
 const youtubeErrorHandler = (player) => {
     return ({ data }) => {
         const castData = data;
-        let error = HonorVideoErrorType.unknown;
-        if (castData) {
-            error = parseYTPlayerError(castData);
-        }
-        player.emitter.triggerEvent(HonorVideoEvent.error, {
-            data: { type: error },
+        const error = parseYTPlayerError(castData);
+        player.emitter.triggerEvent({
+            eventType: HonorVideoEvent.error,
+            data: {
+                code: error,
+            }
         });
     };
 };
@@ -112,7 +106,8 @@ const youtubePlaybackHandler = (player) => {
     return ({ data }) => {
         const rate = data;
         if (rate) {
-            player.emitter.triggerEvent(HonorVideoEvent.playbackRateChanged, {
+            player.emitter.triggerEvent({
+                eventType: HonorVideoEvent.playbackRateChanged,
                 data: rate,
             });
         }

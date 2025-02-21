@@ -22,7 +22,9 @@ export default tsEslint.config(
     },
   },
   ...tsEslint.configs.strictTypeChecked,
-
+  {
+    ignores: ['webpack.config.cjs']
+  },
   // TypeScript files configuration
   {
     files: ['**/*.ts', '**/*.tsx'],

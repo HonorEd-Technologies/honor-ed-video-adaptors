@@ -29,7 +29,8 @@ export default (emitter: HonorVideoEventEmitters): Promise<void> => {
       } else {
         const errorMessage =
           'There was a problem loading the YouTube Iframe API'
-        triggerEvent(HonorVideoEvent.error, {
+        triggerEvent({
+          eventType: HonorVideoEvent.error,
           data: {
             code: HonorVideoErrorType.apiLoadError,
             message: errorMessage,

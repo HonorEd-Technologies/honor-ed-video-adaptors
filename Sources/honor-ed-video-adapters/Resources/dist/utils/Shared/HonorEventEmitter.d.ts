@@ -1,5 +1,5 @@
 import { type HonorVideoError } from '../../types/Shared/HonorVideoError';
-import { HonorVideoEvent, type HonorVideoEventPayload } from '../../types/Shared/HonorVideoEvent';
+import { type HonorVideoEventPayload } from '../../types/Shared/HonorVideoEvent';
 import { type HonorVideoPlayerState } from '../../types/Shared/HonorVideoPlayerState';
 export declare class HonorVideoEventEmitters {
     private stateChangeEmitter;
@@ -14,7 +14,6 @@ export declare class HonorVideoEventEmitters {
     onCurrentTimeChange: (callback: (time: number) => void) => () => void;
     onPlaybackRateChange: (callback: (rate: number) => void) => () => void;
     onVolumeChange: (callback: (rate: number) => void) => () => void;
-    triggerEvent: (event: HonorVideoEvent, { data }?: HonorVideoEventPayload) => void;
+    triggerEvent: ({ eventType, data }: HonorVideoEventPayload) => void;
 }
-export type HonorVideoEventHandler = (event: HonorVideoEvent, payload: HonorVideoEventPayload) => void;
 //# sourceMappingURL=HonorEventEmitter.d.ts.map

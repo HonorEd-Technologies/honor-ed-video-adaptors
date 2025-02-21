@@ -4,7 +4,7 @@
  * See [here](https://developers.google.com/youtube/iframe_api_reference#Events) for more info.
  */
 export type YoutubeEvent = {
-  data?: any
+  data: number | undefined
 }
 
 /**

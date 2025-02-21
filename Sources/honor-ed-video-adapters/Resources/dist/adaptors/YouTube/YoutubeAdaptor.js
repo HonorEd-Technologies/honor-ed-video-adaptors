@@ -23,7 +23,7 @@ export class YoutubeAdaptor {
         const ytPlayer = convertYTPlayer(elementId, config);
         this.YTPlayer = ytPlayer;
     };
-    destroy = () => this.YTPlayer.destroy();
+    destroy = () => { this.YTPlayer.destroy(); };
     getCurrentTime = () => this.YTPlayer.getCurrentTime();
     getDuration = () => this.YTPlayer.getDuration();
     getPlaybackRate = () => this.YTPlayer.getPlaybackRate();
@@ -33,13 +33,13 @@ export class YoutubeAdaptor {
         return parseYTPlayerState(state);
     };
     getVolume = () => this.YTPlayer.getVolume();
-    loadVideoById = (videoId, startTime, endTime) => this.loadVideoById(videoId, startTime, endTime);
-    seekTo = (seconds) => this.YTPlayer.seekTo(seconds);
-    setPlaybackRate = (rate) => this.YTPlayer.setPlaybackRate(rate);
-    setSize = (width, height) => this.YTPlayer.setSize(width, height);
-    setVolume = (volume) => this.YTPlayer.setVolume(volume);
-    stopVideo = () => this.YTPlayer.stopVideo();
-    playVideo = () => this.YTPlayer.playVideo();
-    pauseVideo = () => this.YTPlayer.pauseVideo();
+    loadVideoById = (videoId, startTime, endTime) => { this.loadVideoById(videoId, startTime, endTime); };
+    seekTo = (seconds) => { this.YTPlayer.seekTo(seconds, true); };
+    setPlaybackRate = (rate) => { this.YTPlayer.setPlaybackRate(rate); };
+    setSize = (width, height) => { this.YTPlayer.setSize(width, height); };
+    setVolume = (volume) => { this.YTPlayer.setVolume(volume); };
+    stopVideo = () => { this.YTPlayer.stopVideo(); };
+    playVideo = () => { this.YTPlayer.playVideo(); };
+    pauseVideo = () => { this.YTPlayer.pauseVideo(); };
 }
 //# sourceMappingURL=YoutubeAdaptor.js.map

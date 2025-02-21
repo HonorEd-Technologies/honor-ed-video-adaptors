@@ -1,37 +1,11 @@
-export default (elementId: string, config: PlayerOptions) => {
-  if (!window.YT) { return }
-  const player = new window.YT.Player(elementId, config)
-  return {
-    loadVideoById: (
-      videoId: string,
-      startSeconds?: number,
-      endSeconds?: number
-    ): void => { player.loadVideoById({ videoId, startSeconds, endSeconds }); },
-    loadVideoByUrl: (
-      mediaContentUrl: string,
-      startSeconds?: number,
-      endSeconds?: number
-    ): void => { player.loadVideoByUrl({ mediaContentUrl, startSeconds, endSeconds }); },
-    playVideo: (): void => { player.playVideo(); },
-    pauseVideo: (): void => { player.pauseVideo(); },
-    stopVideo: (): void => { player.stopVideo(); },
-    seekTo: (seconds: number, allowSeekAhead: boolean): void =>
-      { player.seekTo(seconds, allowSeekAhead); },
-    getDuration: (): number => player.getDuration(),
-    getVideoLoadedFraction: (): number => player.getVideoLoadedFraction(),
-    setVolume: (volume: number): void => { player.setVolume(volume); },
-    getVolume: (): number => player.getVolume(),
-    getPlaybackRate: (): number => player.getPlaybackRate(),
-    setPlaybackRate: (suggestedRate: number): void =>
-      { player.setPlaybackRate(suggestedRate); },
-    getPlayerState: (): PlayerState => player.getPlayerState(),
-    getAvailablePlaybackRates: (): number[] => player.getAvailablePlaybackRates(),
-    getCurrentTime: (): number => player.getCurrentTime(),
-    getVideoUrl: (): string => player.getVideoUrl(),
-    destroy: (): void => { player.destroy(); },
-    setSize: (width: number, height: number): void => { player.setSize(width, height); },
-    getIframe: (): HTMLIFrameElement => player.getIframe(),
+import { type YoutubePlayerState } from "../../types/YouTube/YouTubeEvents"
+
+export default (elementId: string, config: PlayerOptions): Player => {
+  if (!window.YT) {
+    throw Error('Player instantiated before API loaded')
   }
+  const player = new window.YT.Player(elementId, config)
+  return player
 }
 
 export type Player = {
@@ -114,7 +88,7 @@ export type Player = {
   getVideoLoadedFraction(): number
 
   // Playback status
-  getPlayerState(): PlayerState
+  getPlayerState(): YoutubePlayerState
   getCurrentTime(): number
   getDuration(): number
 
@@ -191,11 +165,12 @@ type Events = {
   onAutoplayBlocked?: (event: OnAutoplayBlockedEvent) => void
 }
 
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+
 interface BaseEvent {
   target: Player
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface OnReadyEvent extends BaseEvent {}
 interface OnStateChangeEvent extends BaseEvent {
   data: PlayerState
@@ -209,9 +184,7 @@ interface OnPlaybackRateChangeEvent extends BaseEvent {
 interface OnErrorEvent extends BaseEvent {
   data: number
 }
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface OnApiChangeEvent extends BaseEvent {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface OnAutoplayBlockedEvent extends BaseEvent {}
 
 interface SphericalProperties {

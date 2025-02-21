@@ -4,7 +4,7 @@
  * See [here](https://developers.google.com/youtube/iframe_api_reference#Events) for more info.
  */
 export type YoutubeEvent = {
-    data?: any;
+    data: number | undefined;
 };
 /**
  * Youtube's iFrame API passes changes to the state of its video player in the form of a number. See [here](https://developers.google.com/youtube/iframe_api_reference#onStateChange) for more info.

@@ -10,7 +10,7 @@ class HonorVideoEventEmitter<T> {
 
   on = (callback: (data: T) => void) => {
     this.callbacks.push(callback)
-    return () => {
+    return (): void => {
       const idx = this.callbacks.indexOf(callback)
       if (idx !== -1) {
         this.callbacks.splice(idx, 1)
@@ -52,43 +52,30 @@ export class HonorVideoEventEmitters {
     this.volumeEmitter.on(callback)
 
   triggerEvent = (
-    event: HonorVideoEvent,
-    { data }: HonorVideoEventPayload = {}
+    {
+      eventType, 
+      data
+    }: HonorVideoEventPayload
   ): void => {
-    switch (event) {
+    switch (eventType) {
       case HonorVideoEvent.playerReady:
         this.readyEmitter.emit()
         break
       case HonorVideoEvent.stateChanged:
-        if (<HonorVideoPlayerState>data) {
-          this.stateChangeEmitter.emit(<HonorVideoPlayerState>data)
-        }
+        this.stateChangeEmitter.emit(data)
         break
       case HonorVideoEvent.error:
-        if (<HonorVideoError>data) {
-          this.errorEmitter.emit(<HonorVideoError>data)
-        }
+        this.errorEmitter.emit(data)
         break
       case HonorVideoEvent.currentTimeChanged:
-        if (<number>data) {
-          this.currentTimeEmitter.emit(<number>data)
-        }
+        this.currentTimeEmitter.emit(data)
         break
       case HonorVideoEvent.playbackRateChanged:
-        if (<number>data) {
-          this.playbackRateEmitter.emit(<number>data)
-        }
+        this.playbackRateEmitter.emit(data)
         break
       case HonorVideoEvent.volumeChanged:
-        if (<number>data) {
-          this.volumeEmitter.emit(<number>data)
-        }
+        this.volumeEmitter.emit(data)
         break
     }
   }
 }
-
-export type HonorVideoEventHandler = (
-  event: HonorVideoEvent,
-  payload: HonorVideoEventPayload
-) => void

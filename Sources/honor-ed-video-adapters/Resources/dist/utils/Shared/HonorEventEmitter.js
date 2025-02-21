@@ -29,35 +29,25 @@ export class HonorVideoEventEmitters {
     onCurrentTimeChange = (callback) => this.currentTimeEmitter.on(callback);
     onPlaybackRateChange = (callback) => this.playbackRateEmitter.on(callback);
     onVolumeChange = (callback) => this.volumeEmitter.on(callback);
-    triggerEvent = (event, { data } = {}) => {
-        switch (event) {
+    triggerEvent = ({ eventType, data }) => {
+        switch (eventType) {
             case HonorVideoEvent.playerReady:
                 this.readyEmitter.emit();
                 break;
             case HonorVideoEvent.stateChanged:
-                if (data) {
-                    this.stateChangeEmitter.emit(data);
-                }
+                this.stateChangeEmitter.emit(data);
                 break;
             case HonorVideoEvent.error:
-                if (data) {
-                    this.errorEmitter.emit(data);
-                }
+                this.errorEmitter.emit(data);
                 break;
             case HonorVideoEvent.currentTimeChanged:
-                if (data) {
-                    this.currentTimeEmitter.emit(data);
-                }
+                this.currentTimeEmitter.emit(data);
                 break;
             case HonorVideoEvent.playbackRateChanged:
-                if (data) {
-                    this.playbackRateEmitter.emit(data);
-                }
+                this.playbackRateEmitter.emit(data);
                 break;
             case HonorVideoEvent.volumeChanged:
-                if (data) {
-                    this.volumeEmitter.emit(data);
-                }
+                this.volumeEmitter.emit(data);
                 break;
         }
     };
