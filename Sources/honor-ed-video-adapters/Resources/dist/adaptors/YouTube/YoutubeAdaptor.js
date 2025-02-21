@@ -1,13 +1,14 @@
 import convertYTPlayer from './convertYTPlayer';
 import loadYoutubeAPI from '../../utils/loadYoutubeAPI';
-import { youtubeEventHandler } from '../../utils/YouTube/events';
+import { parseYTPlayerState, youtubeEventHandler } from '../../utils/YouTube/events';
 /**
  * This class will load Youtube's IFrame API upon the call of `initialize`, and upon completion will set the YT.Player object on `this` and expose methods that interact with it.
  */
 export class YoutubeAdaptor {
     YTPlayer;
-    async initialize(elementId, configuration, player) {
+    initialize = async (elementId, configuration, player) => {
         await loadYoutubeAPI(player.emitter);
+        console.log("API LOADED");
         const config = {
             height: configuration.height,
             width: configuration.width,
@@ -22,12 +23,16 @@ export class YoutubeAdaptor {
         };
         const ytPlayer = convertYTPlayer(elementId, config);
         this.YTPlayer = ytPlayer;
-    }
+    };
     destroy = () => this.YTPlayer.destroy();
     getCurrentTime = () => this.YTPlayer.getCurrentTime();
     getDuration = () => this.YTPlayer.getDuration();
     getPlaybackRate = () => this.YTPlayer.getPlaybackRate();
     getVideoLoadedFraction = () => this.YTPlayer.getVideoLoadedFraction();
+    getPlayerState = () => {
+        const state = this.YTPlayer.getPlayerState();
+        return parseYTPlayerState(state);
+    };
     getVolume = () => this.YTPlayer.getVolume();
     loadVideoById = (videoId, startTime, endTime) => this.loadVideoById(videoId, startTime, endTime);
     seekTo = (seconds) => this.YTPlayer.seekTo(seconds);

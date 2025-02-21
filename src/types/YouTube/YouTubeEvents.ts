@@ -16,7 +16,7 @@ export const YoutubePlayerState = {
   playing: 1,
   paused: 2,
   buffering: 3,
-  videoCued: 4,
+  videoCued: 5,
 } as const
 
 export type YoutubePlayerState =

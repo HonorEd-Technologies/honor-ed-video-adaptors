@@ -1,1 +1,1 @@
-{"version":3,"file":"HonorVideoPlayerState.d.ts","sourceRoot":"","sources":["../../../src/types/Shared/HonorVideoPlayerState.ts"],"names":[],"mappings":"AAAA,0BAAkB,qBAAqB;IACrC,SAAS,IAAI;IACb,KAAK,IAAI;IACT,OAAO,IAAI;IACX,MAAM,IAAI;IACV,SAAS,IAAI;CACd"}
+{"version":3,"file":"HonorVideoPlayerState.d.ts","sourceRoot":"","sources":["../../../src/types/Shared/HonorVideoPlayerState.ts"],"names":[],"mappings":"AAAA,oBAAY,qBAAqB;IAC/B,SAAS,IAAI;IACb,KAAK,IAAI;IACT,OAAO,IAAI;IACX,MAAM,IAAI;IACV,SAAS,IAAI;IACb,KAAK,IAAI;CACV"}

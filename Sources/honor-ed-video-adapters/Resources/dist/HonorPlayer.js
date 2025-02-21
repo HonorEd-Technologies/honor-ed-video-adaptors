@@ -34,6 +34,7 @@ var __runInitializers = (this && this.__runInitializers) || function (thisArg, i
 };
 import { HonorVideoEventEmitters } from './utils/Shared/HonorEventEmitter';
 import { HonorVideoEvent } from './types/Shared/HonorVideoEvent';
+import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState';
 function RequiresInitializationForAllMethods(excludeMethods = []) {
     return function (Base) {
         return class extends Base {
@@ -68,6 +69,8 @@ let HonorPlayer = (() => {
             'onError',
             'onCurrentTimeChanged',
             'onStateChanged',
+            'onPlaybackRateChanged',
+            'onVolumeChanged',
             'initializeAdaptor',
         ])];
     let _classDescriptor;
@@ -84,9 +87,10 @@ let HonorPlayer = (() => {
         }
         initialized = false;
         adaptor;
-        emitter = new HonorVideoEventEmitters();
+        emitter;
         constructor(elementId, configuration, adaptor) {
             this.adaptor = adaptor;
+            this.emitter = new HonorVideoEventEmitters();
             this.initializeAdaptor(elementId, configuration);
         }
         destroy = () => this.adaptor.destroy();
@@ -103,22 +107,39 @@ let HonorPlayer = (() => {
         stopVideo = () => this.adaptor.stopVideo();
         playVideo = () => this.adaptor.playVideo();
         pauseVideo = () => this.adaptor.pauseVideo();
-        onReady(callback) {
-            this.emitter.onReady(callback);
-        }
-        onError(callback) {
-            this.emitter.onError(callback);
-        }
-        onCurrentTimeChanged(callback) {
-            this.emitter.onCurrentTimeChange(callback);
-        }
-        onStateChanged(callback) {
-            this.emitter.onStateChange(callback);
-        }
-        async initializeAdaptor(elementId, config) {
+        onReady = (callback) => {
+            try {
+                const state = this.adaptor.getPlayerState();
+                if (state != HonorVideoPlayerState.unstarted) {
+                    callback();
+                }
+                else {
+                    this.emitter.onReady(callback);
+                }
+            }
+            catch {
+                return this.emitter.onReady(callback);
+            }
+        };
+        onError = (callback) => {
+            return this.emitter.onError(callback);
+        };
+        onCurrentTimeChanged = (callback) => {
+            return this.emitter.onCurrentTimeChange(callback);
+        };
+        onStateChanged = (callback) => {
+            return this.emitter.onStateChange(callback);
+        };
+        onPlaybackRateChanged = (callback) => {
+            return this.emitter.onPlaybackRateChange(callback);
+        };
+        onVolumeChanged = (callback) => {
+            return this.emitter.onVolumeChange(callback);
+        };
+        initializeAdaptor = async (elementId, config) => {
             await this.adaptor.initialize(elementId, config, this);
             this.initialized = true;
-        }
+        };
     };
     return HonorPlayer = _classThis;
 })();

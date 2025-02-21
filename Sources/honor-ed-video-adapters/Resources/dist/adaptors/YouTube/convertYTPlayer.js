@@ -15,6 +15,7 @@ export default (elementId, config) => {
         getVolume: () => player.getVolume(),
         getPlaybackRate: () => player.getPlaybackRate(),
         setPlaybackRate: (suggestedRate) => player.setPlaybackRate(suggestedRate),
+        getPlayerState: () => player.getPlayerState(),
         getAvailablePlaybackRates: () => player.getAvailablePlaybackRates(),
         getCurrentTime: () => player.getCurrentTime(),
         getVideoUrl: () => player.getVideoUrl(),

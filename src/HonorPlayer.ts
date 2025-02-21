@@ -47,12 +47,14 @@ function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
   'onError',
   'onCurrentTimeChanged',
   'onStateChanged',
+  'onPlaybackRateChanged',
+  'onVolumeChanged',
   'initializeAdaptor',
 ])
 export class HonorPlayer {
   private initialized = false
   private adaptor: HonorVideoAdaptor
-  emitter = new HonorVideoEventEmitters()
+  emitter: HonorVideoEventEmitters
 
   constructor(
     elementId: string,
@@ -60,6 +62,7 @@ export class HonorPlayer {
     adaptor: HonorVideoAdaptor
   ) {
     this.adaptor = adaptor
+    this.emitter = new HonorVideoEventEmitters()
     this.initializeAdaptor(elementId, configuration)
   }
 
@@ -79,20 +82,36 @@ export class HonorPlayer {
   stopVideo = () => this.adaptor.stopVideo()
   playVideo = () => this.adaptor.playVideo()
   pauseVideo = () => this.adaptor.pauseVideo()
-  onReady(callback: () => void) {
-    this.emitter.onReady(callback)
+  onReady = (callback: () => void) => {
+    try { 
+      const state = this.adaptor.getPlayerState()
+      if (state != HonorVideoPlayerState.unstarted) { 
+        callback()
+      } else { 
+        this.emitter.onReady(callback)
+      }
+    } catch { 
+      return this.emitter.onReady(callback)
+    }
   }
-  onError(callback: (error: HonorVideoError) => void) {
-    this.emitter.onError(callback)
+  onError = (callback: (error: HonorVideoError) => void) => {
+    return this.emitter.onError(callback)
   }
-  onCurrentTimeChanged(callback: (time: number) => void) {
-    this.emitter.onCurrentTimeChange(callback)
+  onCurrentTimeChanged = (callback: (time: number) => void) => {
+    return this.emitter.onCurrentTimeChange(callback)
   }
-  onStateChanged(callback: (state: HonorVideoPlayerState) => void) {
-    this.emitter.onStateChange(callback)
+  onStateChanged = (callback: (state: HonorVideoPlayerState) => void) => {
+    return this.emitter.onStateChange(callback)
+  }
+  onPlaybackRateChanged = (callback: (rate: number) => void) => { 
+    return this.emitter.onPlaybackRateChange(callback)
+  }
+  onVolumeChanged = (callback: (volume: number) => void) => { 
+    return this.emitter.onVolumeChange(callback)
   }
 
-  async initializeAdaptor(elementId: string, config: HonorVideoConfiguration) {
+
+  initializeAdaptor = async (elementId: string, config: HonorVideoConfiguration) => {
     await this.adaptor.initialize(elementId, config, this)
     this.initialized = true
   }
