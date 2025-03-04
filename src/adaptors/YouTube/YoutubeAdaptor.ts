@@ -65,7 +65,7 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
   getPlaybackRate = (): number => this.YTPlayer.getPlaybackRate()
   getAvailablePlaybackRates = (): number[] => this.YTPlayer.getAvailablePlaybackRates()
   setPlaybackRate = (rate: number): void => this.YTPlayer.setPlaybackRate(rate)
-  getAvailableLanguages = (): CaptionOption[] => this.YTPlayer.getOption('captions', 'translationLanguages')
+  getAvailableLanguages = (): CaptionOption[] => this.YTPlayer.getOption('captions', 'tracklist')
   setCaptionLanguage = (languageIdentifier: string): void => this.YTPlayer.setOption('captions', 'track', { languageCode: languageIdentifier })
   setSize = (width: number, height: number): void =>
     this.YTPlayer.setSize(width, height)

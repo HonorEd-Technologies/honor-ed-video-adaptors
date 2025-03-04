@@ -4,6 +4,7 @@ import { type HonorVideoError } from './types/Shared/HonorVideoError'
 import { HonorVideoEvent } from './types/Shared/HonorVideoEvent'
 import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState'
 import { type HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor'
+import { CaptionOption } from './types/Shared/CaptionOption'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type Constructor = new (...args: any[]) => {}
@@ -84,7 +85,10 @@ export class HonorPlayer {
   loadVideoById = (videoId: string, startTime?: number, endTime?: number): void =>
     { this.adaptor.loadVideoById(videoId, startTime, endTime); }
   seekTo = (seconds: number): void => { this.adaptor.seekTo(seconds); }
+  getAvailablePlaybackRates = (): number[] => this.adaptor.getAvailablePlaybackRates()
   setPlaybackRate = (rate: number): void => { this.adaptor.setPlaybackRate(rate); }
+  setCaptionLanguage = (identifier: string): void => { this.adaptor.setCaptionLanguage(identifier) }
+  getAvailableLanguages = (): CaptionOption[] => this.adaptor.getAvailableLanguages()
   setSize = (width: number, height: number): void =>
     this.adaptor.setSize(width, height)
   setVolume = (volume: number): void => { this.adaptor.setVolume(volume); }
