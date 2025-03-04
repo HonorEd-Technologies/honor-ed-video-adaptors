@@ -8,6 +8,7 @@ import {
 } from '../../utils/YouTube/events'
 import { type HonorPlayer } from '../../HonorPlayer'
 import { type HonorVideoPlayerState } from '../../types'
+import { CaptionOption } from '../../types/Shared/CaptionOption'
 
 export type YoutubeConfig = {
   height: number
@@ -49,7 +50,6 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
   destroy = () => this.YTPlayer.destroy()
   getCurrentTime = (): number => this.YTPlayer.getCurrentTime()
   getDuration = (): number => this.YTPlayer.getDuration()
-  getPlaybackRate = (): number => this.YTPlayer.getPlaybackRate()
   getVideoLoadedFraction = (): number => this.YTPlayer.getVideoLoadedFraction()
   getPlayerState = (): HonorVideoPlayerState | undefined => {
     const state = this.YTPlayer.getPlayerState()
@@ -62,8 +62,12 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
     endTime?: number
   ): void => this.loadVideoById(videoId, startTime, endTime)
   seekTo = (seconds: number): void => this.YTPlayer.seekTo(seconds)
+  getPlaybackRate = (): number => this.YTPlayer.getPlaybackRate()
+  getAvailablePlaybackRates = (): number[] => this.YTPlayer.getAvailablePlaybackRates()
   setPlaybackRate = (rate: number): void => this.YTPlayer.setPlaybackRate(rate)
-  setSize = (width: number, height: number): Object =>
+  getAvailableLanguages = (): CaptionOption[] => this.YTPlayer.getOption('captions', 'translationLanguages')
+  setCaptionLanguage = (languageIdentifier: string): void => this.YTPlayer.setOption('captions', 'track', { languageCode: languageIdentifier })
+  setSize = (width: number, height: number): void =>
     this.YTPlayer.setSize(width, height)
   setVolume = (volume: number): void => this.YTPlayer.setVolume(volume)
   stopVideo = () => this.YTPlayer.stopVideo()

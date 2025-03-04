@@ -1,3 +1,5 @@
+import { type CaptionOption } from "../../types/Shared/CaptionOption";
+
 export default (elementId: string, config: PlayerOptions) => {
   if (!window.YT) { return }
   const player = new window.YT.Player(elementId, config)
@@ -21,6 +23,9 @@ export default (elementId: string, config: PlayerOptions) => {
     getVideoLoadedFraction: (): number => player.getVideoLoadedFraction(),
     setVolume: (volume: number): void => { player.setVolume(volume); },
     getVolume: (): number => player.getVolume(),
+    getOptions: (module: string): string[] => player.getOptions(module),
+    getOption: (module: string, option: string): object[] => player.getOption(module, option),
+    setOption: (module: string, option: string, data: object): void => { player.setOption(module, option, data); },
     getPlaybackRate: (): number => player.getPlaybackRate(),
     setPlaybackRate: (suggestedRate: number): void =>
       { player.setPlaybackRate(suggestedRate); },
@@ -123,6 +128,11 @@ export type Player = {
   getVideoEmbedCode(): string
   getPlaylist(): string[]
   getPlaylistIndex(): number
+
+  // Options
+  getOptions(module: string): string[]
+  getOption(module: string, option: string): CaptionOption[]
+  setOption(module: string, option: string, data: object): void
 
   // DOM
   addEventListener<T extends keyof Events>(

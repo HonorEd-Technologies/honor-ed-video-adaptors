@@ -85,7 +85,7 @@ export class HonorPlayer {
     { this.adaptor.loadVideoById(videoId, startTime, endTime); }
   seekTo = (seconds: number): void => { this.adaptor.seekTo(seconds); }
   setPlaybackRate = (rate: number): void => { this.adaptor.setPlaybackRate(rate); }
-  setSize = (width: number, height: number): object =>
+  setSize = (width: number, height: number): void =>
     this.adaptor.setSize(width, height)
   setVolume = (volume: number): void => { this.adaptor.setVolume(volume); }
   stopVideo = (): void => { this.adaptor.stopVideo(); }
