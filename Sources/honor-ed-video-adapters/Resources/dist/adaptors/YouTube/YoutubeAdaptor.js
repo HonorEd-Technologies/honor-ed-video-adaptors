@@ -37,7 +37,7 @@ export class YoutubeAdaptor {
     getPlaybackRate = () => this.YTPlayer.getPlaybackRate();
     getAvailablePlaybackRates = () => this.YTPlayer.getAvailablePlaybackRates();
     setPlaybackRate = (rate) => this.YTPlayer.setPlaybackRate(rate);
-    getAvailableLanguages = () => this.YTPlayer.getOption('captions', 'translationLanguages');
+    getAvailableLanguages = () => this.YTPlayer.getOption('captions', 'tracklist');
     setCaptionLanguage = (languageIdentifier) => this.YTPlayer.setOption('captions', 'track', { languageCode: languageIdentifier });
     setSize = (width, height) => this.YTPlayer.setSize(width, height);
     setVolume = (volume) => this.YTPlayer.setVolume(volume);

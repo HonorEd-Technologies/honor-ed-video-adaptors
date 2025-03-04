@@ -109,7 +109,10 @@ let HonorPlayer = (() => {
         getVolume = () => this.adaptor.getVolume();
         loadVideoById = (videoId, startTime, endTime) => { this.adaptor.loadVideoById(videoId, startTime, endTime); };
         seekTo = (seconds) => { this.adaptor.seekTo(seconds); };
+        getAvailablePlaybackRates = () => this.adaptor.getAvailablePlaybackRates();
         setPlaybackRate = (rate) => { this.adaptor.setPlaybackRate(rate); };
+        setCaptionLanguage = (identifier) => { this.adaptor.setCaptionLanguage(identifier); };
+        getAvailableLanguages = () => this.adaptor.getAvailableLanguages();
         setSize = (width, height) => this.adaptor.setSize(width, height);
         setVolume = (volume) => { this.adaptor.setVolume(volume); };
         stopVideo = () => { this.adaptor.stopVideo(); };

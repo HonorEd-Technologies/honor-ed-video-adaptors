@@ -3,6 +3,7 @@ import { type HonorVideoConfiguration } from './types/Shared/HonorVideoConfigura
 import { type HonorVideoError } from './types/Shared/HonorVideoError';
 import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState';
 import { type HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor';
+import { CaptionOption } from './types/Shared/CaptionOption';
 export declare class HonorPlayer {
     private initialized;
     private adaptor;
@@ -16,7 +17,10 @@ export declare class HonorPlayer {
     getVolume: () => number;
     loadVideoById: (videoId: string, startTime?: number, endTime?: number) => void;
     seekTo: (seconds: number) => void;
+    getAvailablePlaybackRates: () => number[];
     setPlaybackRate: (rate: number) => void;
+    setCaptionLanguage: (identifier: string) => void;
+    getAvailableLanguages: () => CaptionOption[];
     setSize: (width: number, height: number) => void;
     setVolume: (volume: number) => void;
     stopVideo: () => void;
