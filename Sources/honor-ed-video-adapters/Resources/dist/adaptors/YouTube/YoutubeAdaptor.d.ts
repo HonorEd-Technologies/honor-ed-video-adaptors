@@ -2,7 +2,6 @@ import { type HonorVideoAdaptor } from '../HonorVideoAdaptor';
 import { type HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration';
 import { type HonorPlayer } from '../../HonorPlayer';
 import { type HonorVideoPlayerState } from '../../types';
-import { CaptionOption } from '../../types/Shared/CaptionOption';
 export type YoutubeConfig = {
     height: number;
     width: number;
@@ -19,17 +18,14 @@ export declare class YoutubeAdaptor implements HonorVideoAdaptor {
     destroy: () => any;
     getCurrentTime: () => number;
     getDuration: () => number;
+    getPlaybackRate: () => number;
     getVideoLoadedFraction: () => number;
     getPlayerState: () => HonorVideoPlayerState | undefined;
     getVolume: () => number;
     loadVideoById: (videoId: string, startTime?: number, endTime?: number) => void;
     seekTo: (seconds: number) => void;
-    getPlaybackRate: () => number;
-    getAvailablePlaybackRates: () => number[];
     setPlaybackRate: (rate: number) => void;
-    getAvailableLanguages: () => CaptionOption[];
-    setCaptionLanguage: (languageIdentifier: string) => void;
-    setSize: (width: number, height: number) => void;
+    setSize: (width: number, height: number) => Object;
     setVolume: (volume: number) => void;
     stopVideo: () => any;
     playVideo: () => any;

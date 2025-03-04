@@ -1,4 +1,3 @@
-import { type CaptionOption } from "../../types/Shared/CaptionOption";
 declare const _default: (elementId: string, config: PlayerOptions) => {
     loadVideoById: (videoId: string, startSeconds?: number, endSeconds?: number) => void;
     loadVideoByUrl: (mediaContentUrl: string, startSeconds?: number, endSeconds?: number) => void;
@@ -10,9 +9,6 @@ declare const _default: (elementId: string, config: PlayerOptions) => {
     getVideoLoadedFraction: () => number;
     setVolume: (volume: number) => void;
     getVolume: () => number;
-    getOptions: (module: string) => string[];
-    getOption: (module: string, option: string) => object[];
-    setOption: (module: string, option: string, data: object) => void;
     getPlaybackRate: () => number;
     setPlaybackRate: (suggestedRate: number) => void;
     getPlayerState: () => PlayerState;
@@ -89,9 +85,6 @@ export type Player = {
     getVideoEmbedCode(): string;
     getPlaylist(): string[];
     getPlaylistIndex(): number;
-    getOptions(module: string): string[];
-    getOption(module: string, option: string): CaptionOption[];
-    setOption(module: string, option: string, data: object): void;
     addEventListener<T extends keyof Events>(event: T, listener: (event: Events[T]) => void): void;
     removeEventListener<T extends keyof Events>(event: T, listener: (event: Events[T]) => void): void;
     getIframe(): HTMLIFrameElement;

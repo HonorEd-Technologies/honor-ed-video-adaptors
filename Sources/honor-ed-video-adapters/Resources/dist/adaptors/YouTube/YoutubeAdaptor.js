@@ -26,6 +26,7 @@ export class YoutubeAdaptor {
     destroy = () => this.YTPlayer.destroy();
     getCurrentTime = () => this.YTPlayer.getCurrentTime();
     getDuration = () => this.YTPlayer.getDuration();
+    getPlaybackRate = () => this.YTPlayer.getPlaybackRate();
     getVideoLoadedFraction = () => this.YTPlayer.getVideoLoadedFraction();
     getPlayerState = () => {
         const state = this.YTPlayer.getPlayerState();
@@ -34,11 +35,7 @@ export class YoutubeAdaptor {
     getVolume = () => this.YTPlayer.getVolume();
     loadVideoById = (videoId, startTime, endTime) => this.loadVideoById(videoId, startTime, endTime);
     seekTo = (seconds) => this.YTPlayer.seekTo(seconds);
-    getPlaybackRate = () => this.YTPlayer.getPlaybackRate();
-    getAvailablePlaybackRates = () => this.YTPlayer.getAvailablePlaybackRates();
     setPlaybackRate = (rate) => this.YTPlayer.setPlaybackRate(rate);
-    getAvailableLanguages = () => this.YTPlayer.getOption('captions', 'translationLanguages');
-    setCaptionLanguage = (languageIdentifier) => this.YTPlayer.setOption('captions', 'track', { languageCode: languageIdentifier });
     setSize = (width, height) => this.YTPlayer.setSize(width, height);
     setVolume = (volume) => this.YTPlayer.setVolume(volume);
     stopVideo = () => this.YTPlayer.stopVideo();
