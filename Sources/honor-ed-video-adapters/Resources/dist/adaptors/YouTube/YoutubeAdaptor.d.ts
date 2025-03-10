@@ -2,7 +2,7 @@ import { type HonorVideoAdaptor } from '../HonorVideoAdaptor';
 import { type HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration';
 import { type HonorPlayer } from '../../HonorPlayer';
 import { type HonorVideoPlayerState } from '../../types';
-import { CaptionOption } from '../../types/Shared/CaptionOption';
+import { type CaptionOption } from '../../types/Shared/CaptionOption';
 export type YoutubeConfig = {
     height: number;
     width: number;

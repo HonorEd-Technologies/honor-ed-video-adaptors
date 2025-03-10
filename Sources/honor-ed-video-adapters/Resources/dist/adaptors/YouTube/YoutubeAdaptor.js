@@ -14,7 +14,7 @@ export class YoutubeAdaptor {
             videoId: configuration.videoId,
             events: youtubeEventHandler(player),
             playerVars: {
-                autoPlay: configuration.autoplay ? 1 : 0,
+                autoplay: configuration.autoplay ? 1 : 0,
                 controls: configuration.controls ? 1 : 0,
                 fs: configuration.fullscreenEnabled ? 1 : 0,
                 playsInline: configuration.playsInline ? 1 : 0,
