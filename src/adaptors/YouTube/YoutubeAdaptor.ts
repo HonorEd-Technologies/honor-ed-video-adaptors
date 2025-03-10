@@ -8,7 +8,7 @@ import {
 } from '../../utils/YouTube/events'
 import { type HonorPlayer } from '../../HonorPlayer'
 import { type HonorVideoPlayerState } from '../../types'
-import { CaptionOption } from '../../types/Shared/CaptionOption'
+import { type CaptionOption } from '../../types/Shared/CaptionOption'
 
 export type YoutubeConfig = {
   height: number
@@ -36,7 +36,7 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
       videoId: configuration.videoId,
       events: youtubeEventHandler(player),
       playerVars: {
-        autoPlay: configuration.autoplay ? 1 : 0,
+        autoplay: configuration.autoplay ? 1 : 0,
         controls: configuration.controls ? 1 : 0,
         fs: configuration.fullscreenEnabled ? 1 : 0,
         playsInline: configuration.playsInline ? 1 : 0,
