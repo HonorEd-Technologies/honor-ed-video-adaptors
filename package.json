@@ -8,10 +8,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "clean": "rimraf dist && rimraf Sources/honor-ed-video-adapters/Resources/dist",
+    "clean": "rimraf dist && rimraf Sources/HonorVideoAdaptors/Resources/dist",
     "prebuild": "npm run clean",
     "build": "tsc && webpack build",
-    "postbuild": "copyfiles -u 1 \"dist/**/*\"  Sources/honor-ed-video-adapters/Resources/dist && cp ./src/HonorPlayer.html ./Sources/honor-ed-video-adapters/Resources/dist",
+    "postbuild": "copyfiles -u 1 \"dist/**/*\"  Sources/HonorVideoAdaptors/Resources/dist && cp ./src/HonorPlayer.html ./Sources/HonorVideoAdaptors/Resources/dist",
     "format:fix": "prettier --write .",
     "format:check": "prettier --check .",
     "lint:eslint": "eslint .",

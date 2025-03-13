@@ -10,7 +10,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "HonorVideoAdaptors",
-            targets: ["honor-ed-video-adapters"]),
+            targets: ["HonorVideoAdaptors"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -18,7 +18,7 @@ let package = Package(
         .target(
             name: "HonorVideoAdaptors",
             sources: ["honor-ed-video-adapters.swift"],
-            resources: [.process("Resources/dist")]
+            resources: [.copy("Resources/dist")]
         ),
     ]
 )
