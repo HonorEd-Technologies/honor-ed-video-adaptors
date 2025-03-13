@@ -4,19 +4,19 @@
 import PackageDescription
 
 let package = Package(
-    name: "honor-ed-video-adapters",
+    name: "HonorVideoAdaptors",
     platforms: [.iOS(.v16)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "honor-ed-video-adapters",
-            targets: ["honor-ed-video-adapters"]),
+            name: "HonorVideoAdaptors",
+            targets: ["HonorVideoAdaptors"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "honor-ed-video-adapters",
+            name: "HonorVideoAdaptors",
             sources: ["honor-ed-video-adapters.swift"],
             resources: [.process("Resources/dist")]
         ),
