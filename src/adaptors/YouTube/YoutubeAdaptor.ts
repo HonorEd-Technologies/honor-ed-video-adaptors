@@ -55,7 +55,7 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
     const state = this.YTPlayer.getPlayerState()
     return parseYTPlayerState(state)
   }
-  getVolume = (): number => this.YTPlayer.getVolume()
+  getVolume = (): number => this.YTPlayer.getVolume() / 100
   loadVideoById = (
     videoId: string,
     startTime?: number,
@@ -69,7 +69,7 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
   setCaptionLanguage = (languageIdentifier: string): void => this.YTPlayer.setOption('captions', 'track', { languageCode: languageIdentifier })
   setSize = (width: number, height: number): void =>
     this.YTPlayer.setSize(width, height)
-  setVolume = (volume: number): void => this.YTPlayer.setVolume(volume)
+  setVolume = (volume: number): void => this.YTPlayer.setVolume(volume * 100)
   stopVideo = () => this.YTPlayer.stopVideo()
   playVideo = () => this.YTPlayer.playVideo()
   pauseVideo = () => this.YTPlayer.pauseVideo()

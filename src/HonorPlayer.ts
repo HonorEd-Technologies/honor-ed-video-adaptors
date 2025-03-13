@@ -91,7 +91,10 @@ export class HonorPlayer {
   getAvailableLanguages = (): CaptionOption[] => this.adaptor.getAvailableLanguages()
   setSize = (width: number, height: number): void =>
     this.adaptor.setSize(width, height)
-  setVolume = (volume: number): void => { this.adaptor.setVolume(volume); }
+  setVolume = (volume: number): void => {
+    const boundVolume = Math.min(1, Math.max(0, volume)) 
+    this.adaptor.setVolume(boundVolume); 
+  }
   stopVideo = (): void => { this.adaptor.stopVideo(); }
   playVideo = (): void => { this.adaptor.playVideo(); }
   pauseVideo = (): void => { this.adaptor.pauseVideo(); }
