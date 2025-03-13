@@ -18,7 +18,7 @@ let package = Package(
         .target(
             name: "HonorVideoAdaptors",
             sources: ["honor-ed-video-adapters.swift"],
-            resources: [.copy("Resources/dist")]
+            resources: [.process("Resources/dist")]
         ),
     ]
 )

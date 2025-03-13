@@ -11,7 +11,7 @@
     "clean": "rimraf dist && rimraf Sources/HonorVideoAdaptors/Resources/dist",
     "prebuild": "npm run clean",
     "build": "tsc && webpack build",
-    "postbuild": "copyfiles -u 1 \"dist/**/*\"  Sources/HonorVideoAdaptors/Resources/dist && cp ./src/HonorPlayer.html ./Sources/HonorVideoAdaptors/Resources/dist",
+    "postbuild": "copyfiles -u 1 \"dist/**/main.js\"  Sources/HonorVideoAdaptors/Resources/dist && cp ./src/HonorPlayer.html ./Sources/HonorVideoAdaptors/Resources/dist",
     "format:fix": "prettier --write .",
     "format:check": "prettier --check .",
     "lint:eslint": "eslint .",
