@@ -23,6 +23,7 @@ export type HonorVideoAdaptor = {
   setSize: (width: number, height: number) => void
   getAvailableLanguages: () => CaptionOption[]
   setCaptionLanguage: (languageIdentifier: string) => void
+  removeCaptions: () => void
   setVolume: (volume: number) => void
   stopVideo: () => void
   playVideo: () => void
