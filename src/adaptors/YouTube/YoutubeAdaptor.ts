@@ -38,6 +38,7 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
       playerVars: {
         autoplay: configuration.autoplay ? 1 : 0,
         controls: configuration.controls ? 1 : 0,
+        cc_load_policy: 1,
         fs: configuration.fullscreenEnabled ? 1 : 0,
         playsInline: configuration.playsInline ? 1 : 0,
       },
@@ -67,6 +68,7 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
   setPlaybackRate = (rate: number): void => this.YTPlayer.setPlaybackRate(rate)
   getAvailableLanguages = (): CaptionOption[] => this.YTPlayer.getOption('captions', 'tracklist')
   setCaptionLanguage = (languageIdentifier: string): void => this.YTPlayer.setOption('captions', 'track', { languageCode: languageIdentifier })
+  removeCaptions = (): void => this.YTPlayer.setOption('captions', 'track', { })
   setSize = (width: number, height: number): void =>
     this.YTPlayer.setSize(width, height)
   setVolume = (volume: number): void => this.YTPlayer.setVolume(volume * 100)

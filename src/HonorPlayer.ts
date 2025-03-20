@@ -88,6 +88,7 @@ export class HonorPlayer {
   getAvailablePlaybackRates = (): number[] => this.adaptor.getAvailablePlaybackRates()
   setPlaybackRate = (rate: number): void => { this.adaptor.setPlaybackRate(rate); }
   setCaptionLanguage = (identifier: string): void => { this.adaptor.setCaptionLanguage(identifier) }
+  removeCaptions = (): void => { this.adaptor.removeCaptions() }
   getAvailableLanguages = (): CaptionOption[] => this.adaptor.getAvailableLanguages()
   setSize = (width: number, height: number): void =>
     this.adaptor.setSize(width, height)
