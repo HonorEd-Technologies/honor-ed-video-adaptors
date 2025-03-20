@@ -1,4 +1,4 @@
-import convertYTPlayer from './convertYTPlayer'
+import convertYTPlayer, { Player } from './convertYTPlayer'
 import { type HonorVideoAdaptor } from '../HonorVideoAdaptor'
 import { type HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration'
 import loadYoutubeAPI from '../../utils/loadYoutubeAPI'
@@ -48,7 +48,7 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
     this.YTPlayer = ytPlayer
   }
 
-  destroy = () => this.YTPlayer.destroy()
+  destroy = () => { this.YTPlayer.destroy(); }
   getCurrentTime = (): number => this.YTPlayer.getCurrentTime()
   getDuration = (): number => this.YTPlayer.getDuration()
   getVideoLoadedFraction = (): number => this.YTPlayer.getVideoLoadedFraction()
@@ -66,9 +66,18 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
   getPlaybackRate = (): number => this.YTPlayer.getPlaybackRate()
   getAvailablePlaybackRates = (): number[] => this.YTPlayer.getAvailablePlaybackRates()
   setPlaybackRate = (rate: number): void => this.YTPlayer.setPlaybackRate(rate)
-  getAvailableLanguages = (): CaptionOption[] => this.YTPlayer.getOption('captions', 'tracklist')
-  getCurrentLanguage = (): CaptionOption | undefined => this.YTPlayer.getOption('captions', 'track')
-  setCaptionLanguage = (languageIdentifier: string): void => this.YTPlayer.setOption('captions', 'track', { languageCode: languageIdentifier })
+  getAvailableLanguages = (): CaptionOption[] => { 
+    const options: { languageCode: string, languageName: string }[] | undefined = this.YTPlayer.getOption('captions', 'tracklist') 
+    if (options) { 
+      return options.flatMap(({ languageCode, languageName }) => ({ languageCode, languageIdentifier: languageName }))
+    }
+    return []
+  }
+  getCurrentLanguage = (): CaptionOption | undefined => { 
+    const option: { languageCode: string, languageName: string } | undefined = this.YTPlayer.getOption('captions', 'track')
+    return option ? { languageCode: option.languageCode, languageIdentifier: option.languageName } : undefined
+  }
+  setCaptionLanguage = (languageCode: string): void => { this.YTPlayer.setOption('captions', 'track', { languageCode }) }
   removeCaptions = (): void => this.YTPlayer.setOption('captions', 'track', { })
   setSize = (width: number, height: number): void =>
     this.YTPlayer.setSize(width, height)

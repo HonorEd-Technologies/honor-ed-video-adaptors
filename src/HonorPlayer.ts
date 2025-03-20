@@ -4,7 +4,7 @@ import { type HonorVideoError } from './types/Shared/HonorVideoError'
 import { HonorVideoEvent } from './types/Shared/HonorVideoEvent'
 import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState'
 import { type HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor'
-import { CaptionOption } from './types/Shared/CaptionOption'
+import { type CaptionOption } from './types/Shared/CaptionOption'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type Constructor = new (...args: any[]) => {}
