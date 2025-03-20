@@ -90,6 +90,7 @@ export class HonorPlayer {
   setCaptionLanguage = (identifier: string): void => { this.adaptor.setCaptionLanguage(identifier) }
   removeCaptions = (): void => { this.adaptor.removeCaptions() }
   getAvailableLanguages = (): CaptionOption[] => this.adaptor.getAvailableLanguages()
+  getCurrentLanguage = (): CaptionOption | undefined => this.adaptor.getCurrentLanguage()
   setSize = (width: number, height: number): void =>
     this.adaptor.setSize(width, height)
   setVolume = (volume: number): void => {
