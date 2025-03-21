@@ -4,7 +4,7 @@ import { type HonorVideoError } from './types/Shared/HonorVideoError'
 import { HonorVideoEvent } from './types/Shared/HonorVideoEvent'
 import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState'
 import { type HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor'
-import { CaptionOption } from './types/Shared/CaptionOption'
+import { type CaptionOption } from './types/Shared/CaptionOption'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type Constructor = new (...args: any[]) => {}
@@ -90,6 +90,7 @@ export class HonorPlayer {
   setCaptionLanguage = (identifier: string): void => { this.adaptor.setCaptionLanguage(identifier) }
   removeCaptions = (): void => { this.adaptor.removeCaptions() }
   getAvailableLanguages = (): CaptionOption[] => this.adaptor.getAvailableLanguages()
+  getCurrentLanguage = (): CaptionOption | undefined => this.adaptor.getCurrentLanguage()
   setSize = (width: number, height: number): void =>
     this.adaptor.setSize(width, height)
   setVolume = (volume: number): void => {
