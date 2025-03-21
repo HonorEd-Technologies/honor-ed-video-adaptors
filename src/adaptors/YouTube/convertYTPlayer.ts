@@ -206,25 +206,25 @@ interface BaseEvent {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface OnReadyEvent extends BaseEvent {}
-interface OnStateChangeEvent extends BaseEvent {
+export interface OnReadyEvent extends BaseEvent {}
+export interface OnStateChangeEvent extends BaseEvent {
   data: PlayerState
 }
-interface OnPlaybackQualityChangeEvent extends BaseEvent {
+export interface OnPlaybackQualityChangeEvent extends BaseEvent {
   data: string
 }
-interface OnPlaybackRateChangeEvent extends BaseEvent {
+export interface OnPlaybackRateChangeEvent extends BaseEvent {
   data: number
 }
-interface OnErrorEvent extends BaseEvent {
+export interface OnErrorEvent extends BaseEvent {
   data: number
 }
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface OnApiChangeEvent extends BaseEvent {}
+export interface OnApiChangeEvent extends BaseEvent {}
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface OnAutoplayBlockedEvent extends BaseEvent {}
+export interface OnAutoplayBlockedEvent extends BaseEvent {}
 
-interface SphericalProperties {
+export interface SphericalProperties {
   yaw: number
   pitch: number
   roll: number

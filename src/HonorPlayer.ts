@@ -73,6 +73,7 @@ export class HonorPlayer {
   ) {
     this.adaptor = adaptor
     this.emitter = new HonorVideoEventEmitters()
+    this.initializeAdaptor = this.initializeAdaptor.bind(this)
     void this.initializeAdaptor(elementId, configuration)
   }
 
@@ -92,7 +93,7 @@ export class HonorPlayer {
   getAvailableLanguages = (): CaptionOption[] => this.adaptor.getAvailableLanguages()
   getCurrentLanguage = (): CaptionOption | undefined => this.adaptor.getCurrentLanguage()
   setSize = (width: number, height: number): void =>
-    this.adaptor.setSize(width, height)
+    { this.adaptor.setSize(width, height); }
   setVolume = (volume: number): void => {
     const boundVolume = Math.min(1, Math.max(0, volume)) 
     this.adaptor.setVolume(boundVolume); 
@@ -129,10 +130,10 @@ export class HonorPlayer {
     return this.emitter.onVolumeChange(callback)
   }
 
-  initializeAdaptor = async (
+  async initializeAdaptor(
     elementId: string,
     config: HonorVideoConfiguration
-  ): Promise<void> => {
+  ): Promise<void> {
     await this.adaptor.initialize(elementId, config, this)
     this.initialized = true
   }
