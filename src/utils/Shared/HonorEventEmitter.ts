@@ -70,9 +70,7 @@ export class HonorVideoEventEmitters {
         }
         break
       case HonorVideoEvent.currentTimeChanged:
-        if (<number>data) {
-          this.currentTimeEmitter.emit(<number>data)
-        }
+        this.currentTimeEmitter.emit(+data)
         break
       case HonorVideoEvent.playbackRateChanged:
         if (<number>data) {
