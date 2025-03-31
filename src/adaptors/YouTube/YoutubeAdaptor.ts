@@ -1,4 +1,4 @@
-import convertYTPlayer, { Player } from './convertYTPlayer'
+import convertYTPlayer from './convertYTPlayer'
 import { type HonorVideoAdaptor } from '../HonorVideoAdaptor'
 import { type HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration'
 import loadYoutubeAPI from '../../utils/loadYoutubeAPI'
@@ -9,13 +9,16 @@ import {
 import { type HonorPlayer } from '../../HonorPlayer'
 import { type HonorVideoPlayerState } from '../../types'
 import { type CaptionOption } from '../../types/Shared/CaptionOption'
+import { YOUTUBE_EDUCATION_HOSTNAME } from './constants'
 
 export type YoutubeConfig = {
   height: number
   width: number
   videoId: string
   playerVars: object
+  host: string | undefined
   events?: object
+  embedConfig?: object
 }
 
 /**
@@ -30,11 +33,18 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
     player: HonorPlayer
   ): Promise<void> => {
     await loadYoutubeAPI(player.emitter)
+
+    const shouldUseEducationApi = window.location.protocol === 'https://'
+
+    if (!configuration.keys?.youtubeApiKey) { 
+      throw new Error('Education API key must be provided in configuration object.')
+    }
     const config: YoutubeConfig = {
       height: configuration.height,
       width: configuration.width,
       videoId: configuration.videoId,
       events: youtubeEventHandler(player),
+      host: shouldUseEducationApi ? YOUTUBE_EDUCATION_HOSTNAME : undefined,
       playerVars: {
         autoplay: configuration.autoplay ? 1 : 0,
         controls: configuration.controls ? 1 : 0,
@@ -42,6 +52,9 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
         fs: configuration.fullscreenEnabled ? 1 : 0,
         playsInline: configuration.playsInline ? 1 : 0,
       },
+      embedConfig: shouldUseEducationApi ? { 
+        apiKey: configuration.keys.youtubeApiKey
+      } : undefined
     }
 
     const ytPlayer = convertYTPlayer(elementId, config)

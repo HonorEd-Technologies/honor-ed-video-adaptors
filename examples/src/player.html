@@ -28,6 +28,9 @@
             controls: false,
             fullscreenEnabled: false,
             playsInline: false,
+            keys: { 
+              youtubeApiKey: 'AIzaSyA6a0eerycEDs2yDe_hB28PE8tsYYS7GxE'
+            }
           }
           const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor('youtube')
           const player = new HE.HonorPlayer('player-1', config, adaptor)
@@ -42,7 +45,7 @@
           })
 
           const removeError = player.onError((error) => {
-            console.log('Error: ' + error)
+            console.log('Error: ', error)
           })
 
           const removeCurrentTimeChange = player.onCurrentTimeChanged(

@@ -1,6 +1,7 @@
 import { type HonorVideoEventEmitters } from './Shared/HonorEventEmitter'
 import { HonorVideoErrorType } from '../types/Shared/HonorVideoError'
 import { HonorVideoEvent } from '../types/Shared/HonorVideoEvent'
+import { YOUTUBE_API, YOUTUBE_EDUCATION_API } from '../adaptors'
 
 export default (emitter: HonorVideoEventEmitters): Promise<void> => {
   const triggerEvent = emitter.triggerEvent.bind(emitter)
@@ -12,8 +13,9 @@ export default (emitter: HonorVideoEventEmitters): Promise<void> => {
     }
 
     const tag = document.createElement('script')
+    const tagSource = window.location.protocol === 'https:' ? YOUTUBE_EDUCATION_API : YOUTUBE_API
 
-    tag.src = 'https://www.youtube.com/iframe_api'
+    tag.src = tagSource
     const firstScriptTag = document.getElementsByTagName('script')[0]
 
     if (firstScriptTag.parentNode) {
