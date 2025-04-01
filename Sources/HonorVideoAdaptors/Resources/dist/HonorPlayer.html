@@ -9,6 +9,7 @@
       let search = window.location.search
       let urlParams = new URLSearchParams(search)
       let videoId = urlParams.get('videoId')
+      let youtubeApiKey = urlParams.get('youtubeApiKey')
 
       window.addEventListener('load', (event) => {
         if (!videoId) {
@@ -23,6 +24,9 @@
             controls: false,
             fullscreenEnabled: false,
             playsInline: false,
+            keys: {
+              youtubeApiKey
+            }
           }
 
           const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor('youtube')

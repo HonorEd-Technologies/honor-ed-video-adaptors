@@ -34,7 +34,7 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
   ): Promise<void> => {
     await loadYoutubeAPI(player.emitter)
 
-    const shouldUseEducationApi = window.location.protocol === 'https://'
+    const shouldUseEducationApi = true
 
     if (!configuration.keys?.youtubeApiKey) { 
       throw new Error('Education API key must be provided in configuration object.')

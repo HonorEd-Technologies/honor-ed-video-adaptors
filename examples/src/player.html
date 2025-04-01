@@ -2,6 +2,9 @@
 <html>
   <head>
     <script type="module" src="/dist/main.js"></script>
+    <script>
+      Object.defineProperty(document, "referrer", {get: function() { return "create-dev.devhonor.education" }})
+    </script>
   </head>
   <body>
     <div id="player-1"></div>

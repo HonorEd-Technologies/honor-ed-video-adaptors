@@ -13,7 +13,7 @@ export default (emitter: HonorVideoEventEmitters): Promise<void> => {
     }
 
     const tag = document.createElement('script')
-    const tagSource = window.location.protocol === 'https:' ? YOUTUBE_EDUCATION_API : YOUTUBE_API
+    const tagSource = YOUTUBE_EDUCATION_API
 
     tag.src = tagSource
     const firstScriptTag = document.getElementsByTagName('script')[0]
