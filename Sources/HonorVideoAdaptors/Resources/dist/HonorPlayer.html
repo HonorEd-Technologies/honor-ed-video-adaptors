@@ -6,11 +6,11 @@
   <body style="margin: 0px; background-color: black">
     <div id="player-1"></div>
     <script>
-      let search = window.location.search
-      let urlParams = new URLSearchParams(search)
-      let videoId = urlParams.get('videoId')
-      let youtubeApiKey = urlParams.get('youtubeApiKey')
-
+      /** 
+       * For iOS and Android consumers, the video ID and the API key must be injected with a `WKUserScript`.
+      */
+      const videoId = "VIDEO_ID_PLACEHOLDER"
+      const youtubeApiKey = "YOUTUBE_API_KEY_PLACEHOLDER"
       window.addEventListener('load', (event) => {
         if (!videoId) {
           document.getElementById('player-1').innerText =

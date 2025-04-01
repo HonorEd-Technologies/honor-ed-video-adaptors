@@ -2,6 +2,15 @@ import Foundation
 
 public enum EntryPoint {
     public static let playerUrl = Bundle.module.url(forResource: "HonorPlayer", withExtension: "html")
+    
+    public static func htmlString(htmlString: String, videoId: String, apiKey: String) -> String {
+        let videoIdPlaceholder = "VIDEO_ID_PLACEHOLDER"
+        let youtubeApiKeyPlaceholder = "YOUTUBE_API_KEY_PLACEHOLDER"
+        
+        return htmlString
+            .replacingOccurrences(of: videoIdPlaceholder, with: videoId)
+            .replacingOccurrences(of: youtubeApiKeyPlaceholder, with: apiKey)
+    }
 }
 
 public enum HEVideoPlayerState: Int, Equatable {
