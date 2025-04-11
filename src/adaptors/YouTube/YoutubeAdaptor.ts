@@ -7,7 +7,7 @@ import {
   youtubeEventHandler,
 } from '../../utils/YouTube/events'
 import { type HonorPlayer } from '../../HonorPlayer'
-import { type HonorVideoPlayerState } from '../../types'
+import { HonorVideoErrorType, type HonorVideoPlayerState } from '../../types'
 import { type CaptionOption } from '../../types/Shared/CaptionOption'
 import { YOUTUBE_EDUCATION_HOSTNAME } from './constants'
 
@@ -16,7 +16,7 @@ export type YoutubeConfig = {
   width: number
   videoId: string
   playerVars: object
-  host: string | undefined
+  host?: string
   events?: object
   embedConfig?: object
 }
@@ -25,26 +25,34 @@ export type YoutubeConfig = {
  * This class will load Youtube's IFrame API upon the call of `initialize`, and upon completion will set the YT.Player object on `this` and expose methods that interact with it.
  */
 export class YoutubeAdaptor implements HonorVideoAdaptor {
+  apiKey: string
   YTPlayer: any | null
+
+  constructor(apiKey: string) { 
+    this.apiKey = apiKey
+    this.YTPlayer = null
+  }
 
   initialize = async (
     elementId: string,
     configuration: HonorVideoConfiguration,
     player: HonorPlayer
   ): Promise<void> => {
-    await loadYoutubeAPI(player.emitter)
-
-    const shouldUseEducationApi = true
-
-    if (!configuration.keys?.youtubeApiKey) { 
-      throw new Error('Education API key must be provided in configuration object.')
+    if (window.location.protocol === 'https:') {
+      await this.loadEducationalYoutubePlayer(elementId, configuration, player)
+    } else {
+      await this.loadYoutubePlayer(elementId, configuration, player)
     }
-    const config: YoutubeConfig = {
+  }
+
+  loadEducationalYoutubePlayer = async (elementId: string, configuration: HonorVideoConfiguration, player: HonorPlayer): Promise<void> => {
+    await loadYoutubeAPI(player.emitter, true)
+    const config: YoutubeConfig = { 
       height: configuration.height,
       width: configuration.width,
       videoId: configuration.videoId,
       events: youtubeEventHandler(player),
-      host: shouldUseEducationApi ? YOUTUBE_EDUCATION_HOSTNAME : undefined,
+      host: YOUTUBE_EDUCATION_HOSTNAME,
       playerVars: {
         autoplay: configuration.autoplay ? 1 : 0,
         controls: configuration.controls ? 1 : 0,
@@ -52,9 +60,31 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
         fs: configuration.fullscreenEnabled ? 1 : 0,
         playsInline: configuration.playsInline ? 1 : 0,
       },
-      embedConfig: shouldUseEducationApi ? { 
-        apiKey: configuration.keys.youtubeApiKey
-      } : undefined
+      embedConfig: {
+        apiKey: this.apiKey,
+        hideTitle: true,
+      }
+    }
+
+    const ytPlayer = convertYTPlayer(elementId, config)
+    this.YTPlayer = ytPlayer
+  }
+
+  loadYoutubePlayer = async (elementId: string, configuration: HonorVideoConfiguration, player: HonorPlayer): Promise<void> => { 
+    await loadYoutubeAPI(player.emitter, false)
+
+    const config: YoutubeConfig = { 
+      height: configuration.height,
+      width: configuration.width,
+      videoId: configuration.videoId,
+      events: youtubeEventHandler(player),
+      playerVars: {
+        autoplay: configuration.autoplay ? 1 : 0,
+        controls: configuration.controls ? 1 : 0,
+        cc_load_policy: 1,
+        fs: configuration.fullscreenEnabled ? 1 : 0,
+        playsInline: configuration.playsInline ? 1 : 0,
+      },
     }
 
     const ytPlayer = convertYTPlayer(elementId, config)

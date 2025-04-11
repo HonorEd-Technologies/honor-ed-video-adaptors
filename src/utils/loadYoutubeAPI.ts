@@ -3,7 +3,7 @@ import { HonorVideoErrorType } from '../types/Shared/HonorVideoError'
 import { HonorVideoEvent } from '../types/Shared/HonorVideoEvent'
 import { YOUTUBE_API, YOUTUBE_EDUCATION_API } from '../adaptors'
 
-export default (emitter: HonorVideoEventEmitters): Promise<void> => {
+export default (emitter: HonorVideoEventEmitters, isEducationApi: boolean): Promise<void> => {
   const triggerEvent = emitter.triggerEvent.bind(emitter)
   const iFrameReadyPromise = new Promise<void>((resolve, reject) => {
     if (window.YT && window.YT.Player instanceof Function) {
@@ -13,13 +13,15 @@ export default (emitter: HonorVideoEventEmitters): Promise<void> => {
     }
 
     const tag = document.createElement('script')
-    const tagSource = YOUTUBE_EDUCATION_API
+    const tagSource = isEducationApi ? YOUTUBE_EDUCATION_API : YOUTUBE_API
 
     tag.src = tagSource
-    const firstScriptTag = document.getElementsByTagName('script')[0]
+    const firstScriptTag = document.getElementsByTagName('script').length > 0 ? document.getElementsByTagName('script')[0] : undefined
 
-    if (firstScriptTag.parentNode) {
+    if (firstScriptTag && firstScriptTag.parentNode) {
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+    } else { 
+      document.head.appendChild(tag)
     }
 
     window.onYouTubeIframeAPIReady = (): void => {

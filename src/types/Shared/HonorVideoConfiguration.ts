@@ -6,7 +6,4 @@ export type HonorVideoConfiguration = {
   fullscreenEnabled: boolean
   playsInline: boolean
   videoId: string
-  keys?: { 
-    youtubeApiKey?: string | undefined
-  }
 }

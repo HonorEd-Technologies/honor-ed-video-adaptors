@@ -1,18 +1,12 @@
 <!doctype html>
 <html>
-  <head>
-    <script src="main.js"></script>
-  </head>
   <body style="margin: 0px; background-color: black">
     <div id="player-1"></div>
     <script>
-      /** 
-       * For iOS and Android consumers, the video ID and the API key must be injected with a `WKUserScript`.
-      */
-      const videoId = "VIDEO_ID_PLACEHOLDER"
-      const youtubeApiKey = "YOUTUBE_API_KEY_PLACEHOLDER"
+      const videoId = "VIDEO_ID"
+      const apiKey = "API_KEY"
       window.addEventListener('load', (event) => {
-        if (!videoId) {
+        if (!videoId || !apiKey) {
           document.getElementById('player-1').innerText =
             'Please pass in a video id'
         } else {
@@ -23,13 +17,10 @@
             autoplay: false,
             controls: false,
             fullscreenEnabled: false,
-            playsInline: false,
-            keys: {
-              youtubeApiKey
-            }
+            playsInline: false
           }
 
-          const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor('youtube')
+          const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor({ type: 'youtube', apiKey })
           const player = new HE.HonorPlayer('player-1', config, adaptor)
           window.HonorPlayer = player
 
@@ -85,6 +76,12 @@
         console.log(`resize width: ${newWidth}, height: ${newHeight}`)
         if (window.HonorPlayer) {
           window.HonorPlayer.setSize(newWidth, newHeight)
+        }
+      })
+
+      window.addEventListener('unload', (event) => {
+        if (window.HonorPlayer) {
+          window.HonorPlayer.destroy()
         }
       })
     </script>

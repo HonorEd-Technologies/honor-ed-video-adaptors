@@ -2,9 +2,6 @@
 <html>
   <head>
     <script type="module" src="/dist/main.js"></script>
-    <script>
-      Object.defineProperty(document, "referrer", {get: function() { return "create-dev.devhonor.education" }})
-    </script>
   </head>
   <body>
     <div id="player-1"></div>
@@ -19,7 +16,7 @@
       let videoId = urlParams.get('videoId')
 
       window.addEventListener('load', (event) => {
-        if (!videoId) {
+        if (!videoId ) {
           document.getElementById('player-1').innerText =
             'Please pass in a video id'
         } else {
@@ -31,11 +28,8 @@
             controls: false,
             fullscreenEnabled: false,
             playsInline: false,
-            keys: { 
-              youtubeApiKey: 'AIzaSyA6a0eerycEDs2yDe_hB28PE8tsYYS7GxE'
-            }
           }
-          const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor('youtube')
+          const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor({ type: 'youtube', apiKey: "" })
           const player = new HE.HonorPlayer('player-1', config, adaptor)
           window.HonorPlayer = player
 
