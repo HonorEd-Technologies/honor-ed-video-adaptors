@@ -33,7 +33,7 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
     configuration: HonorVideoConfiguration,
     player: HonorPlayer
   ): Promise<void> => {
-    const shouldUseEducationAPI = document.referrer.startsWith('https')
+    const shouldUseEducationAPI = window.location.protocol === 'https:'
     if (shouldUseEducationAPI) { 
       await loadEducationYoutubeAPI(player.emitter)
     } else {
