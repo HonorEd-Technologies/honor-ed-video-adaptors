@@ -2,6 +2,7 @@ import Foundation
 
 public enum EntryPoint {
     public static let playerUrl = Bundle.module.url(forResource: "HonorPlayer", withExtension: "html")
+    public static let playerJsUrl = Bundle.module.url(forResource: "main", withExtension: "js")
 }
 
 public enum HEVideoPlayerState: Int, Equatable {
