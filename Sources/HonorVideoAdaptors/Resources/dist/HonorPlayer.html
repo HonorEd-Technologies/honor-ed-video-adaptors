@@ -1,14 +1,10 @@
 <!doctype html>
 <html>
-  <head>
-    <script src="main.js"></script>
-  </head>
   <body style="margin: 0px; background-color: black">
     <div id="player-1"></div>
     <script>
-      let search = window.location.search
-      let urlParams = new URLSearchParams(search)
-      let videoId = urlParams.get('videoId')
+      const videoId = 'VIDEO_ID'
+      const enc = 'ENCRYPTED_PAYLOAD'
 
       window.addEventListener('load', (event) => {
         if (!videoId) {
@@ -23,6 +19,7 @@
             controls: false,
             fullscreenEnabled: false,
             playsInline: false,
+            enc,
           }
 
           const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor('youtube')

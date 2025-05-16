@@ -2,7 +2,15 @@ import { type HonorVideoEventEmitters } from './Shared/HonorEventEmitter'
 import { HonorVideoErrorType } from '../types/Shared/HonorVideoError'
 import { HonorVideoEvent } from '../types/Shared/HonorVideoEvent'
 
-export default (emitter: HonorVideoEventEmitters): Promise<void> => {
+export const loadYoutubeAPI = (emitter: HonorVideoEventEmitters): Promise<void> => {
+  return loadYoutubeScript(emitter, 'https://www.youtube.com/iframe_api')
+}
+
+export const loadEducationYoutubeAPI = (emitter: HonorVideoEventEmitters): Promise<void> => {
+  return loadYoutubeScript(emitter, 'https://www.youtubeeducation.com/iframe_api')
+}
+
+const loadYoutubeScript = (emitter: HonorVideoEventEmitters, url: string): Promise<void> => { 
   const triggerEvent = emitter.triggerEvent.bind(emitter)
   const iFrameReadyPromise = new Promise<void>((resolve, reject) => {
     if (window.YT && window.YT.Player instanceof Function) {
@@ -13,11 +21,14 @@ export default (emitter: HonorVideoEventEmitters): Promise<void> => {
 
     const tag = document.createElement('script')
 
-    tag.src = 'https://www.youtube.com/iframe_api'
+    tag.src = url
+    const scripts = document.getElementsByTagName('script')
     const firstScriptTag = document.getElementsByTagName('script')[0]
 
-    if (firstScriptTag.parentNode) {
+    if (scripts.length !== 0 && firstScriptTag.parentNode) {
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+    } else { 
+      document.head.appendChild(tag)
     }
 
     window.onYouTubeIframeAPIReady = (): void => {

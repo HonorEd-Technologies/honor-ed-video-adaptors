@@ -1,7 +1,7 @@
 import convertYTPlayer, { Player } from './convertYTPlayer'
 import { type HonorVideoAdaptor } from '../HonorVideoAdaptor'
 import { type HonorVideoConfiguration } from '../../types/Shared/HonorVideoConfiguration'
-import loadYoutubeAPI from '../../utils/loadYoutubeAPI'
+import { loadYoutubeAPI, loadEducationYoutubeAPI } from '../../utils/loadYoutubeAPI'
 import {
   parseYTPlayerState,
   youtubeEventHandler,
@@ -14,9 +14,13 @@ export type YoutubeConfig = {
   height: number
   width: number
   videoId: string
+  host?: string
   playerVars: object
   events?: object
+  embedConfig?: object
 }
+
+const EDUCATION_HOST_NAME = 'https://www.youtubeeducation.com'
 
 /**
  * This class will load Youtube's IFrame API upon the call of `initialize`, and upon completion will set the YT.Player object on `this` and expose methods that interact with it.
@@ -29,7 +33,13 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
     configuration: HonorVideoConfiguration,
     player: HonorPlayer
   ): Promise<void> => {
-    await loadYoutubeAPI(player.emitter)
+    const shouldUseEducationAPI = window.location.protocol === 'https:'
+    if (shouldUseEducationAPI) { 
+      await loadEducationYoutubeAPI(player.emitter)
+    } else {
+      await loadYoutubeAPI(player.emitter)
+    }
+
     const config: YoutubeConfig = {
       height: configuration.height,
       width: configuration.width,
@@ -42,6 +52,14 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
         fs: configuration.fullscreenEnabled ? 1 : 0,
         playsInline: configuration.playsInline ? 1 : 0,
       },
+    }
+
+    if (shouldUseEducationAPI) { 
+      config.embedConfig = { 
+        contentFilter: 0,
+        enc: configuration.enc,
+      }
+      config.host = EDUCATION_HOST_NAME
     }
 
     const ytPlayer = convertYTPlayer(elementId, config)
