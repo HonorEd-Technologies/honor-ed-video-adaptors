@@ -4,3 +4,7 @@ node_modules
 .idea
 .build
 *.tgz
+src/.DS_Store
+src/adaptors/.DS_Store
+src/types/.DS_Store
+src/utils/.DS_Store
