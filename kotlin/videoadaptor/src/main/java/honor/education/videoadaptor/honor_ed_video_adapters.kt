@@ -6,6 +6,8 @@ public object EntryPoint {
     // These will refer to assets, since there's no Bundle.module in Android
     const val playerUrl: String = "file:///android_asset/HonorPlayer.html"
     const val playerJsUrl: String = "file:///android_asset/main.js"
+    const val playerAssetName: String = "HonorPlayer.html"
+    const val playerMainJSName: String = "main.js"
 }
 
 public enum class HEVideoPlayerState(val value: Int) {
