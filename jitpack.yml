@@ -1,0 +1,5 @@
+jdk:
+  - openjdk17
+before_install:
+  - echo "Running JitPack build with assets"
+  - find . -type d -name "assets" | xargs ls -la
