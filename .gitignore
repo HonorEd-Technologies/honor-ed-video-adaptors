@@ -4,3 +4,14 @@ node_modules
 .idea
 .build
 *.tgz
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+lib/src/main/.DS_Store
+lib/src/main/kotlin/.DS_Store
+lib/src/main/kotlin/honor/.DS_Store
+lib/src/test/kotlin/org/.DS_Store
+lib/src/test/kotlin/org/education/.DS_Store
