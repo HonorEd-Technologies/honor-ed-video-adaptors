@@ -21,7 +21,7 @@ android {
 
     sourceSets {
         main {
-            assets.srcDirs += 'src/main/assets'
+            assets.srcDirs = ['src/main/assets']
         }
     }
 
@@ -55,7 +55,7 @@ dependencies {
 publishing {
     publications {
         release(MavenPublication) {
-            groupId = 'com.github.HonorEd-Technologies'
+            groupId = 'honor.education'
             artifactId = 'videoadaptor'
             version = '1.0.1'
 
