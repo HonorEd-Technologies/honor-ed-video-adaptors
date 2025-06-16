@@ -3,6 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+group = "com.github.HonorEd-Technologies"
+version = "1.0.0"
+
 android {
     namespace 'honor.education.videoadaptor'
     compileSdk 34
