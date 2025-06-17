@@ -6,6 +6,23 @@
       const videoId = 'VIDEO_ID'
       const enc = 'ENCRYPTED_PAYLOAD'
 
+      function isAndroid() {
+        return typeof HEVideoPlayerBridge !== "undefined";
+      }
+
+      function isIOS() {
+        return window.webkit && window.webkit.messageHandlers;
+      }
+
+      function postToNative(eventName, payload = {}) {
+        if (isIOS() && window.webkit.messageHandlers[eventName]) {
+          window.webkit.messageHandlers[eventName].postMessage(payload);
+        }
+        if (isAndroid() && HEVideoPlayerBridge[eventName]) {
+          HEVideoPlayerBridge[eventName](...Object.values(payload));
+        }
+      }
+
       window.addEventListener('load', (event) => {
         if (!videoId) {
           document.getElementById('player-1').innerText =
@@ -27,48 +44,20 @@
           window.HonorPlayer = player
 
           player.onReady(() => {
-            if (
-              window.webkit &&
-              window.webkit.messageHandlers &&
-              window.webkit.messageHandlers.playerReady
-            ) {
-              window.webkit.messageHandlers.playerReady.postMessage({})
-            }
-          })
+            postToNative("playerReady");
+          });
 
           player.onStateChanged((state) => {
-            if (
-              window.webkit &&
-              window.webkit.messageHandlers &&
-              window.webkit.messageHandlers.playerStateChanged
-            ) {
-              window.webkit.messageHandlers.playerStateChanged.postMessage({
-                state,
-              })
-            }
-          })
+            postToNative("playerStateChanged", { state });
+          });
 
           player.onError((error) => {
-            if (
-              window.webkit &&
-              window.webkit.messageHandlers &&
-              window.webkit.messageHandlers.playerError
-            ) {
-              window.webkit.messageHandlers.playerError.postMessage({ error })
-            }
-          })
+            postToNative("playerError", { error });
+          });
 
           player.onCurrentTimeChanged((time) => {
-            if (
-              window.webkit &&
-              window.webkit.messageHandlers &&
-              window.webkit.messageHandlers.currentTimeChanged
-            ) {
-              window.webkit.messageHandlers.currentTimeChanged.postMessage({
-                time,
-              })
-            }
-          })
+            postToNative("currentTimeChanged", { time });
+          });
         }
       })
 
