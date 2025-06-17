@@ -1,5 +1,12 @@
 jdk:
   - openjdk17
+
 before_install:
-  - echo "Running JitPack build with assets"
+  - echo "Running JitPack build with assets verification"
+  - mkdir -p $HOME/.gradle
+  - echo "org.gradle.jvmargs=-Xmx2g -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError" > $HOME/.gradle/gradle.properties
   - find . -type d -name "assets" | xargs ls -la
+
+install:
+  - echo "Running custom install with assets"
+  - ./gradlew clean build publishToMavenLocal -x test
