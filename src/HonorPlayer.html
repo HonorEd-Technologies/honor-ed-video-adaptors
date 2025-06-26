@@ -5,7 +5,9 @@
     <script>
       const videoId = 'VIDEO_ID'
       const enc = 'ENCRYPTED_PAYLOAD'
-      const useEducationApi = false // Set to true if you want to use the Education API
+      // Set to true if you want to use the Education API
+      // The player expects a boolean so make sure to include the quotes when replacing
+      const useEducationApi = 'USE_EDUCATION_API_ENABLED' 
 
       function isAndroid() {
         return typeof HEVideoPlayerBridge !== "undefined";
