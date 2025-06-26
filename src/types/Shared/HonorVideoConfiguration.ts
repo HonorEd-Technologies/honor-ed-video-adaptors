@@ -6,5 +6,6 @@ export type HonorVideoConfiguration = {
   fullscreenEnabled: boolean
   playsInline: boolean
   videoId: string
+  useEducationApi?: boolean
   enc?: string
 }

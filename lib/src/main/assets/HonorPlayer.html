@@ -5,6 +5,7 @@
     <script>
       const videoId = 'VIDEO_ID'
       const enc = 'ENCRYPTED_PAYLOAD'
+      const useEducationApi = false // Set to true if you want to use the Education API
 
       function isAndroid() {
         return typeof HEVideoPlayerBridge !== "undefined";
@@ -73,6 +74,7 @@
             fullscreenEnabled: false,
             playsInline: false,
             enc,
+            useEducationApi,
           }
 
           const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor('youtube')
