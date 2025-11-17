@@ -93,6 +93,7 @@
 
           player.onError((error) => {
             postToNative("playerError", { error });
+            alert(`Player Error: ${error}`);
           });
 
           player.onCurrentTimeChanged((time) => {
