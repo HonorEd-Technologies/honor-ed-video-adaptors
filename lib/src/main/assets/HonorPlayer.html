@@ -2,7 +2,140 @@
 <html>
   <body style="margin: 0px; background-color: black">
     <div id="player-1"></div>
+    <div id="log-display" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); color: #0f0; font-family: monospace; font-size: 10px; overflow-y: auto; z-index: 10000; padding: 10px; white-space: pre-wrap; word-wrap: break-word;"></div>
     <script>
+      // ============================================================================
+      // PERSISTENT LOG BUFFER - Captures all logs even before debugger attachment
+      // ============================================================================
+      (function() {
+        window.HELogBuffer = [];
+        window.HEShowLogs = false; // Set to true to display logs on-screen
+        const MAX_LOGS = 500; // Keep last 500 logs
+
+        // Format a log entry
+        function formatLogEntry(level, args) {
+          const timestamp = new Date().toISOString();
+          const message = Array.from(args).map(arg => {
+            if (typeof arg === 'object') {
+              try {
+                return JSON.stringify(arg);
+              } catch (e) {
+                return String(arg);
+              }
+            }
+            return String(arg);
+          }).join(' ');
+
+          return { timestamp, level, message };
+        }
+
+        // Add log to buffer
+        function addToBuffer(entry) {
+          window.HELogBuffer.push(entry);
+          if (window.HELogBuffer.length > MAX_LOGS) {
+            window.HELogBuffer.shift(); // Remove oldest log
+          }
+
+          // Send important logs to native side immediately
+          if (entry.level === 'error' || entry.level === 'warn') {
+            try {
+              if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.consoleLog) {
+                window.webkit.messageHandlers.consoleLog.postMessage(entry);
+              }
+              if (typeof HEVideoPlayerBridge !== 'undefined' && HEVideoPlayerBridge.consoleLog) {
+                HEVideoPlayerBridge.consoleLog(entry.timestamp, entry.level, entry.message);
+              }
+            } catch (e) {
+              // Silently fail if bridge not available
+            }
+          }
+
+          // Update on-screen display if enabled
+          if (window.HEShowLogs) {
+            updateLogDisplay();
+          }
+        }
+
+        // Update on-screen log display
+        function updateLogDisplay() {
+          const logDisplay = document.getElementById('log-display');
+          if (logDisplay && window.HEShowLogs) {
+            logDisplay.style.display = 'block';
+            const logs = window.HELogBuffer.slice(-50).map(entry => {
+              const color = entry.level === 'error' ? '#f00' : entry.level === 'warn' ? '#ff0' : '#0f0';
+              return `<span style="color: ${color}">[${entry.timestamp.split('T')[1].split('.')[0]}] ${entry.level.toUpperCase()}: ${entry.message}</span>`;
+            }).join('\n');
+            logDisplay.innerHTML = logs;
+            logDisplay.scrollTop = logDisplay.scrollHeight;
+          }
+        }
+
+        // Override console methods
+        const originalConsole = {
+          log: console.log.bind(console),
+          error: console.error.bind(console),
+          warn: console.warn.bind(console),
+          info: console.info.bind(console)
+        };
+
+        console.log = function() {
+          originalConsole.log.apply(console, arguments);
+          addToBuffer(formatLogEntry('log', arguments));
+        };
+
+        console.error = function() {
+          originalConsole.error.apply(console, arguments);
+          addToBuffer(formatLogEntry('error', arguments));
+        };
+
+        console.warn = function() {
+          originalConsole.warn.apply(console, arguments);
+          addToBuffer(formatLogEntry('warn', arguments));
+        };
+
+        console.info = function() {
+          originalConsole.info.apply(console, arguments);
+          addToBuffer(formatLogEntry('info', arguments));
+        };
+
+        // Function to retrieve all logs (callable from native code)
+        window.getHELogs = function() {
+          return JSON.stringify(window.HELogBuffer, null, 2);
+        };
+
+        // Function to get logs as plain text
+        window.getHELogsText = function() {
+          return window.HELogBuffer.map(entry =>
+            `[${entry.timestamp}] ${entry.level.toUpperCase()}: ${entry.message}`
+          ).join('\n');
+        };
+
+        // Function to toggle on-screen log display (callable from native code)
+        window.toggleHELogDisplay = function() {
+          window.HEShowLogs = !window.HEShowLogs;
+          const logDisplay = document.getElementById('log-display');
+          if (logDisplay) {
+            logDisplay.style.display = window.HEShowLogs ? 'block' : 'none';
+            if (window.HEShowLogs) {
+              updateLogDisplay();
+            }
+          }
+          return window.HEShowLogs;
+        };
+
+        // Function to clear log buffer (callable from native code)
+        window.clearHELogs = function() {
+          window.HELogBuffer = [];
+          const logDisplay = document.getElementById('log-display');
+          if (logDisplay) {
+            logDisplay.innerHTML = '';
+          }
+        };
+
+        console.log('[HonorPlayer] Log buffer system initialized');
+      })();
+      // ============================================================================
+
       const videoId = 'VIDEO_ID'
       const enc = 'ENCRYPTED_PAYLOAD'
       // Set to true if you want to use the Education API
@@ -62,43 +195,106 @@
           return JSON.stringify({});
       }
 
+      // Global error handlers to catch any uncaught exceptions
+      window.addEventListener('error', (event) => {
+        console.error('[HonorPlayer] Global error event:')
+        console.error('[HonorPlayer] Message:', event.message)
+        console.error('[HonorPlayer] Source:', event.filename)
+        console.error('[HonorPlayer] Line:', event.lineno)
+        console.error('[HonorPlayer] Column:', event.colno)
+        console.error('[HonorPlayer] Error object:', event.error)
+        alert(`UNCAUGHT ERROR: ${event.message}\nat ${event.filename}:${event.lineno}:${event.colno}`)
+      })
+
+      window.addEventListener('unhandledrejection', (event) => {
+        console.error('[HonorPlayer] Unhandled promise rejection:')
+        console.error('[HonorPlayer] Reason:', event.reason)
+        console.error('[HonorPlayer] Promise:', event.promise)
+        alert(`UNHANDLED PROMISE REJECTION: ${event.reason}`)
+      })
+
       window.addEventListener('load', (event) => {
+        console.log('[HonorPlayer] Window load event fired')
+        console.log('[HonorPlayer] User Agent:', navigator.userAgent)
+        console.log('[HonorPlayer] Platform:', navigator.platform)
+        console.log('[HonorPlayer] Location:', window.location.href)
+        console.log('[HonorPlayer] Protocol:', window.location.protocol)
+
+        console.log('[HonorPlayer] videoId:', videoId)
+        console.log('[HonorPlayer] enc:', enc)
+        console.log('[HonorPlayer] useEducationApi:', useEducationApi)
+        console.log('[HonorPlayer] HE object available:', typeof HE !== 'undefined')
+
+        if (typeof HE !== 'undefined') {
+          console.log('[HonorPlayer] HE object keys:', Object.keys(HE))
+        } else {
+          console.error('[HonorPlayer] HE object is not defined! Cannot initialize player.')
+          alert('ERROR: HonorPlayer library not loaded. Check console for details.')
+          return
+        }
+
         if (!videoId) {
+          console.error('[HonorPlayer] No video ID provided')
           document.getElementById('player-1').innerText =
             'Please pass in a video id'
+          alert('ERROR: No video ID provided')
         } else {
-          let config = {
-            height: document.documentElement.clientHeight,
-            width: document.documentElement.clientWidth,
-            videoId,
-            autoplay: false,
-            controls: false,
-            fullscreenEnabled: false,
-            playsInline: false,
-            enc,
-            useEducationApi,
+          try {
+            let config = {
+              height: document.documentElement.clientHeight,
+              width: document.documentElement.clientWidth,
+              videoId,
+              autoplay: false,
+              controls: false,
+              fullscreenEnabled: false,
+              playsInline: false,
+              enc,
+              useEducationApi,
+            }
+
+            console.log('[HonorPlayer] Player configuration:', JSON.stringify(config, null, 2))
+            console.log('[HonorPlayer] Creating adaptor...')
+
+            const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor('youtube')
+            console.log('[HonorPlayer] Adaptor created:', adaptor)
+
+            console.log('[HonorPlayer] Creating HonorPlayer instance...')
+            const player = new HE.HonorPlayer('player-1', config, adaptor)
+            window.HonorPlayer = player
+            console.log('[HonorPlayer] HonorPlayer instance created')
+
+            player.onReady(() => {
+              console.log('[HonorPlayer] onReady callback fired')
+              postToNative("playerReady");
+            });
+
+            player.onStateChanged((state) => {
+              console.log('[HonorPlayer] onStateChanged callback fired, state:', state)
+              postToNative("playerStateChanged", { state });
+            });
+
+            player.onError((error) => {
+              console.error('[HonorPlayer] onError callback fired')
+              console.error('[HonorPlayer] Error object:', JSON.stringify(error, null, 2))
+              console.error('[HonorPlayer] Error type:', error.type)
+              console.error('[HonorPlayer] Error code:', error.code)
+              console.error('[HonorPlayer] Error message:', error.message)
+              alert(`ERROR: ${error.message || error.code || JSON.stringify(error)}`)
+              postToNative("playerError", { error });
+            });
+
+            player.onCurrentTimeChanged((time) => {
+              postToNative("currentTimeChanged", { time });
+            });
+
+            console.log('[HonorPlayer] All event listeners registered')
+          } catch (error) {
+            console.error('[HonorPlayer] Exception during player initialization:', error)
+            console.error('[HonorPlayer] Error name:', error.name)
+            console.error('[HonorPlayer] Error message:', error.message)
+            console.error('[HonorPlayer] Error stack:', error.stack)
+            alert(`EXCEPTION during initialization: ${error.message}\nCheck console for details.`)
           }
-
-          const adaptor = HE.HonorVideoAdaptorFactory.createAdaptor('youtube')
-          const player = new HE.HonorPlayer('player-1', config, adaptor)
-          window.HonorPlayer = player
-
-          player.onReady(() => {
-            postToNative("playerReady");
-          });
-
-          player.onStateChanged((state) => {
-            postToNative("playerStateChanged", { state });
-          });
-
-          player.onError((error) => {
-            postToNative("playerError", { error });
-            alert(`Player Error: ${error}`);
-          });
-
-          player.onCurrentTimeChanged((time) => {
-            postToNative("currentTimeChanged", { time });
-          });
         }
       })
 

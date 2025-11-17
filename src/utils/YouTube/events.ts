@@ -46,6 +46,7 @@ const parseYTPlayerError = (error: YoutubeError): HonorVideoErrorType => {
 
 const youtubeReadyHandler = (player: HonorPlayer): (() => void) => {
   return () => {
+    console.log('[HonorPlayer] YouTube player ready event fired')
     player.emitter.triggerEvent(HonorVideoEvent.playerReady)
     // youtube has no event for updating the current volume of the video, so we need to set up an interval to publish the event
     setInterval(() => {
@@ -120,14 +121,46 @@ const youtubeErrorHandler = (
   player: HonorPlayer
 ): ((event: YoutubeEvent) => void) => {
   return ({ data }: YoutubeEvent) => {
+    console.error('[HonorPlayer] YouTube error event received')
+    console.error('[HonorPlayer] Raw YouTube error data:', data)
+    console.error('[HonorPlayer] Full event object:', event)
+
     const castData = <YoutubeError>data
     let error = HonorVideoErrorType.unknown
+    let errorMessage = `YouTube error code: ${data}`
 
     if (castData) {
       error = parseYTPlayerError(castData)
+      // Add descriptive messages for each error type
+      switch (castData) {
+        case YoutubeError.invalidParameter:
+          errorMessage = `YouTube error ${castData}: Invalid parameter value`
+          break
+        case YoutubeError.playerError:
+          errorMessage = `YouTube error ${castData}: HTML5 player error`
+          break
+        case YoutubeError.notFound:
+          errorMessage = `YouTube error ${castData}: Video not found or removed`
+          break
+        case YoutubeError.invalidPermissions:
+        case YoutubeError.invalidPermissionsAlt:
+          errorMessage = `YouTube error ${castData}: Video cannot be played in embedded players`
+          break
+        case YoutubeError.apiLoadError:
+          errorMessage = `YouTube error ${castData}: API load error`
+          break
+        default:
+          errorMessage = `YouTube error ${castData}: Unknown error type`
+      }
+    } else {
+      errorMessage = `YouTube error with unrecognized code: ${JSON.stringify(data)}`
     }
+
+    console.error('[HonorPlayer]', errorMessage)
+    console.error('[HonorPlayer] Parsed error type:', error)
+
     player.emitter.triggerEvent(HonorVideoEvent.error, {
-      data: { type: error },
+      data: { type: error, message: errorMessage },
     })
   }
 }

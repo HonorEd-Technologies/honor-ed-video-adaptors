@@ -1,8 +1,21 @@
 import { type CaptionOption } from "../../types/Shared/CaptionOption";
 
 export default (elementId: string, config: PlayerOptions) => {
-  if (!window.YT) { return }
+  console.log('[HonorPlayer] convertYTPlayer called')
+  console.log('[HonorPlayer] Element ID:', elementId)
+  console.log('[HonorPlayer] Config:', JSON.stringify(config, null, 2))
+  console.log('[HonorPlayer] window.YT available:', !!window.YT)
+  console.log('[HonorPlayer] window.YT.Player available:', !!window.YT?.Player)
+
+  if (!window.YT) {
+    console.error('[HonorPlayer] window.YT is not available!')
+    return
+  }
+
+  console.log('[HonorPlayer] Creating new YT.Player instance...')
   const player = new window.YT.Player(elementId, config)
+  console.log('[HonorPlayer] YT.Player instance created:', player)
+
   return {
     loadVideoById: (
       videoId: string,

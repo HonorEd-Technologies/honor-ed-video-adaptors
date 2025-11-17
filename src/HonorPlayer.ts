@@ -1,6 +1,6 @@
 import { HonorVideoEventEmitters } from './utils/Shared/HonorEventEmitter'
 import { type HonorVideoConfiguration } from './types/Shared/HonorVideoConfiguration'
-import { type HonorVideoError } from './types/Shared/HonorVideoError'
+import { type HonorVideoError, HonorVideoErrorType } from './types/Shared/HonorVideoError'
 import { HonorVideoEvent } from './types/Shared/HonorVideoEvent'
 import { HonorVideoPlayerState } from './types/Shared/HonorVideoPlayerState'
 import { type HonorVideoAdaptor } from './adaptors/HonorVideoAdaptor'
@@ -71,8 +71,14 @@ export class HonorPlayer {
     configuration: HonorVideoConfiguration,
     adaptor: HonorVideoAdaptor
   ) {
+    console.log('[HonorPlayer] HonorPlayer constructor called')
+    console.log('[HonorPlayer] Element ID:', elementId)
+    console.log('[HonorPlayer] Configuration:', configuration)
+    console.log('[HonorPlayer] Adaptor:', adaptor)
+
     this.adaptor = adaptor
     this.emitter = new HonorVideoEventEmitters()
+    console.log('[HonorPlayer] Starting adaptor initialization...')
     void this.initializeAdaptor(elementId, configuration)
   }
 
@@ -133,7 +139,20 @@ export class HonorPlayer {
     elementId: string,
     config: HonorVideoConfiguration
   ): Promise<void> => {
-    await this.adaptor.initialize(elementId, config, this)
-    this.initialized = true
+    console.log('[HonorPlayer] initializeAdaptor called')
+    try {
+      await this.adaptor.initialize(elementId, config, this)
+      this.initialized = true
+      console.log('[HonorPlayer] Adaptor initialization completed successfully')
+    } catch (error) {
+      console.error('[HonorPlayer] Failed to initialize adaptor:', error)
+      this.emitter.triggerEvent(HonorVideoEvent.error, {
+        data: {
+          code: HonorVideoErrorType.adaptorLayerError,
+          message: `Failed to initialize adaptor: ${error instanceof Error ? error.message : String(error)}`,
+        },
+      })
+      throw error
+    }
   }
 }
