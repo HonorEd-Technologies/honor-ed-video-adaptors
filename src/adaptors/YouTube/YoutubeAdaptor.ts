@@ -33,8 +33,12 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
     configuration: HonorVideoConfiguration,
     player: HonorPlayer
   ): Promise<void> => {
-    const shouldUseEducationAPI = window.location.protocol === 'https:' && configuration.useEducationApi
-    if (shouldUseEducationAPI) { 
+    // The education flow (youtubeeducation.com host + its iframe_api) is gated on the tenant
+    // flag; other tenants stay on the standard youtube.com host. The encrypted embedConfig is
+    // attached whenever a token is present (see config below), independent of the host.
+    const shouldUseEducationAPI =
+      window.location.protocol === 'https:' && configuration.useEducationApi
+    if (shouldUseEducationAPI) {
       await loadEducationYoutubeAPI(player.emitter)
     } else {
       await loadYoutubeAPI(player.emitter)
@@ -52,14 +56,10 @@ export class YoutubeAdaptor implements HonorVideoAdaptor {
         fs: configuration.fullscreenEnabled ? 1 : 0,
         playsInline: configuration.playsInline ? 1 : 0,
       },
-    }
-
-    if (shouldUseEducationAPI) { 
-      config.embedConfig = { 
-        contentFilter: 0,
-        enc: configuration.enc,
-      }
-      config.host = EDUCATION_HOST_NAME
+      ...(configuration.enc
+        ? { embedConfig: { contentFilter: 0, enc: configuration.enc } }
+        : {}),
+      host: shouldUseEducationAPI ? EDUCATION_HOST_NAME : undefined,
     }
 
     const ytPlayer = convertYTPlayer(elementId, config)
