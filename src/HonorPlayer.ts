@@ -33,7 +33,7 @@ function RequiresInitializationForAllMethods(excludeMethods: string[] = []) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-explicit-any
             ;(this as any)[methodName] = function (...args: any[]) {
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-              if (!(this).initialized) {
+              if (!this.initialized) {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                 this.emitter.triggerEvent(HonorVideoEvent.error, { data: 5 })
                 throw new Error(
@@ -76,36 +76,60 @@ export class HonorPlayer {
     void this.initializeAdaptor(elementId, configuration)
   }
 
-  destroy = (): void => { this.adaptor.destroy(); }
+  destroy = (): void => {
+    this.adaptor.destroy()
+  }
   getCurrentTime = (): number => this.adaptor.getCurrentTime()
   getDuration = (): number => this.adaptor.getDuration()
   getPlaybackRate = (): number => this.adaptor.getPlaybackRate()
   getVideoLoadedFraction = (): number => this.adaptor.getVideoLoadedFraction()
   getVolume = (): number => this.adaptor.getVolume()
-  loadVideoById = (videoId: string, startTime?: number, endTime?: number): void =>
-    { this.adaptor.loadVideoById(videoId, startTime, endTime); }
-  seekTo = (seconds: number): void => { this.adaptor.seekTo(seconds); }
-  getAvailablePlaybackRates = (): number[] => this.adaptor.getAvailablePlaybackRates()
-  setPlaybackRate = (rate: number): void => { this.adaptor.setPlaybackRate(rate); }
-  setCaptionLanguage = (identifier: string): void => { this.adaptor.setCaptionLanguage(identifier) }
-  removeCaptions = (): void => { this.adaptor.removeCaptions() }
-  getAvailableLanguages = (): CaptionOption[] => this.adaptor.getAvailableLanguages()
-  getCurrentLanguage = (): CaptionOption | undefined => this.adaptor.getCurrentLanguage()
+  loadVideoById = (
+    videoId: string,
+    startTime?: number,
+    endTime?: number
+  ): void => {
+    this.adaptor.loadVideoById(videoId, startTime, endTime)
+  }
+  seekTo = (seconds: number): void => {
+    this.adaptor.seekTo(seconds)
+  }
+  getAvailablePlaybackRates = (): number[] =>
+    this.adaptor.getAvailablePlaybackRates()
+  setPlaybackRate = (rate: number): void => {
+    this.adaptor.setPlaybackRate(rate)
+  }
+  setCaptionLanguage = (identifier: string): void => {
+    this.adaptor.setCaptionLanguage(identifier)
+  }
+  removeCaptions = (): void => {
+    this.adaptor.removeCaptions()
+  }
+  getAvailableLanguages = (): CaptionOption[] =>
+    this.adaptor.getAvailableLanguages()
+  getCurrentLanguage = (): CaptionOption | undefined =>
+    this.adaptor.getCurrentLanguage()
   setSize = (width: number, height: number): void =>
     this.adaptor.setSize(width, height)
   setVolume = (volume: number): void => {
-    const boundVolume = Math.min(1, Math.max(0, volume)) 
-    this.adaptor.setVolume(boundVolume); 
+    const boundVolume = Math.min(1, Math.max(0, volume))
+    this.adaptor.setVolume(boundVolume)
   }
-  stopVideo = (): void => { this.adaptor.stopVideo(); }
-  playVideo = (): void => { this.adaptor.playVideo(); }
-  pauseVideo = (): void => { this.adaptor.pauseVideo(); }
-  onReady = (callback: () => void): () => void => {
+  stopVideo = (): void => {
+    this.adaptor.stopVideo()
+  }
+  playVideo = (): void => {
+    this.adaptor.playVideo()
+  }
+  pauseVideo = (): void => {
+    this.adaptor.pauseVideo()
+  }
+  onReady = (callback: () => void): (() => void) => {
     try {
       const state = this.adaptor.getPlayerState()
       if (state !== HonorVideoPlayerState.unstarted) {
         callback()
-        return () => { }
+        return () => {}
       } else {
         return this.emitter.onReady(callback)
       }
@@ -113,19 +137,21 @@ export class HonorPlayer {
       return this.emitter.onReady(callback)
     }
   }
-  onError = (callback: (error: HonorVideoError) => void): () => void => {
+  onError = (callback: (error: HonorVideoError) => void): (() => void) => {
     return this.emitter.onError(callback)
   }
-  onCurrentTimeChanged = (callback: (time: number) => void): () => void => {
+  onCurrentTimeChanged = (callback: (time: number) => void): (() => void) => {
     return this.emitter.onCurrentTimeChange(callback)
   }
-  onStateChanged = (callback: (state: HonorVideoPlayerState) => void): () => void => {
+  onStateChanged = (
+    callback: (state: HonorVideoPlayerState) => void
+  ): (() => void) => {
     return this.emitter.onStateChange(callback)
   }
-  onPlaybackRateChanged = (callback: (rate: number) => void): () => void => {
+  onPlaybackRateChanged = (callback: (rate: number) => void): (() => void) => {
     return this.emitter.onPlaybackRateChange(callback)
   }
-  onVolumeChanged = (callback: (volume: number) => void): () => void => {
+  onVolumeChanged = (callback: (volume: number) => void): (() => void) => {
     return this.emitter.onVolumeChange(callback)
   }
 

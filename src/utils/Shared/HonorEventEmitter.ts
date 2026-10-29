@@ -39,16 +39,18 @@ export class HonorVideoEventEmitters {
   private volumeEmitter: HonorVideoEventEmitter<number> =
     new HonorVideoEventEmitter()
 
-  onReady = (callback: () => void): () => void => this.readyEmitter.on(callback)
-  onStateChange = (callback: (data: HonorVideoPlayerState) => void): () => void =>
-    this.stateChangeEmitter.on(callback)
-  onError = (callback: (error: HonorVideoError) => void): () => void =>
+  onReady = (callback: () => void): (() => void) =>
+    this.readyEmitter.on(callback)
+  onStateChange = (
+    callback: (data: HonorVideoPlayerState) => void
+  ): (() => void) => this.stateChangeEmitter.on(callback)
+  onError = (callback: (error: HonorVideoError) => void): (() => void) =>
     this.errorEmitter.on(callback)
-  onCurrentTimeChange = (callback: (time: number) => void): () => void =>
+  onCurrentTimeChange = (callback: (time: number) => void): (() => void) =>
     this.currentTimeEmitter.on(callback)
-  onPlaybackRateChange = (callback: (rate: number) => void): () => void =>
+  onPlaybackRateChange = (callback: (rate: number) => void): (() => void) =>
     this.playbackRateEmitter.on(callback)
-  onVolumeChange = (callback: (rate: number) => void): () => void =>
+  onVolumeChange = (callback: (rate: number) => void): (() => void) =>
     this.volumeEmitter.on(callback)
 
   triggerEvent = (

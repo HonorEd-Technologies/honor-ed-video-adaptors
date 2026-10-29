@@ -1,4 +1,4 @@
-export type CaptionOption = { 
+export type CaptionOption = {
   languageCode: string
   languageIdentifier: string
 }
