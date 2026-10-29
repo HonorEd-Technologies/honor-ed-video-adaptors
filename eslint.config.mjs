@@ -28,10 +28,6 @@ export default tsEslint.config(
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: tsEslint.parser,
-      parserOptions: {
-        project: './tsconfig.json',
-        tsconfigRootDir: import.meta.dirname,
-      },
     },
     plugins: {
       '@typescript-eslint': tsEslint.plugin,
@@ -111,7 +107,7 @@ export default tsEslint.config(
       'dist',
       'Sources',
       'eslint.config.mjs',
-      'webpack.config.js',
+      'webpack.config.cjs',
     ],
   }
 )

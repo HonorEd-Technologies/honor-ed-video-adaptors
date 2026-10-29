@@ -2,6 +2,7 @@ node_modules
 .next
 build
 dist
+lib/src/main/assets
 public
 coverage
 *.min.js

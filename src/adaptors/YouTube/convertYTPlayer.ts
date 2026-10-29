@@ -1,40 +1,64 @@
-import { type CaptionOption } from "../../types/Shared/CaptionOption";
+import { type CaptionOption } from '../../types/Shared/CaptionOption'
 
 export default (elementId: string, config: PlayerOptions) => {
-  if (!window.YT) { return }
+  if (!window.YT) {
+    return
+  }
   const player = new window.YT.Player(elementId, config)
   return {
     loadVideoById: (
       videoId: string,
       startSeconds?: number,
       endSeconds?: number
-    ): void => { player.loadVideoById({ videoId, startSeconds, endSeconds }); },
+    ): void => {
+      player.loadVideoById({ videoId, startSeconds, endSeconds })
+    },
     loadVideoByUrl: (
       mediaContentUrl: string,
       startSeconds?: number,
       endSeconds?: number
-    ): void => { player.loadVideoByUrl({ mediaContentUrl, startSeconds, endSeconds }); },
-    playVideo: (): void => { player.playVideo(); },
-    pauseVideo: (): void => { player.pauseVideo(); },
-    stopVideo: (): void => { player.stopVideo(); },
-    seekTo: (seconds: number, allowSeekAhead: boolean): void =>
-      { player.seekTo(seconds, allowSeekAhead); },
+    ): void => {
+      player.loadVideoByUrl({ mediaContentUrl, startSeconds, endSeconds })
+    },
+    playVideo: (): void => {
+      player.playVideo()
+    },
+    pauseVideo: (): void => {
+      player.pauseVideo()
+    },
+    stopVideo: (): void => {
+      player.stopVideo()
+    },
+    seekTo: (seconds: number, allowSeekAhead: boolean): void => {
+      player.seekTo(seconds, allowSeekAhead)
+    },
     getDuration: (): number => player.getDuration(),
     getVideoLoadedFraction: (): number => player.getVideoLoadedFraction(),
-    setVolume: (volume: number): void => { player.setVolume(volume); },
+    setVolume: (volume: number): void => {
+      player.setVolume(volume)
+    },
     getVolume: (): number => player.getVolume(),
     getOptions: (module: string): string[] => player.getOptions(module),
-    getOption: (module: string, option: string): object[] => player.getOption(module, option),
-    setOption: (module: string, option: string, data: object): void => { player.setOption(module, option, data); },
+    getOption: (module: string, option: string): object[] =>
+      player.getOption(module, option),
+    setOption: (module: string, option: string, data: object): void => {
+      player.setOption(module, option, data)
+    },
     getPlaybackRate: (): number => player.getPlaybackRate(),
-    setPlaybackRate: (suggestedRate: number): void =>
-      { player.setPlaybackRate(suggestedRate); },
+    setPlaybackRate: (suggestedRate: number): void => {
+      player.setPlaybackRate(suggestedRate)
+    },
     getPlayerState: (): PlayerState => player.getPlayerState(),
-    getAvailablePlaybackRates: (): number[] => player.getAvailablePlaybackRates(),
+    getAvailablePlaybackRates: (): number[] =>
+      player.getAvailablePlaybackRates(),
     getCurrentTime: (): number => player.getCurrentTime(),
     getVideoUrl: (): string => player.getVideoUrl(),
-    destroy: (): void => { player.destroy(); },
-    setSize: (width: number, height: number): void => { player.setSize(width, height); },
+    destroy: (): void => {
+      player.destroy()
+    },
+    setSize: (width: number, height: number): void => {
+      player.setSize(width, height)
+    },
     getIframe: (): HTMLIFrameElement => player.getIframe(),
   }
 }
@@ -184,12 +208,7 @@ type PlayerVars = {
 }
 
 export type PlayerState =
-  | 'UNSTARTED'
-  | 'ENDED'
-  | 'PLAYING'
-  | 'PAUSED'
-  | 'BUFFERING'
-  | 'CUED'
+  'UNSTARTED' | 'ENDED' | 'PLAYING' | 'PAUSED' | 'BUFFERING' | 'CUED'
 
 type Events = {
   onReady?: (event: OnReadyEvent) => void
